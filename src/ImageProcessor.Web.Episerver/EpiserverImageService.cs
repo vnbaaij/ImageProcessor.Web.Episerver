@@ -14,7 +14,7 @@ namespace ImageProcessor.Web.Episerver
     /// <summary>
     /// Image service for retrieving images from EPiServer
     /// </summary>
-    public class EpiserverImageService : IImageService
+    public class ImageService : IImageService
     {
         /// <summary>
         /// Gets or sets the prefix for the given implementation.

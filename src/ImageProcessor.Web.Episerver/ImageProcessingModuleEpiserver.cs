@@ -16,10 +16,12 @@ namespace ImageProcessor.Web.Episerver
 
         protected override string GetRequestUrl(HttpRequest request)
         {
-            var fixedUrl = PathRegex.Replace(request.Url.PathAndQuery, string.Empty);
+            string requestUrl = request.Url.PathAndQuery;
 
-            fixedUrl = QuestionMarkRegex.Replace(fixedUrl, new SecondOccuranceFinder("&").MatchEvaluator);
-            return fixedUrl;
+            requestUrl = PathRegex.Replace(requestUrl, string.Empty);
+            requestUrl = QuestionMarkRegex.Replace(requestUrl, new SecondOccuranceFinder("&").MatchEvaluator);
+
+            return requestUrl;
         }
     }
 
@@ -47,6 +49,3 @@ namespace ImageProcessor.Web.Episerver
         }
     }
 }
-
-
-

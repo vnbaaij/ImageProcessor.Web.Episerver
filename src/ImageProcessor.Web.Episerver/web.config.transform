@@ -1,0 +1,13 @@
+﻿<?xml version="1.0"?>
+<configuration>
+  <system.web>
+    <httpModules>
+      <add name="ImageProcessorModule" type="ImageProcessor.Web.Episerver.EpiserverImageProcessingModule, ImageProcessor.Web.Episerver" />
+    </httpModules>
+  </system.web>
+  <system.webServer>
+    <modules runAllManagedModulesForAllRequests="true">
+      <add name="ImageProcessorModule" type="ImageProcessor.Web.Episerver.EpiserverImageProcessingModule, ImageProcessor.Web.Episerver" />
+    </modules>
+  </system.webServer>
+</configuration>

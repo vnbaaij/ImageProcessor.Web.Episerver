@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ImageProcessor.Web.Plugins.EpiserverBlobReader")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("ImageProcessor.Web.Episerver")]
+[assembly: AssemblyDescription("Integrating ImageProcessor into Episerver")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Vincent Baaij")]
 [assembly: AssemblyProduct("ImageProcessor.Web.Plugins.EpiserverBlobReader")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]

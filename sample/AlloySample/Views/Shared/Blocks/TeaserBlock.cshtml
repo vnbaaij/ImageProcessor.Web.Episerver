@@ -1,5 +1,6 @@
 @using EPiServer.Core
 @using AlloySample.Controllers
+@using ImageProcessor.Web.Episerver
 @model TeaserBlock
 <div class="border">
     @*Link the teaser block only if a link has been set and not displayed in preview*@
@@ -10,7 +11,10 @@
     {
         <h2 @Html.EditAttributes(x => x.Heading)>@Model.Heading</h2>
         <p @Html.EditAttributes(x => x.Text)>@Model.Text</p>
-        <div @Html.EditAttributes(x => x.Image)><img src="@Url.ContentUrl(Model.Image)?width=75" /></div>
+        <div @Html.EditAttributes(x => x.Image)>
+            <img src="@Html.StartProcessImage(Model.Image).Width(375).Alpha(62).BackgroundColor(0,1,2,3)" />
+            <img src="@Url.ContentUrl(Model.Image).?width=75" />
+        </div>
     }
 
 </div>
