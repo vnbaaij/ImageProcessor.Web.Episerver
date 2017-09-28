@@ -13,9 +13,9 @@ namespace AlloySample
         {
             AreaRegistration.RegisterAllAreas();
 
-            ImageProcessingModule.ValidatingRequest += ImageProcessingModule_ValidatingRequest;
+            //ImageProcessingModule.ValidatingRequest += ImageProcessingModule_ValidatingRequest;
             //Tip: Want to call the EPiServer API on startup? Add an initialization module instead (Add -> New Item.. -> EPiServer -> Initialization Module)
-            
+
         }
 
         private void ImageProcessingModule_ValidatingRequest(object sender, ValidatingRequestEventArgs args)
