@@ -12,6 +12,6 @@
     <description>$description$</description>
     <releaseNotes>Supports Episerver 10</releaseNotes>
     <copyright>Copyright 2017</copyright>
-    <tags>Episerver ImageProcessor CMS Blob</tags>
+    <tags>Episerver ImageProcessor Blob Cache Fluent API</tags>
   </metadata>
 </package>

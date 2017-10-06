@@ -28,12 +28,12 @@ namespace ImageProcessor.Web.Episerver
         /// Gets a value indicating whether the image service requests files from
         /// the locally based file system.
         /// </summary>
-        public bool IsFileLocalService => true;
+        public bool IsFileLocalService => false;
 
         /// <summary>
         /// Gets or sets any additional settings required by the service.
         /// </summary>
-        public Dictionary<string, string> Settings { get; set; }
+        public Dictionary<string, string> Settings { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets or sets the white list of <see cref="System.Uri"/>.
@@ -65,17 +65,17 @@ namespace ImageProcessor.Web.Episerver
         /// <returns>
         /// The <see cref="System.Byte"/> array containing the image data.
         /// </returns>
-        public Task<byte[]> GetImage(object id)
+        public async Task<byte[]> GetImage(object id)
         {
             var content = ContentRouteHelper.Service.Content;
 
             if (content != null && content.QueryDistinctAccess(AccessLevel.Read))
             {
                 if (content is IBinaryStorable binary)
-                    return Task.FromResult(binary.BinaryData.ReadAllBytes());
+                    return await Task.FromResult(binary.BinaryData.ReadAllBytes());
             }
 
-            return Task.FromResult<byte[]>(null);
+            return null;
         }
     }
 }
