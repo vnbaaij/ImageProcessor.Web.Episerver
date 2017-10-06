@@ -137,13 +137,12 @@
     <Compile Include="FileBlobCache.cs" />
     <Compile Include="ImageService.cs" />
     <Compile Include="HtmlHelperExtensions.cs" />
-    <Compile Include="ImageProcessingModuleEpiserver.cs" />
+    <Compile Include="EpiserverImageProcessingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UrlBuilderExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ImageProcesor.Web.Episerver.nuspec" />
     <None Include="packages.config" />
     <None Include="web.config.transform" />
   </ItemGroup>

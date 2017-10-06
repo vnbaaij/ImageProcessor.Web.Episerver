@@ -266,6 +266,23 @@ namespace ImageProcessor.Web.Episerver
         }
 
         /// <summary>
+        /// Change the alpha component of the image to effect its luminance
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="gamma">The gamma value</param>
+        /// <returns></returns>
+        public static UrlBuilder Gamma(this UrlBuilder target, float gamma)
+        {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            if (!target.IsEmpty)
+                target.QueryCollection.Add("gamma", gamma.ToString());
+
+            return target;
+        }
+
+        /// <summary>
         /// Uses a Gaussian kernel to blur the current image.
         /// Additional optional properties are also available
         /// </summary>
