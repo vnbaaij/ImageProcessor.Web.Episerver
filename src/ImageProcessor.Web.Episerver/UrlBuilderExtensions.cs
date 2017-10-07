@@ -296,6 +296,15 @@ namespace ImageProcessor.Web.Episerver
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
 
+            if (kernelsize < 0 || kernelsize > 22)
+                throw new ArgumentOutOfRangeException(nameof(target));
+
+            if (sigma < 0 || sigma > 5.1)
+                throw new ArgumentOutOfRangeException(nameof(target));
+
+            if (threshold < 0 || threshold > 100)
+                throw new ArgumentOutOfRangeException(nameof(target));
+
             if (!target.IsEmpty)
             {
                 target.QueryCollection.Add("blur", kernelsize.ToString());
@@ -320,6 +329,16 @@ namespace ImageProcessor.Web.Episerver
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
+
+            if (kernelsize < 0 || kernelsize > 22)
+                throw new ArgumentOutOfRangeException(nameof(target));
+
+            if (sigma < 0 || sigma > 5.1)
+                throw new ArgumentOutOfRangeException(nameof(target));
+
+            if (threshold < 0 || threshold > 100)
+                throw new ArgumentOutOfRangeException(nameof(target));
+
 
             if (!target.IsEmpty)
             {
