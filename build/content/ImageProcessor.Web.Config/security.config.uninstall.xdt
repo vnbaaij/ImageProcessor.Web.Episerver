@@ -1,0 +1,6 @@
+<security xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <services>
+    <service name="EpiserverImageService" type="ImageProcessor.Web.Episerver.ImageService, ImageProcessor.Web.Episerver" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+    <service name="LocalFileImageService" type="ImageProcessor.Web.Services.LocalFileImageService, ImageProcessor.Web"  xdt:Transform="InsertBefore(/security/services/service)" />
+  </services>
+</security>

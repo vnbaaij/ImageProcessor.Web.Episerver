@@ -675,9 +675,12 @@ namespace ImageProcessor.Web.Episerver
                 if (heightratio != null)
                     target.QueryCollection.Add("heightratio", heightratio.ToString());
 
-                target.QueryCollection.Add("mode", mode.ToString().ToLower());
-                target.QueryCollection.Add("anchor", anchor.ToString().ToLower());
-                target.QueryCollection.Add("upscale", upscale.ToString().ToLower());
+                if (mode != ResizeMode.Pad)
+                    target.QueryCollection.Add("mode", mode.ToString().ToLower());
+                if (anchor != AnchorPosition.Center)
+                    target.QueryCollection.Add("anchor", anchor.ToString().ToLower());
+                if (upscale != true)
+                    target.QueryCollection.Add("upscale", upscale.ToString().ToLower());
 
                 if (centerX != null || centerY != null)
                 {

@@ -1,7 +1,0 @@
-<caching currentCache="DiskCache">
-  <caches>
-    <cache name="EpiserverBlobCache" type="ImageProcessor.Web.Episerver.FileBlobCache, ImageProcessor.Web.Episerver" maxDays="365" browserMaxDays="7">
-      <settings />
-    </cache>
-  </caches>
-</caching>

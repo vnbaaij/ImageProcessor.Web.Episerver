@@ -1,0 +1,15 @@
+﻿<?xml version="1.0"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <system.web>
+    <httpModules>
+      <add name="ImageProcessorModule" type="ImageProcessor.Web.Episerver.EpiserverImageProcessingModule, ImageProcessor.Web.Episerver" xdt:Transform="Remove" xdt:Locator="Match(name)"/>
+      <add name="ImageProcessorModule" type="ImageProcessor.Web.HttpModules.ImageProcessingModule, ImageProcessor.Web" xdt:Transform="Insert"  />
+    </httpModules>
+  </system.web>
+  <system.webServer>
+    <modules runAllManagedModulesForAllRequests="true">
+      <add name="ImageProcessorModule" type="ImageProcessor.Web.Episerver.EpiserverImageProcessingModule, ImageProcessor.Web.Episerver" xdt:Transform="Remove" xdt:Locator="Match(name)"/>
+      <add name="ImageProcessorModule" type="ImageProcessor.Web.HttpModules.ImageProcessingModule, ImageProcessor.Web" xdt:Transform="Insert"  />
+    </modules>
+  </system.webServer>
+</configuration>

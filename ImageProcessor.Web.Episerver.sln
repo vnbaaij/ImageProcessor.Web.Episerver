@@ -12,22 +12,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessor.Web.Episerve
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{4032C020-B6AD-435F-A52C-08B27B92466B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuSpec", "NuSpec", "{9722D96B-3140-42A9-8A29-86D8F4489CC8}"
-	ProjectSection(SolutionItems) = preProject
-		build\NuSpecs\ImageProcesor.Web.Episerver.nuspec = build\NuSpecs\ImageProcesor.Web.Episerver.nuspec
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Transform", "Transform", "{A2F15FD9-ED7E-4216-AB79-3F6F8FAACFD3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImageProcessor.Web.Episerver", "ImageProcessor.Web.Episerver", "{CAE49B13-C2A3-4060-B1AF-85910E764278}"
 	ProjectSection(SolutionItems) = preProject
-		build\content\ImageProcessor.Web.Episerver\web.config.transform = build\content\ImageProcessor.Web.Episerver\web.config.transform
+		build\content\ImageProcessor.Web.Episerver\web.config.install.xdt = build\content\ImageProcessor.Web.Episerver\web.config.install.xdt
+		build\content\ImageProcessor.Web.Episerver\web.config.uninstall.xdt = build\content\ImageProcessor.Web.Episerver\web.config.uninstall.xdt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImageProcessor.Web.Config", "ImageProcessor.Web.Config", "{E089EEDF-F2F2-4C92-B393-AD93EC84E72F}"
 	ProjectSection(SolutionItems) = preProject
-		build\content\ImageProcessor.Web.Config\cache.config.transform = build\content\ImageProcessor.Web.Config\cache.config.transform
-		build\content\ImageProcessor.Web.Config\security.config.transform = build\content\ImageProcessor.Web.Config\security.config.transform
+		build\content\ImageProcessor.Web.Config\cache.config.install.xdt = build\content\ImageProcessor.Web.Config\cache.config.install.xdt
+		build\content\ImageProcessor.Web.Config\cache.config.uninstall.xdt = build\content\ImageProcessor.Web.Config\cache.config.uninstall.xdt
+		build\content\ImageProcessor.Web.Config\security.config.install.xdt = build\content\ImageProcessor.Web.Config\security.config.install.xdt
+		build\content\ImageProcessor.Web.Config\security.config.uninstall.xdt = build\content\ImageProcessor.Web.Config\security.config.uninstall.xdt
 	EndProjectSection
 EndProject
 Global
@@ -49,7 +47,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{9722D96B-3140-42A9-8A29-86D8F4489CC8} = {4032C020-B6AD-435F-A52C-08B27B92466B}
 		{A2F15FD9-ED7E-4216-AB79-3F6F8FAACFD3} = {4032C020-B6AD-435F-A52C-08B27B92466B}
 		{CAE49B13-C2A3-4060-B1AF-85910E764278} = {A2F15FD9-ED7E-4216-AB79-3F6F8FAACFD3}
 		{E089EEDF-F2F2-4C92-B393-AD93EC84E72F} = {A2F15FD9-ED7E-4216-AB79-3F6F8FAACFD3}

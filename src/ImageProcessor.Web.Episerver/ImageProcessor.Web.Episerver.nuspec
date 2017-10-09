@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>Vincent Baaij</owners>
+    <projectUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver</projectUrl>
+    <licenseUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Supports Episerver 10</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>Episerver ImageProcessor Blob Cache Fluent API</tags>
+    <dependencies>
+        <dependency id="ImageProcessor" version="2.5.5.0" />
+        <dependency id="ImageProcessor.Web" version="4.8.6.0" />
+        <dependency id="ImageProcessor.Web.Config" version="2.3.0.0" />
+        <dependency id="EPiServer.CMS.Core" version="[10.0, 11.0)" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\build\content\ImageProcessor.Web.Config\cache.config.install.xdt" target="content\config\imageprocessor\cache.config.install.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Config\security.config.install.xdt" target="content\config\imageprocessor\security.config.install.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver\web.config.install.xdt" target="content\web.config.install.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Config\cache.config.uninstall.xdt" target="content\config\imageprocessor\cache.config.uninstall.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Config\security.config.uninstall.xdt" target="content\config\imageprocessor\security.config.uninstall.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver\web.config.uninstall.xdt" target="content\web.config.uninstall.xdt" />
+  </files>
+</package>

@@ -1,5 +1,0 @@
-<security>
-  <services>
-    <service name="EpiserverImageService" type="ImageProcessor.Web.Episerver.ImageService, ImageProcessor.Web.Episerver" />
-  </services>
-</security>

@@ -1,0 +1,7 @@
+<caching xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform" currentCache="DiskCache" xdt:Transform="SetAttributes(currentCache)">
+  <caches>
+    <cache name="EpiserverBlobCache" type="ImageProcessor.Web.Episerver.FileBlobCache, ImageProcessor.Web.Episerver" maxDays="365" browserMaxDays="7" xdt:Transform="Remove" xdt:Locator="Match(name)">
+      <settings />
+    </cache>
+  </caches>
+</caching>
