@@ -11,8 +11,8 @@ using ImageProcessor.Configuration;
 using ImageProcessor.Web.Caching;
 using ImageProcessor.Web.HttpModules;
 
-//using Microsoft.WindowsAzure.Storage;
-//using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace ImageProcessor.Web.Episerver
 {
@@ -83,14 +83,14 @@ namespace ImageProcessor.Web.Episerver
         public AzureBlobCache(string requestPath, string fullPath, string querystring)
             : base(requestPath, fullPath, querystring)
         {
-            //if (cloudCachedBlobClient == null)
-            //{
-            //    // Retrieve storage accounts from connection string.
-            //    CloudStorageAccount cloudCachedStorageAccount = CloudStorageAccount.Parse(this.Settings["CachedStorageAccount"]);
+            if (cloudCachedBlobClient == null)
+            {
+                // Retrieve storage accounts from connection string.
+                CloudStorageAccount cloudCachedStorageAccount = CloudStorageAccount.Parse(this.Settings["CachedStorageAccount"]);
 
-            //    // Create the blob clients.
-            //    cloudCachedBlobClient = cloudCachedStorageAccount.CreateCloudBlobClient();
-            //}
+                // Create the blob clients.
+                cloudCachedBlobClient = cloudCachedStorageAccount.CreateCloudBlobClient();
+            }
 
             if (cloudCachedBlobContainer == null)
             {
