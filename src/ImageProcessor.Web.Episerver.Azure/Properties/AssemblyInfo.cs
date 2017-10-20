@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ImageProcessor.Web.Episerver.Azure")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Store ImageProcessor cache in Episerver configured Azure Blob storage")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Vincent Baaij")]
 [assembly: AssemblyProduct("ImageProcessor.Web.Episerver.Azure")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]

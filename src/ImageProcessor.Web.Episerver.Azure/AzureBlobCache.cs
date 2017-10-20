@@ -6,6 +6,10 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using EPiServer;
+using EPiServer.Core;
+using EPiServer.Framework.Configuration;
+using EPiServer.Web.Routing;
 
 using ImageProcessor.Configuration;
 using ImageProcessor.Web.Caching;
@@ -14,7 +18,7 @@ using ImageProcessor.Web.HttpModules;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace ImageProcessor.Web.Episerver
+namespace ImageProcessor.Web.Episerver.Azure
 {
     /// <summary>
     /// Provides an <see cref="IImageCache"/> implementation that uses Azure blob storage.
@@ -83,6 +87,7 @@ namespace ImageProcessor.Web.Episerver
         public AzureBlobCache(string requestPath, string fullPath, string querystring)
             : base(requestPath, fullPath, querystring)
         {
+            string configuredPath = "~/" + EPiServerFrameworkSection.Instance.AppData.BasePath;
             if (cloudCachedBlobClient == null)
             {
                 // Retrieve storage accounts from connection string.
@@ -142,12 +147,18 @@ namespace ImageProcessor.Web.Episerver
             // if the last time it was checked is greater than 5 seconds. This would be much better for perf
             // if there is a high throughput of image requests.
             string cachedFileName = await this.CreateCachedFileNameAsync();
-            this.CachedPath = CachedImageHelper.GetCachedPath(cloudCachedBlobContainer.Uri.ToString(), cachedFileName, true, this.FolderDepth);
+            //this.CachedPath = CachedImageHelper.GetCachedPath(cloudCachedBlobContainer.Uri.ToString(), cachedFileName, true, this.FolderDepth);
 
-            // Do we insert the cache container? This seems to break some setups.
-            bool useCachedContainerInUrl = this.Settings.ContainsKey("UseCachedContainerInUrl") && this.Settings["UseCachedContainerInUrl"].ToLower() != "false";
+            var blob = UrlResolver.Current.Route(new UrlBuilder(this.FullPath)) as IBinaryStorable;
 
-            this.cachedRewritePath = CachedImageHelper.GetCachedPath(useCachedContainerInUrl ? Path.Combine(this.cachedCdnRoot, cloudCachedBlobContainer.Name) : this.cachedCdnRoot, cachedFileName, true, this.FolderDepth);
+            string blobFolder = blob.BinaryDataContainer.Segments[1];
+
+
+            this.CachedPath = Path.Combine(this.cachedCdnRoot, blobFolder, cachedFileName);
+
+           
+
+            this.cachedRewritePath = CachedImageHelper.GetCachedPath(this.cachedCdnRoot, cachedFileName, true, this.FolderDepth);
 
             bool isUpdated = false;
             CachedImage cachedImage = CacheIndexer.Get(this.CachedPath);

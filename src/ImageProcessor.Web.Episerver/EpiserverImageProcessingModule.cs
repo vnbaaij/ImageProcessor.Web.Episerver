@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ImageProcessor.Web.HttpModules;
+﻿using System.Text.RegularExpressions;
 using System.Web;
-using System.Text.RegularExpressions;
+using ImageProcessor.Web.HttpModules;
 
 namespace ImageProcessor.Web.Episerver
 {

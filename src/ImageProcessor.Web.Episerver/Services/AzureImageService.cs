@@ -1,0 +1,155 @@
+﻿
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web;
+using EPiServer.Core;
+using EPiServer.Security;
+using EPiServer.ServiceLocation;
+using EPiServer.Web.Routing;
+using ImageProcessor.Web.Caching;
+using ImageProcessor.Web.Helpers;
+using ImageProcessor.Web.Services;
+
+namespace ImageProcessor.Web.Episerver
+{
+    /// <summary>
+    /// Image service for retrieving images from Episerver running on Azure.
+    /// </summary>
+    public class AzureImageService : IImageService
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AzureImageService"/> class.
+        /// </summary>
+        public AzureImageService()
+        {
+            this.Settings = new Dictionary<string, string>
+            {
+                { "MaxBytes", "4194304" },
+                { "Timeout", "30000" },
+                { "Host", string.Empty }
+            };
+        }
+
+        /// <summary>
+        /// Gets or sets the prefix for the given implementation.
+        /// <remarks>
+        /// This value is used as a prefix for any image requests that should use this service.
+        /// </remarks>
+        /// </summary>
+        public string Prefix { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets a value indicating whether the image service requests files from
+        /// the locally based file system.
+        /// </summary>
+        public bool IsFileLocalService => false;
+
+        /// <summary>
+        /// Gets or sets any additional settings required by the service.
+        /// </summary>
+        public Dictionary<string, string> Settings { get; set; } = new Dictionary<string, string>();
+
+        /// <summary>
+        /// Gets or sets the white list of <see cref="System.Uri"/>.
+        /// </summary>
+        public Uri[] WhiteList { get; set; }
+
+        public Injected<IContentRouteHelper> ContentRouteHelper { get; set; }
+        /// <summary>
+        /// Gets a value indicating whether the current request passes sanitizing rules.
+        /// </summary>
+        /// <param name="path">
+        /// The image path.
+        /// </param>
+        /// <returns>
+        /// <c>True</c> if the request is valid; otherwise, <c>False</c>.
+        /// </returns>
+        public virtual bool IsValidRequest(string path)
+        {
+            return ImageHelpers.IsValidImageExtension(path);
+        }
+
+        /// <summary>
+        /// Gets the image using the given identifier.
+        /// </summary>
+        /// <param name="id">
+        /// The value identifying the image to fetch.
+        /// </param>
+        /// <returns>
+        /// The <see cref="System.Byte"/> array containing the image data.
+        /// </returns>
+        public virtual async Task<byte[]> GetImage(object id)
+        {
+            string host = this.Settings["Host"];
+            string container = this.Settings.ContainsKey("Container") ? this.Settings["Container"] : string.Empty;
+            Uri baseUri = new Uri(host);
+
+            var helper = ServiceLocator.Current.GetInstance<IContentRouteHelper>();
+            var content = helper?.Content;
+            //var content = ContentRouteHelper.Service.Content;
+
+            string relativeResourceUrl = "";
+
+            if (content == null || !content.QueryDistinctAccess(AccessLevel.Read))
+            {
+                return null;
+            }
+
+
+            if (content is IBinaryStorable binary)
+            {
+                relativeResourceUrl = binary.ToString();
+            }
+            //return await Task.FromResult(binary.BinaryData.ReadAllBytes());
+            if (!string.IsNullOrEmpty(container))
+            {
+                // TODO: Check me.
+                container = $"{container.TrimEnd('/')}/";
+                if (!relativeResourceUrl.StartsWith($"{container}/"))
+                {
+                    relativeResourceUrl = $"{container}{relativeResourceUrl.TrimStart('/')}";
+                }
+            }
+
+            Uri uri = new Uri(baseUri, relativeResourceUrl);
+            RemoteFile remoteFile = new RemoteFile(uri)
+            {
+                MaxDownloadSize = int.Parse(this.Settings["MaxBytes"]),
+                TimeoutLength = int.Parse(this.Settings["Timeout"])
+            };
+
+            byte[] buffer;
+
+            // Prevent response blocking.
+            WebResponse webResponse = await remoteFile.GetWebResponseAsync().ConfigureAwait(false);
+
+            using (MemoryStream memoryStream = MemoryStreamPool.Shared.GetStream())
+            {
+                using (WebResponse response = webResponse)
+                {
+                    using (Stream responseStream = response.GetResponseStream())
+                    {
+                        if (responseStream != null)
+                        {
+                            responseStream.CopyTo(memoryStream);
+
+                            // Reset the position of the stream to ensure we're reading the correct part.
+                            memoryStream.Position = 0;
+
+                            buffer = memoryStream.GetBuffer();
+                        }
+                        else
+                        {
+                            throw new HttpException((int)HttpStatusCode.NotFound, $"No image exists at {uri}");
+                        }
+                    }
+                }
+            }
+
+            return buffer;
+        }
+    }
+}
