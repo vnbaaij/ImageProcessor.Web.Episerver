@@ -75,6 +75,8 @@ namespace ImageProcessor.Web.Episerver
         /// </summary>
         private DateTime cachedImageCreationTimeUtc = DateTime.MinValue;
 
+        private Injected<IContentRepository> contentRepository;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FileBlobCache"/> class.
         /// </summary>
@@ -625,11 +627,11 @@ namespace ImageProcessor.Web.Episerver
 
             var id = new Uri($"{Blob.BlobUriScheme}://{Blob.DefaultProvider}/{directory}/{path}");
 
-            var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
+            //var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
 
             var assetsRoot = SiteDefinition.Current.RootPage;
 
-            var descendants = contentRepository.GetDescendents(assetsRoot).Where(p => contentRepository.Get<IContent>(p) is MediaData).Select(contentRepository.Get<MediaData>);
+            var descendants = contentRepository.Service.GetDescendents(assetsRoot).Where(p => contentRepository.Service.Get<IContent>(p) is MediaData).Select(contentRepository.Service.Get<MediaData>);
 
             foreach (var image in descendants)
             {

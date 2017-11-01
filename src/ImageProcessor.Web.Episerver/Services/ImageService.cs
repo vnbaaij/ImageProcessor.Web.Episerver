@@ -40,7 +40,7 @@ namespace ImageProcessor.Web.Episerver
         /// </summary>
         public Uri[] WhiteList { get; set; }
 
-        private Injected<IContentRouteHelper> ContentRouteHelper { get; set; }
+        private Injected<IContentRouteHelper> contentRouteHelper;
 
         /// <summary>
         /// Gets a value indicating whether the current request passes sanitizing rules.
@@ -67,7 +67,7 @@ namespace ImageProcessor.Web.Episerver
         /// </returns>
         public async Task<byte[]> GetImage(object id)
         {
-            var content = ContentRouteHelper.Service.Content;
+            var content = contentRouteHelper.Service.Content;
 
             if (content != null && content.QueryDistinctAccess(AccessLevel.Read))
             {
