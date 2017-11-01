@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
+using EPiServer;
 using EPiServer.Core;
 using EPiServer.Security;
 using EPiServer.ServiceLocation;
@@ -57,7 +58,6 @@ namespace ImageProcessor.Web.Episerver
         /// </summary>
         public Uri[] WhiteList { get; set; }
 
-        public Injected<IContentRouteHelper> ContentRouteHelper { get; set; }
         /// <summary>
         /// Gets a value indicating whether the current request passes sanitizing rules.
         /// </summary>
@@ -87,9 +87,7 @@ namespace ImageProcessor.Web.Episerver
             string container = this.Settings.ContainsKey("Container") ? this.Settings["Container"] : string.Empty;
             Uri baseUri = new Uri(host);
 
-            var helper = ServiceLocator.Current.GetInstance<IContentRouteHelper>();
-            var content = helper?.Content;
-            //var content = ContentRouteHelper.Service.Content;
+            var content = UrlResolver.Current.Route(new UrlBuilder((string)id));
 
             string relativeResourceUrl = "";
 
@@ -98,10 +96,9 @@ namespace ImageProcessor.Web.Episerver
                 return null;
             }
 
-
             if (content is IBinaryStorable binary)
             {
-                relativeResourceUrl = binary.ToString();
+                relativeResourceUrl = binary.BinaryData.ID.AbsolutePath;
             }
             //return await Task.FromResult(binary.BinaryData.ReadAllBytes());
             if (!string.IsNullOrEmpty(container))
