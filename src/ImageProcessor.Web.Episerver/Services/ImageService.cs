@@ -40,7 +40,7 @@ namespace ImageProcessor.Web.Episerver
         /// </summary>
         public Uri[] WhiteList { get; set; }
 
-        public Injected<IContentRouteHelper> ContentRouteHelper { get; set; }
+        private Injected<IContentRouteHelper> ContentRouteHelper { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the current request passes sanitizing rules.
