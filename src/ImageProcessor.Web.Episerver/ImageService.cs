@@ -66,8 +66,6 @@ namespace ImageProcessor.Web.Episerver
         /// </returns>
         public async Task<byte[]> GetImage(object id)
         {
-            //var content = contentRouteHelper.Service.Content;
-
             var content = UrlResolver.Current.Route(new UrlBuilder((string)id));
 
             if (content != null && content.QueryDistinctAccess(AccessLevel.Read))
