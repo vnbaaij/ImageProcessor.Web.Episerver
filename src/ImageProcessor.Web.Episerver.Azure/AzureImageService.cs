@@ -34,7 +34,7 @@ namespace ImageProcessor.Web.Episerver.Azure
 
             if (string.IsNullOrWhiteSpace(host))
             {
-                string provider = EPiServerFrameworkSection.Instance.Blob.DefaultProvider;                
+                string provider = EPiServerFrameworkSection.Instance.Blob.DefaultProvider;
                 // Get the name of the connection string from configured provider
                 string connectionStringName = EPiServerFrameworkSection.Instance.Blob.Providers[provider].Parameters["connectionStringName"];
                 // Retrieve storage accounts from connection string.
@@ -43,7 +43,7 @@ namespace ImageProcessor.Web.Episerver.Azure
                 // Create the blob client.
                 CloudBlobClient cloudBlobClient = cloudCachedStorageAccount.CreateCloudBlobClient();
 
-                host = cloudBlobClient.BaseUri.AbsolutePath;
+                host = cloudBlobClient.BaseUri.ToString();
             }
 
             this.Settings = new Dictionary<string, string>
@@ -103,7 +103,7 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// </returns>
         public virtual async Task<byte[]> GetImage(object id)
         {
-            string host = this.Settings["Host"];
+
             string container = this.Settings.ContainsKey("Container") ? this.Settings["Container"] : string.Empty;
             Uri baseUri = new Uri(host);
 
