@@ -10,9 +10,9 @@ using EPiServer;
 using EPiServer.Core;
 using EPiServer.Framework.Configuration;
 using EPiServer.Logging;
+using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
 
-using ImageProcessor.Configuration;
 using ImageProcessor.Web.Caching;
 using ImageProcessor.Web.HttpModules;
 
@@ -66,6 +66,8 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// </summary>
         private readonly int timeout = 1000;
 
+        private const string prefix = "3p!_";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureBlobCache"/> class.
         /// </summary>
@@ -98,7 +100,7 @@ namespace ImageProcessor.Web.Episerver.Azure
                 // Retrieve storage accounts from connection string.
                 CloudStorageAccount cloudCachedStorageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString);
 
-                // Create the blob clients.
+                // Create the blob client.
                 cloudBlobClient = cloudCachedStorageAccount.CreateCloudBlobClient();
             }
 
@@ -121,7 +123,7 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// </returns>
         public override async Task<bool> IsNewOrUpdatedAsync()
         {
-            string cachedFileName = await CreateCachedFileNameAsync();
+            string cachedFileName = prefix + await CreateCachedFileNameAsync();
 
             var blob = UrlResolver.Current.Route(new UrlBuilder(FullPath)) as IBinaryStorable;
 
@@ -220,23 +222,13 @@ namespace ImageProcessor.Web.Episerver.Azure
 
             ScheduleCacheTrimmer(async token =>
             {
-                // Jump up to the parent branch to clean through the cache.
-                string parent = string.Empty;
-
-                if (FolderDepth > 0)
-                {
-                    Uri uri = new Uri(CachedPath);
-                    string path = uri.GetLeftPart(UriPartial.Path).Substring(blobContainer.Uri.ToString().Length + 1);
-                    parent = path.Substring(0, 2);
-                }
-
                 BlobContinuationToken continuationToken = null;
                 List<IListBlobItem> results = new List<IListBlobItem>();
 
                 // Loop through the all the files in a non blocking fashion.
                 do
                 {
-                    BlobResultSegment response = await blobContainer.ListBlobsSegmentedAsync(parent, true, BlobListingDetails.Metadata, 5000, continuationToken, null, null, token);
+                    BlobResultSegment response = await blobContainer.ListBlobsSegmentedAsync(string.Empty, true, BlobListingDetails.Metadata, 5000, continuationToken, null, null, token);
                     continuationToken = response.ContinuationToken;
                     results.AddRange(response.Results);
                 }
@@ -249,11 +241,20 @@ namespace ImageProcessor.Web.Episerver.Azure
                            .Cast<CloudBlockBlob>()
                            .OrderBy(b => b.Properties.LastModified?.UtcDateTime ?? new DateTime()))
                 {
-                    if (token.IsCancellationRequested || (blob.Properties.LastModified.HasValue && !IsExpired(blob.Properties.LastModified.Value.UtcDateTime)))
+                    if (token.IsCancellationRequested )
                     {
                         break;
                     }
 
+                    if (blob.Properties.LastModified.HasValue && !IsExpired(blob.Properties.LastModified.Value.UtcDateTime))
+                    {
+                        continue;
+                    }
+
+                    if (!blob.Name.Contains(prefix))
+                    {
+                        continue;
+                    }
                     // Remove from the cache and delete each CachedImage.
                     CacheIndexer.Remove(blob.Name);
                     await blob.DeleteAsync(token);

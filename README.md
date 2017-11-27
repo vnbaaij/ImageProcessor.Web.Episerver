@@ -23,13 +23,13 @@ Most convenient way to render image in markup would be use `HtmlHelper` extensio
 This will make sure that markup for visitors would be (assuming that image is `png`):
 
 ```
-<image src="/.../image.png?width=100&height=100">
+<img src="/.../image.png?width=100&height=100">
 ```
 
 And in edit mode it would generate something like this:
 
 ```
-<image src="/.../image.png,,{CONTENT-ID}?epieditmode=False&width=100&height=100">
+<img src="/.../image.png,,{CONTENT-ID}?epieditmode=False&width=100&height=100">
 ```
 
 `ProcessImage` returns back `UrlBuilder` type, so you can fluently chain any additional paramters if needed:

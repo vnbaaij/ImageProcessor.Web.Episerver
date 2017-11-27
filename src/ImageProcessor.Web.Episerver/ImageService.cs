@@ -8,6 +8,7 @@ using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
 using ImageProcessor.Web.Helpers;
 using ImageProcessor.Web.Services;
+using EPiServer;
 
 namespace ImageProcessor.Web.Episerver
 {
@@ -40,8 +41,6 @@ namespace ImageProcessor.Web.Episerver
         /// </summary>
         public Uri[] WhiteList { get; set; }
 
-        private Injected<IContentRouteHelper> contentRouteHelper;
-
         /// <summary>
         /// Gets a value indicating whether the current request passes sanitizing rules.
         /// </summary>
@@ -67,7 +66,9 @@ namespace ImageProcessor.Web.Episerver
         /// </returns>
         public async Task<byte[]> GetImage(object id)
         {
-            var content = contentRouteHelper.Service.Content;
+            //var content = contentRouteHelper.Service.Content;
+
+            var content = UrlResolver.Current.Route(new UrlBuilder((string)id));
 
             if (content != null && content.QueryDistinctAccess(AccessLevel.Read))
             {

@@ -1,26 +1,14 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RemoteFile.cs" company="James Jackson-South">
-//   Copyright (c) James Jackson-South.
-//   Licensed under the Apache License, Version 2.0.
-// </copyright>
-// <summary>
-//   Encapsulates methods used to download files from a website address.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+﻿using System;
+using System.Globalization;
+using System.Net;
+using System.Security;
+using System.Threading.Tasks;
+using System.Web;
 
-using System.Collections.Generic;
+using ImageProcessor.Configuration;
 
-namespace ImageProcessor.Web.Episerver
+namespace ImageProcessor.Web.Episerver.Azure
 {
-    using System;
-    using System.Globalization;
-    using System.Net;
-    using System.Security;
-    using System.Threading.Tasks;
-    using System.Web;
-
-    using ImageProcessor.Configuration;
-
     /// <summary>
     /// Encapsulates methods used to download files from a website address.
     /// </summary>

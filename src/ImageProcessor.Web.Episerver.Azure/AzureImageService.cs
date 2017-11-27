@@ -8,29 +8,49 @@ using System.Web;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.Security;
-using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
 using ImageProcessor.Web.Caching;
 using ImageProcessor.Web.Helpers;
 using ImageProcessor.Web.Services;
+using Microsoft.WindowsAzure.Storage;
+using System.Configuration;
+using EPiServer.Framework.Configuration;
+using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace ImageProcessor.Web.Episerver
+namespace ImageProcessor.Web.Episerver.Azure
 {
     /// <summary>
     /// Image service for retrieving images from Episerver running on Azure.
     /// </summary>
-    public class AzureImageService : IImageService
+    public class ImageService : IImageService
     {
+        private static string host = null;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureImageService"/> class.
         /// </summary>
-        public AzureImageService()
+        public ImageService()
         {
+
+            if (string.IsNullOrWhiteSpace(host))
+            {
+                string provider = EPiServerFrameworkSection.Instance.Blob.DefaultProvider;                
+                // Get the name of the connection string from configured provider
+                string connectionStringName = EPiServerFrameworkSection.Instance.Blob.Providers[provider].Parameters["connectionStringName"];
+                // Retrieve storage accounts from connection string.
+                CloudStorageAccount cloudCachedStorageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString);
+
+                // Create the blob client.
+                CloudBlobClient cloudBlobClient = cloudCachedStorageAccount.CreateCloudBlobClient();
+
+                host = cloudBlobClient.BaseUri.AbsolutePath;
+            }
+
             this.Settings = new Dictionary<string, string>
             {
                 { "MaxBytes", "4194304" },
                 { "Timeout", "30000" },
-                { "Host", string.Empty }
+                { "Host", host }
             };
         }
 
@@ -100,7 +120,7 @@ namespace ImageProcessor.Web.Episerver
             {
                 relativeResourceUrl = binary.BinaryData.ID.AbsolutePath;
             }
-            //return await Task.FromResult(binary.BinaryData.ReadAllBytes());
+
             if (!string.IsNullOrEmpty(container))
             {
                 // TODO: Check me.

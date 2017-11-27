@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>Vincent Baaij</owners>
+    <projectUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver</projectUrl>
+    <licenseUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Supports Episerver 10 and higher</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>Episerver ImageProcessor Blob Cache Fluent API Azure</tags>
+    <dependencies>
+        <dependency id="ImageProcessor.Web.Episerver" version="1.0.1.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.Azure\cache.config.install.xdt" target="content\config\imageprocessor\cache.config.install.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.Azure\security.config.install.xdt" target="content\config\imageprocessor\security.config.install.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.Azure\cache.config.uninstall.xdt" target="content\config\imageprocessor\cache.config.uninstall.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.Azure\security.config.uninstall.xdt" target="content\config\imageprocessor\security.config.uninstall.xdt" />
+  </files>
+</package>

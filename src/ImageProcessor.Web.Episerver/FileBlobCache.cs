@@ -10,11 +10,9 @@ using System.Web;
 using System.Web.Hosting;
 using EPiServer;
 using EPiServer.Core;
-using EPiServer.Framework.Blobs;
 using EPiServer.Framework.Configuration;
 using EPiServer.Logging;
 using EPiServer.ServiceLocation;
-using EPiServer.Web;
 using EPiServer.Web.Routing;
 using ImageProcessor.Configuration;
 using ImageProcessor.Imaging.Formats;
@@ -75,7 +73,7 @@ namespace ImageProcessor.Web.Episerver
         /// </summary>
         private DateTime cachedImageCreationTimeUtc = DateTime.MinValue;
 
-        private Injected<IContentRepository> contentRepository;
+        private const string prefix = "3p!_";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileBlobCache"/> class.
@@ -110,7 +108,7 @@ namespace ImageProcessor.Web.Episerver
             // TODO: Before this check is performed it should be throttled. For example, only perform this check
             // if the last time it was checked is greater than 5 seconds. This would be much better for perf
             // if there is a high throughput of image requests.
-            string cachedFileName = await this.CreateCachedFileNameAsync();
+            string cachedFileName = prefix + await this.CreateCachedFileNameAsync();
 
             var blob = UrlResolver.Current.Route(new UrlBuilder(this.FullPath)) as IBinaryStorable;
             string blobFolder = blob.BinaryDataContainer.Segments[1];
@@ -191,12 +189,12 @@ namespace ImageProcessor.Web.Episerver
         /// </returns>
         public override Task TrimCacheAsync()
         {
-            if (!this.TrimCache)
+            if (!TrimCache)
             {
                 return Task.FromResult(0);
             }
 
-            this.ScheduleCacheTrimmer(token =>
+            ScheduleCacheTrimmer(token =>
             {
                 string rootDirectory = Path.GetDirectoryName(this.CachedPath);
 
@@ -220,8 +218,9 @@ namespace ImageProcessor.Web.Episerver
 
                         IEnumerable<FileInfo> files = Directory.EnumerateFiles(directory)
                                                                .Select(f => new FileInfo(f))
+                                                               .Where(f => f.Name.StartsWith(prefix))
                                                                .OrderBy(f => f.CreationTimeUtc);
-                                                               //.Skip(1);
+                                                               
                         foreach (FileInfo fileInfo in files)
                         {
                             if (token.IsCancellationRequested)
@@ -231,24 +230,14 @@ namespace ImageProcessor.Web.Episerver
 
                             try
                             {
-                                // If the group count is equal to the max count minus 1 then we know we
-                                // have reduced the number of items below the maximum allowed.
-                                // We'll cleanup any orphaned expired files though.
                                 if (!this.IsExpired(fileInfo.CreationTimeUtc))
                                 {
-                                    break;
+                                    continue;
                                 }
-                                if (fileInfo.Name.Contains("_Thumbnail"))
-                                {
-                                    break;
-                                }
-
-                                if (!FileIsEpiserverBlob(fileInfo.Name, directory))
-                                {
-                                    // Remove from the cache and delete each CachedImage.
-                                    CacheIndexer.Remove(fileInfo.Name);
-                                    fileInfo.Delete();
-                                }
+                                
+                                // Remove from the cache and delete each CachedImage.
+                                CacheIndexer.Remove(fileInfo.Name);
+                                fileInfo.Delete();
                             }
 
                             catch (Exception ex)
@@ -618,32 +607,6 @@ namespace ImageProcessor.Web.Episerver
                 return "\"" + hexFileTime + "\"";
             }
             return null;
-        }
-
-        private bool FileIsEpiserverBlob(string path, string directory)
-        {
-
-            directory = Path.GetFileName(directory);
-
-            var id = new Uri($"{Blob.BlobUriScheme}://{Blob.DefaultProvider}/{directory}/{path}");
-
-            //var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
-
-            var assetsRoot = SiteDefinition.Current.RootPage;
-
-            var descendants = contentRepository.Service.GetDescendents(assetsRoot).Where(p => contentRepository.Service.Get<IContent>(p) is MediaData).Select(contentRepository.Service.Get<MediaData>);
-
-            foreach (var image in descendants)
-            {
-
-                if (image.BinaryData.ID == id)
-                {
-                    return true;
-                }
-
-            }
-
-            return false;
         }
     }
 }

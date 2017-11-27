@@ -10,7 +10,7 @@
     <licenseUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Supports Episerver 10</releaseNotes>
+    <releaseNotes>Supports Episerver 10 and higher</releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>Episerver ImageProcessor Blob Cache Fluent API</tags>
     <dependencies>
@@ -21,11 +21,11 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\build\content\ImageProcessor.Web.Config\cache.config.install.xdt" target="content\config\imageprocessor\cache.config.install.xdt" />
-    <file src="..\..\build\content\ImageProcessor.Web.Config\security.config.install.xdt" target="content\config\imageprocessor\security.config.install.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver\cache.config.install.xdt" target="content\config\imageprocessor\cache.config.install.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver\security.config.install.xdt" target="content\config\imageprocessor\security.config.install.xdt" />
     <file src="..\..\build\content\ImageProcessor.Web.Episerver\web.config.install.xdt" target="content\web.config.install.xdt" />
-    <file src="..\..\build\content\ImageProcessor.Web.Config\cache.config.uninstall.xdt" target="content\config\imageprocessor\cache.config.uninstall.xdt" />
-    <file src="..\..\build\content\ImageProcessor.Web.Config\security.config.uninstall.xdt" target="content\config\imageprocessor\security.config.uninstall.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver\cache.config.uninstall.xdt" target="content\config\imageprocessor\cache.config.uninstall.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver\security.config.uninstall.xdt" target="content\config\imageprocessor\security.config.uninstall.xdt" />
     <file src="..\..\build\content\ImageProcessor.Web.Episerver\web.config.uninstall.xdt" target="content\web.config.uninstall.xdt" />
   </files>
 </package>

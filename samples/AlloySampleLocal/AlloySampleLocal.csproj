@@ -423,7 +423,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\GeoLiteCity.dat" />
-    <None Include="EPiServerLog.config" />
+    <None Include="Views\EPiServerLog.config" />
     <Content Include="modules\_protected\EPiServer.Packaging.UI\web.config" />
     <Content Include="modules\_protected\EPiServer.Packaging.UI\EPiServer.Packaging.UI.zip" />
     <Content Include="module.config" />
