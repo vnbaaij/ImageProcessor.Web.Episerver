@@ -2,10 +2,8 @@
   <services>
     <service name="AzureImageService" type="ImageProcessor.Web.Episerver.Azure.ImageService, ImageProcessor.Web.Episerver.Azure" xdt:Transform="InsertBefore(/security/services/service)">
       <settings>
-        <setting key="Container" value="media"/>
         <setting key="MaxBytes" value="8194304"/>
         <setting key="Timeout" value="30000"/>
-        <setting key="Host" value=""/>
       </settings>
     </service>
     <service name="EpiserverImageService" type="ImageProcessor.Web.Episerver.ImageService, ImageProcessor.Web.Episerver" xdt:Transform="Remove" xdt:Locator="Match(name)" />
