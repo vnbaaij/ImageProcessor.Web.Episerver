@@ -32,7 +32,7 @@ namespace AlloySample.Models.Blocks
             Order = 1
             )]
         [CultureSpecific]
-        [UIHint(UIHint.LongString)]
+        [UIHint(UIHint.Textarea)]
         public virtual string ImageDescription
         {
             get

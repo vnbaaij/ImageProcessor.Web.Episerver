@@ -10,11 +10,11 @@
     <licenseUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Supports Episerver 10 and higher</releaseNotes>
+    <releaseNotes>Supports Episerver 11 and higher</releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>Episerver ImageProcessor Blob Cache Fluent API Azure</tags>
     <dependencies>
-        <dependency id="ImageProcessor.Web.Episerver" version="1.0.1.0" />
+        <dependency id="ImageProcessor.Web.Episerver" version="2.0.0.0" />
     </dependencies>
   </metadata>
   <files>

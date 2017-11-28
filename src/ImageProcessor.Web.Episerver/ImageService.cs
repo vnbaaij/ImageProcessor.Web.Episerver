@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using EPiServer;
 using EPiServer.Core;
 using EPiServer.Framework.Blobs;
 using EPiServer.Security;
-using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
 using ImageProcessor.Web.Helpers;
 using ImageProcessor.Web.Services;
-using EPiServer;
+
 
 namespace ImageProcessor.Web.Episerver
 {

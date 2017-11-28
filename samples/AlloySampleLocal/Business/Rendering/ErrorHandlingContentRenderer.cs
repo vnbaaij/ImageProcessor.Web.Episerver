@@ -8,7 +8,7 @@ using EPiServer.DataAbstraction;
 using EPiServer.Security;
 using AlloySample.Models.ViewModels;
 using EPiServer.Web.Mvc;
-using EPiServer.XForms;
+//using EPiServer.XForms;
 
 namespace AlloySample.Business.Rendering
 {
@@ -93,14 +93,14 @@ namespace AlloySample.Business.Rendering
                 }
                 HandlerError(helper, contentData, ex);
             }
-            catch (XFormException ex)
-            {
-                if (HttpContext.Current.IsDebuggingEnabled)
-                {
-                    throw;
-                }
-                HandlerError(helper, contentData, ex);
-            }
+            //catch (XFormException ex)
+            //{
+            //    if (HttpContext.Current.IsDebuggingEnabled)
+            //    {
+            //        throw;
+            //    }
+            //    HandlerError(helper, contentData, ex);
+            //}
         }
 
         private void HandlerError(HtmlHelper helper, IContentData contentData, Exception renderingException)
