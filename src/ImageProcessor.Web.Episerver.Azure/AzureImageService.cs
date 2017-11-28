@@ -24,7 +24,8 @@ namespace ImageProcessor.Web.Episerver.Azure
     /// </summary>
     public class ImageService : IImageService
     {
-        private static string host = null;
+        private static string hostName = null;
+        private static string containerName = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureImageService"/> class.
@@ -32,25 +33,28 @@ namespace ImageProcessor.Web.Episerver.Azure
         public ImageService()
         {
 
-            if (string.IsNullOrWhiteSpace(host))
+            if (string.IsNullOrWhiteSpace(hostName))
             {
                 string provider = EPiServerFrameworkSection.Instance.Blob.DefaultProvider;
                 // Get the name of the connection string from configured provider
                 string connectionStringName = EPiServerFrameworkSection.Instance.Blob.Providers[provider].Parameters["connectionStringName"];
+                containerName = EPiServerFrameworkSection.Instance.Blob.Providers[provider].Parameters["container"];
+
                 // Retrieve storage accounts from connection string.
                 CloudStorageAccount cloudCachedStorageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString);
 
                 // Create the blob client.
                 CloudBlobClient cloudBlobClient = cloudCachedStorageAccount.CreateCloudBlobClient();
 
-                host = cloudBlobClient.BaseUri.ToString();
+                hostName = cloudBlobClient.BaseUri.ToString();
             }
 
             this.Settings = new Dictionary<string, string>
             {
                 { "MaxBytes", "4194304" },
                 { "Timeout", "30000" },
-                { "Host", host }
+                { "Host", hostName },
+                { "Container", containerName }
             };
         }
 
@@ -103,9 +107,7 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// </returns>
         public virtual async Task<byte[]> GetImage(object id)
         {
-
-            string container = this.Settings.ContainsKey("Container") ? this.Settings["Container"] : string.Empty;
-            Uri baseUri = new Uri(host);
+            Uri baseUri = new Uri(hostName);
 
             var content = UrlResolver.Current.Route(new UrlBuilder((string)id));
 
@@ -121,13 +123,13 @@ namespace ImageProcessor.Web.Episerver.Azure
                 relativeResourceUrl = binary.BinaryData.ID.AbsolutePath;
             }
 
-            if (!string.IsNullOrEmpty(container))
+            if (!string.IsNullOrEmpty(containerName))
             {
                 // TODO: Check me.
-                container = $"{container.TrimEnd('/')}/";
-                if (!relativeResourceUrl.StartsWith($"{container}/"))
+                containerName = $"{containerName.TrimEnd('/')}/";
+                if (!relativeResourceUrl.StartsWith($"{containerName}/"))
                 {
-                    relativeResourceUrl = $"{container}{relativeResourceUrl.TrimStart('/')}";
+                    relativeResourceUrl = $"{containerName}{relativeResourceUrl.TrimStart('/')}";
                 }
             }
 
