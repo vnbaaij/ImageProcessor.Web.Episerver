@@ -2,7 +2,6 @@
   <services>
     <service name="AzureImageService" type="ImageProcessor.Web.Episerver.Azure.ImageService, ImageProcessor.Web.Episerver.Azure" xdt:Transform="Remove" xdt:Locator="Match(name)" >
       <settings>
-        <setting key="Container" value="media"/>
         <setting key="MaxBytes" value="8194304"/>
         <setting key="Timeout" value="30000"/>
         <setting key="Host" value=""/>
