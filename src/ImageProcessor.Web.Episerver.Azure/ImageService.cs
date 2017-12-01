@@ -16,6 +16,7 @@ using Microsoft.WindowsAzure.Storage;
 using System.Configuration;
 using EPiServer.Framework.Configuration;
 using Microsoft.WindowsAzure.Storage.Blob;
+using ImageProcessor.Web.Configuration;
 
 namespace ImageProcessor.Web.Episerver.Azure
 {
@@ -32,7 +33,6 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// </summary>
         public ImageService()
         {
-
             if (string.IsNullOrWhiteSpace(hostName))
             {
                 string provider = EPiServerFrameworkSection.Instance.Blob.DefaultProvider;
@@ -49,12 +49,11 @@ namespace ImageProcessor.Web.Episerver.Azure
                 hostName = cloudBlobClient.BaseUri.ToString();
             }
 
-            this.Settings = new Dictionary<string, string>
+            Settings = new Dictionary<string, string>
             {
                 { "MaxBytes", "4194304" },
                 { "Timeout", "30000" },
-                { "Host", hostName },
-                { "Container", containerName }
+                { "Host", hostName }
             };
         }
 
@@ -107,6 +106,7 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// </returns>
         public virtual async Task<byte[]> GetImage(object id)
         {
+            string container = Settings.ContainsKey("Container") ? Settings["Container"] : containerName;
             Uri baseUri = new Uri(hostName);
 
             var content = UrlResolver.Current.Route(new UrlBuilder((string)id));
@@ -123,21 +123,22 @@ namespace ImageProcessor.Web.Episerver.Azure
                 relativeResourceUrl = binary.BinaryData.ID.AbsolutePath;
             }
 
-            if (!string.IsNullOrEmpty(containerName))
+
+            if (!string.IsNullOrEmpty(container))
             {
                 // TODO: Check me.
-                containerName = $"{containerName.TrimEnd('/')}/";
-                if (!relativeResourceUrl.StartsWith($"{containerName}/"))
+                container = $"{container.TrimEnd('/')}/";
+                if (!relativeResourceUrl.StartsWith($"{container}/"))
                 {
-                    relativeResourceUrl = $"{containerName}{relativeResourceUrl.TrimStart('/')}";
+                    relativeResourceUrl = $"{container}{relativeResourceUrl.TrimStart('/')}";
                 }
             }
 
             Uri uri = new Uri(baseUri, relativeResourceUrl);
             RemoteFile remoteFile = new RemoteFile(uri)
             {
-                MaxDownloadSize = int.Parse(this.Settings["MaxBytes"]),
-                TimeoutLength = int.Parse(this.Settings["Timeout"])
+                MaxDownloadSize = int.Parse(Settings["MaxBytes"]),
+                TimeoutLength = int.Parse(Settings["Timeout"])
             };
 
             byte[] buffer;
