@@ -260,3 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 /AzureResourceGroup1
+
+samples/AlloySampleLocal/App_Data/**/3p!_*
