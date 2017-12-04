@@ -90,11 +90,13 @@ namespace ImageProcessor.Web.Episerver
         public FileBlobCache(string requestPath, string fullPath, string querystring)
             : base(requestPath, fullPath, querystring)
         {
-            string configuredPath = "~/" + EPiServerFrameworkSection.Instance.AppData.BasePath + "/blobs";
+            string configuredPath = Settings.ContainsKey("VirtualCachePath")
+                                        ? Settings["VirtualCachePath"]
+                                        : "~/" + EPiServerFrameworkSection.Instance.AppData.BasePath + "/blobs";
 
             string virtualPath;
-            this.absoluteCachePath = GetValidatedAbsolutePath(configuredPath, out virtualPath);
-            this.virtualCachePath = virtualPath;
+            absoluteCachePath = GetValidatedAbsolutePath(configuredPath, out virtualPath);
+            virtualCachePath = virtualPath;
         }
 
         /// <summary>
@@ -108,27 +110,27 @@ namespace ImageProcessor.Web.Episerver
             // TODO: Before this check is performed it should be throttled. For example, only perform this check
             // if the last time it was checked is greater than 5 seconds. This would be much better for perf
             // if there is a high throughput of image requests.
-            string cachedFileName = prefix + await this.CreateCachedFileNameAsync();
+            string cachedFileName = prefix + await CreateCachedFileNameAsync();
 
-            var blob = UrlResolver.Current.Route(new UrlBuilder(this.FullPath)) as IBinaryStorable;
+            var blob = UrlResolver.Current.Route(new UrlBuilder(FullPath)) as IBinaryStorable;
             string blobFolder = blob.BinaryDataContainer.Segments[1];
 
 
-            this.CachedPath = Path.Combine(this.absoluteCachePath, blobFolder, cachedFileName);
-            this.virtualCachedFilePath = string.Join("/",this.virtualCachePath, blobFolder, cachedFileName).Replace("//", "/");
+            CachedPath = Path.Combine(absoluteCachePath, blobFolder, cachedFileName);
+            virtualCachedFilePath = string.Join("/", virtualCachePath, blobFolder, cachedFileName).Replace("//", "/");
 
             bool isUpdated = false;
-            CachedImage cachedImage = CacheIndexer.Get(this.CachedPath);
+            CachedImage cachedImage = CacheIndexer.Get(CachedPath);
 
             if (cachedImage == null)
             {
-                if (File.Exists(this.CachedPath))
+                if (File.Exists(CachedPath))
                 {
                     cachedImage = new CachedImage
                     {
-                        Key = Path.GetFileNameWithoutExtension(this.CachedPath),
-                        Path = this.CachedPath,
-                        CreationTimeUtc = File.GetCreationTimeUtc(this.CachedPath)
+                        Key = Path.GetFileNameWithoutExtension(CachedPath),
+                        Path = CachedPath,
+                        CreationTimeUtc = File.GetCreationTimeUtc(CachedPath)
                     };
 
                     CacheIndexer.Add(cachedImage);
@@ -144,15 +146,15 @@ namespace ImageProcessor.Web.Episerver
             {
                 // Check to see if the cached image is set to expire
                 // or a new file with the same name has replaced our current image
-                if (this.IsExpired(cachedImage.CreationTimeUtc) || await this.IsUpdatedAsync(cachedImage.CreationTimeUtc))
+                if (IsExpired(cachedImage.CreationTimeUtc) || await IsUpdatedAsync(cachedImage.CreationTimeUtc))
                 {
-                    CacheIndexer.Remove(this.CachedPath);
+                    CacheIndexer.Remove(CachedPath);
                     isUpdated = true;
                 }
                 else
                 {
                     // Set cachedImageCreationTimeUtc so we can sender Last-Modified or ETag header when using Response.TransmitFile()
-                    this.cachedImageCreationTimeUtc = cachedImage.CreationTimeUtc;
+                    cachedImageCreationTimeUtc = cachedImage.CreationTimeUtc;
                 }
             }
 
@@ -169,13 +171,13 @@ namespace ImageProcessor.Web.Episerver
         /// </returns>
         public override async Task AddImageToCacheAsync(Stream stream, string contentType)
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(Path.GetDirectoryName(this.CachedPath));
+            DirectoryInfo directoryInfo = new DirectoryInfo(Path.GetDirectoryName(CachedPath));
             if (!directoryInfo.Exists)
             {
                 directoryInfo.Create();
             }
 
-            using (FileStream fileStream = File.Create(this.CachedPath))
+            using (FileStream fileStream = File.Create(CachedPath))
             {
                 await stream.CopyToAsync(fileStream);
             }
@@ -196,7 +198,7 @@ namespace ImageProcessor.Web.Episerver
 
             ScheduleCacheTrimmer(token =>
             {
-                string rootDirectory = Path.GetDirectoryName(this.CachedPath);
+                string rootDirectory = Path.GetDirectoryName(CachedPath);
 
                 if (rootDirectory != null)
                 {
@@ -230,7 +232,7 @@ namespace ImageProcessor.Web.Episerver
 
                             try
                             {
-                                if (!this.IsExpired(fileInfo.CreationTimeUtc))
+                                if (!IsExpired(fileInfo.CreationTimeUtc))
                                 {
                                     continue;
                                 }
@@ -248,7 +250,7 @@ namespace ImageProcessor.Web.Episerver
                         }
 
                         // If the directory is empty of files delete it to remove the FCN.
-                        this.RecursivelyDeleteEmptyDirectories(directory, validatedAbsoluteCachePath, token);
+                        RecursivelyDeleteEmptyDirectories(directory, validatedAbsoluteCachePath, token);
                     }
                 }
                 return Task.FromResult(0);
@@ -268,33 +270,33 @@ namespace ImageProcessor.Web.Episerver
             if (!string.IsNullOrWhiteSpace(validatedVirtualCachePath))
             {
                 // The cached file is valid so just rewrite the path.
-                context.RewritePath(this.virtualCachedFilePath, false);
+                context.RewritePath(virtualCachedFilePath, false);
             }
             else
             {
                 // Check if the ETag matches (doing this here because context.RewritePath seems to handle it automatically
                 string eTagFromHeader = context.Request.Headers["If-None-Match"];
-                string eTag = this.GetETag();
+                string eTag = GetETag();
                 if (!string.IsNullOrEmpty(eTagFromHeader) && !string.IsNullOrEmpty(eTag) && eTagFromHeader == eTag)
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.NotModified;
                     context.Response.StatusDescription = "Not Modified";
-                    HttpModules.ImageProcessingModule.SetHeaders(context, this.BrowserMaxDays);
+                    HttpModules.ImageProcessingModule.SetHeaders(context, BrowserMaxDays);
                     context.Response.End();
                 }
                 else
                 {
                     // The file is outside of the web root so we cannot just rewrite the path since that won't work.
-                    string extension = Helpers.ImageHelpers.Instance.GetExtension(this.FullPath, this.Querystring);
+                    string extension = Helpers.ImageHelpers.Instance.GetExtension(FullPath, Querystring);
                     string mimeType = GetContentTypeForExtension(extension);
                     context.Response.ContentType = mimeType;
 
                     // Since we are going to call Response.End(), we need to go ahead and set the headers
-                    HttpModules.ImageProcessingModule.SetHeaders(context, this.BrowserMaxDays);
-                    this.SetETagHeader(context);
-                    context.Response.AddHeader("Content-Length", new FileInfo(this.CachedPath).Length.ToString());
+                    HttpModules.ImageProcessingModule.SetHeaders(context, BrowserMaxDays);
+                    SetETagHeader(context);
+                    context.Response.AddHeader("Content-Length", new FileInfo(CachedPath).Length.ToString());
 
-                    context.Response.TransmitFile(this.CachedPath);
+                    context.Response.TransmitFile(CachedPath);
                     context.Response.End();
                 }
             }
@@ -510,18 +512,18 @@ namespace ImageProcessor.Web.Episerver
 
             try
             {
-                if (new Uri(this.RequestPath).IsFile)
+                if (new Uri(RequestPath).IsFile)
                 {
-                    if (File.Exists(this.RequestPath))
+                    if (File.Exists(RequestPath))
                     {
                         // If it's newer than the cached file then it must be an update.
-                        isUpdated = File.GetLastWriteTimeUtc(this.RequestPath) > creationDate;
+                        isUpdated = File.GetLastWriteTimeUtc(RequestPath) > creationDate;
                     }
                 }
                 else
                 {
                     // Try and get the headers for the file, this should allow cache busting for remote files.
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(this.RequestPath);
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(RequestPath);
                     request.Method = "HEAD";
 
                     using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
@@ -564,7 +566,7 @@ namespace ImageProcessor.Web.Episerver
                     Directory.Delete(directory);
                 }
 
-                this.RecursivelyDeleteEmptyDirectories(Directory.GetParent(directory).FullName, root, token);
+                RecursivelyDeleteEmptyDirectories(Directory.GetParent(directory).FullName, root, token);
             }
             catch (Exception ex)
             {
@@ -580,7 +582,7 @@ namespace ImageProcessor.Web.Episerver
         /// <param name="context"></param>
         private void SetETagHeader(HttpContext context)
         {
-            string eTag = this.GetETag();
+            string eTag = GetETag();
             if (!string.IsNullOrEmpty(eTag))
             {
                 context.Response.Cache.SetETag(eTag);
@@ -593,9 +595,9 @@ namespace ImageProcessor.Web.Episerver
         /// <returns>The <see cref="string"/></returns>
         private string GetETag()
         {
-            if (this.cachedImageCreationTimeUtc != DateTime.MinValue)
+            if (cachedImageCreationTimeUtc != DateTime.MinValue)
             {
-                long lastModFileTime = this.cachedImageCreationTimeUtc.ToFileTime();
+                long lastModFileTime = cachedImageCreationTimeUtc.ToFileTime();
                 DateTime utcNow = DateTime.UtcNow;
                 long nowFileTime = utcNow.ToFileTime();
                 string hexFileTime = lastModFileTime.ToString("X8", System.Globalization.CultureInfo.InvariantCulture);

@@ -27,6 +27,7 @@ namespace ImageProcessor.Web.Episerver.Azure
     /// </summary>
     public class AzureBlobCache : ImageCacheBase
     {
+        private static Object locker = new Object();
         /// <summary>
         /// The assembly version.
         /// </summary>
@@ -57,6 +58,11 @@ namespace ImageProcessor.Web.Episerver.Azure
         private static CloudBlobContainer blobContainer;
 
         /// <summary>
+        /// The cached root url for a content delivery network.
+        /// </summary>
+        private readonly string cdnRoot;
+
+        /// <summary>
         /// Determines if the CDN request is redirected or rewritten
         /// </summary>
         private readonly bool streamCachedImage;
@@ -65,6 +71,11 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// The timeout length for requesting the CDN url.
         /// </summary>
         private readonly int timeout = 1000;
+
+        /// <summary>
+        /// The cached rewrite path.
+        /// </summary>
+        private string rewritePath;
 
         private const string prefix = "3p!_";
 
@@ -90,7 +101,9 @@ namespace ImageProcessor.Web.Episerver.Azure
                 string provider = EPiServerFrameworkSection.Instance.Blob.DefaultProvider;
 
                 // Get the name off the container as specified in the parameters of the provider
-                containerName = EPiServerFrameworkSection.Instance.Blob.Providers[provider].Parameters["container"];
+                containerName = (Settings.ContainsKey("CachedBlobContainer")
+                                                ? Settings["CachedBlobContainer"]
+                                                : EPiServerFrameworkSection.Instance.Blob.Providers[provider].Parameters["container"]).TrimEnd('/');
                 // And also get the name of the connection string from there
                 connectionStringName = EPiServerFrameworkSection.Instance.Blob.Providers[provider].Parameters["connectionStringName"];
             }
@@ -106,8 +119,18 @@ namespace ImageProcessor.Web.Episerver.Azure
 
             if (blobContainer == null)
             {
-                // Retrieve references to a container.
-                blobContainer = cloudBlobClient.GetContainerReference(containerName);
+                // Retrieve reference to the container. Create container if it doesn't exist
+                blobContainer = CreateContainer(cloudBlobClient, containerName, BlobContainerPublicAccessType.Container);
+            }
+
+            cdnRoot = (Settings.ContainsKey("CachedCDNRoot")
+                                     ? Settings["CachedCDNRoot"]
+                                     : blobContainer.Uri.ToString().TrimEnd(blobContainer.Name.ToCharArray())).TrimEnd('/');
+
+            if (Settings.ContainsKey("CachedCDNTimeout"))
+            {
+                int.TryParse(Settings["CachedCDNTimeout"], out int t);
+                timeout = t;
             }
 
             // This setting was added to facilitate streaming of the blob resource directly instead of a redirect. This is beneficial for CDN purposes
@@ -132,6 +155,10 @@ namespace ImageProcessor.Web.Episerver.Azure
             if (blobFolder == null) return true;
 
             CachedPath = string.Join("/", blobContainer.Uri.ToString(), blobFolder, cachedFileName);
+
+            bool useCachedContainerInUrl = Settings.ContainsKey("UseCachedContainerInUrl") && Settings["UseCachedContainerInUrl"].ToLower() != "false";
+
+            rewritePath = string.Join("/", cdnRoot, useCachedContainerInUrl ? containerName : string.Empty, blobFolder, cachedFileName);
 
             bool isUpdated = false;
             CachedImage cachedImage = CacheIndexer.Get(CachedPath);
@@ -316,7 +343,7 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// </param>
         public override void RewritePath(HttpContext context)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(CachedPath);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(rewritePath);
 
             if (streamCachedImage)
             {
@@ -350,14 +377,14 @@ namespace ImageProcessor.Web.Episerver.Azure
                     // It appears that some CDN's on Azure (Akamai) do not work properly when making head requests.
                     // They will return a response url and other headers but a 500 status code.
                     if (ex.Response != null && (((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.NotModified
-                        || ex.Response.ResponseUri.AbsoluteUri.Equals(CachedPath, StringComparison.OrdinalIgnoreCase)))
+                        || ex.Response.ResponseUri.AbsoluteUri.Equals(rewritePath, StringComparison.OrdinalIgnoreCase)))
                     {
                         response = (HttpWebResponse)ex.Response;
                     }
                     else
                     {
                         response?.Dispose();
-                        logger.Error("Unable to stream cached path: " + CachedPath);
+                        logger.Error("Unable to stream cached path: " + rewritePath);
                         return;
                     }
                 }
@@ -406,7 +433,7 @@ namespace ImageProcessor.Web.Episerver.Azure
                     response = (HttpWebResponse)request.GetResponse();
                     response.Dispose();
                     ImageProcessingModule.AddCorsRequestHeaders(context);
-                    context.Response.Redirect(CachedPath, false);
+                    context.Response.Redirect(rewritePath, false);
                 }
                 catch (WebException ex)
                 {
@@ -419,16 +446,16 @@ namespace ImageProcessor.Web.Episerver.Azure
                         // A 304 is not an error
                         // It appears that some CDN's on Azure (Akamai) do not work properly when making head requests.
                         // They will return a response url and other headers but a 500 status code.
-                        if (responseCode == HttpStatusCode.NotModified || response.ResponseUri.AbsoluteUri.Equals(CachedPath, StringComparison.OrdinalIgnoreCase))
+                        if (responseCode == HttpStatusCode.NotModified || response.ResponseUri.AbsoluteUri.Equals(rewritePath, StringComparison.OrdinalIgnoreCase))
                         {
                             response.Dispose();
                             ImageProcessingModule.AddCorsRequestHeaders(context);
-                            context.Response.Redirect(CachedPath, false);
+                            context.Response.Redirect(rewritePath, false);
                         }
                         else
                         {
                             response.Dispose();
-                            logger.Error("Unable to rewrite cached path to: " + CachedPath);
+                            logger.Error("Unable to rewrite cached path to: " + rewritePath);
                         }
                     }
                     else
@@ -472,6 +499,29 @@ namespace ImageProcessor.Web.Episerver.Azure
                 {
                     logger.Error($"Unable to parse date {context.Request.Headers["If-Modified-Since"]} for {context.Request.Url}");
                 }
+            }
+        }
+
+        /// <summary>
+        /// Returns the cache container, creating a new one if none exists.
+        /// </summary>
+        /// <param name="cloudBlobClient"><see cref="CloudBlobClient"/> where the container is stored.</param>
+        /// <param name="containerName">The name of the container.</param>
+        /// <param name="accessType"><see cref="BlobContainerPublicAccessType"/> indicating the access permissions.</param>
+        /// <returns>The <see cref="CloudBlobContainer"/></returns>
+        private static CloudBlobContainer CreateContainer(CloudBlobClient cloudBlobClient, string containerName, BlobContainerPublicAccessType accessType)
+        {
+            CloudBlobContainer container = cloudBlobClient.GetContainerReference(containerName);
+
+            lock (locker)
+            {
+                if (!container.Exists())
+                {
+                    container.Create();
+                    container.SetPermissions(new BlobContainerPermissions { PublicAccess = accessType });
+                }
+
+                return container;
             }
         }
     }
