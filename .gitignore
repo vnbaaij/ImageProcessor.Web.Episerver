@@ -262,6 +262,7 @@ __pycache__/
 /AzureResourceGroup1
 
 samples/AlloySampleLocal/App_Data/blobs/*/*3p!_*
+samples/AlloySampleLocal/App_Data/cache/*/*3p!_*
 !samples/AlloySampleLocal/App_Data/*.mdf
 !samples/AlloySampleLocal/App_Data/*.ldf
 samples/AlloySampleAzure/App_Data/blobs/*/*3p!_*
