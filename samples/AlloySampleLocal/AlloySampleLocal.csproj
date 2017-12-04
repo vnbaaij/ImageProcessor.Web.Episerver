@@ -422,19 +422,17 @@
     <Content Include="config\imageprocessor\cache.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\GeoLiteCity.dat" />
-    <None Include="Views\EPiServerLog.config" />
-    <Content Include="modules\_protected\EPiServer.Packaging.UI\web.config" />
-    <Content Include="modules\_protected\EPiServer.Packaging.UI\EPiServer.Packaging.UI.zip" />
-    <Content Include="module.config" />
     <Content Include="modules\_protected\Shell\web.config" />
     <Content Include="modules\_protected\Shell\Shell.zip" />
     <Content Include="modules\_protected\CMS\web.config" />
     <Content Include="modules\_protected\CMS\CMS.zip" />
+    <Content Include="modules\_protected\EPiServer.Packaging.UI\web.config" />
+    <Content Include="modules\_protected\EPiServer.Packaging.UI\EPiServer.Packaging.UI.zip" />
+    <Content Include="App_Data\GeoLiteCity.dat" />
+    <None Include="packages.config" />
+    <None Include="Views\EPiServerLog.config" />
+    <Content Include="module.config" />
     <Content Include="License.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Views\SearchPage\Index.cshtml" />
     <Content Include="Views\_viewstart.cshtml" />
     <Content Include="Views\VideoFile\Index.cshtml" />
@@ -482,6 +480,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
