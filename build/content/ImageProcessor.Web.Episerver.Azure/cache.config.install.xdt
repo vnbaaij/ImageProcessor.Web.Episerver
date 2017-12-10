@@ -2,6 +2,7 @@
   <caches>
     <cache name="EpiserverAzureBlobCache" type="ImageProcessor.Web.Episerver.Azure.AzureBlobCache, ImageProcessor.Web.Episerver.Azure" maxDays="365" xdt:Transform="Insert">
       <settings>
+        <setting key="UseCachedContainerInUrl" value="true" />
         <setting key="StreamCachedImage" value="false" />
       </settings>
     </cache>
