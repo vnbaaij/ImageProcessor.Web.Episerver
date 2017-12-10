@@ -90,12 +90,15 @@ namespace ImageProcessor.Web.Episerver
         public FileBlobCache(string requestPath, string fullPath, string querystring)
             : base(requestPath, fullPath, querystring)
         {
+            string basePath = (EPiServerFrameworkSection.Instance.AppData.BasePath.IndexOf("@\\") == 0)
+                                        ? EPiServerFrameworkSection.Instance.AppData.BasePath
+                                        : "~/" + EPiServerFrameworkSection.Instance.AppData.BasePath;
+
             string configuredPath = Settings.ContainsKey("VirtualCachePath")
                                         ? Settings["VirtualCachePath"]
-                                        : "~/" + EPiServerFrameworkSection.Instance.AppData.BasePath + "/blobs";
+                                        : basePath + "/blobs";
 
-            string virtualPath;
-            absoluteCachePath = GetValidatedAbsolutePath(configuredPath, out virtualPath);
+            absoluteCachePath = GetValidatedAbsolutePath(configuredPath, out string virtualPath);
             virtualCachePath = virtualPath;
         }
 
@@ -384,14 +387,15 @@ namespace ImageProcessor.Web.Episerver
 
             if (!dirInfo.Exists)
             {
-                if (isInWebRoot)
+                try
                 {
-                    // If this is in the web root, we should just create it
+                    // No matter if webroot or network UNC path - we need to create if it doesn't exist
                     Directory.CreateDirectory(dirInfo.FullName);
                 }
-                else
+                catch (Exception)
                 {
-                    throw new ConfigurationErrorsException("The cache folder " + absPath + " does not exist");
+                    throw new ConfigurationErrorsException("The cache folder " + absPath + " cannot be (re-)created");
+
                 }
             }
 
