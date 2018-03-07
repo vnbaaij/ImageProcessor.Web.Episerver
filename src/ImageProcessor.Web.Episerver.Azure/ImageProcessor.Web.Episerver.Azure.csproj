@@ -81,8 +81,8 @@
     <Reference Include="ImageProcessor, Version=2.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ImageProcessor.2.6.0\lib\net452\ImageProcessor.dll</HintPath>
     </Reference>
-    <Reference Include="ImageProcessor.Web, Version=4.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ImageProcessor.Web.4.9.0\lib\net452\ImageProcessor.Web.dll</HintPath>
+    <Reference Include="ImageProcessor.Web, Version=4.9.1.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.Web.4.9.1.2\lib\net452\ImageProcessor.Web.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
