@@ -16,7 +16,6 @@ using Microsoft.WindowsAzure.Storage;
 using System.Configuration;
 using EPiServer.Framework.Configuration;
 using Microsoft.WindowsAzure.Storage.Blob;
-using ImageProcessor.Web.Configuration;
 
 namespace ImageProcessor.Web.Episerver.Azure
 {

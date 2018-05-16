@@ -230,7 +230,7 @@ namespace ImageProcessor.Web.Episerver.Azure
             blockBlob.Properties.CacheControl = $"public, max-age={BrowserMaxDays * 86400}";
             await blockBlob.SetPropertiesAsync();
 
-            blockBlob.Metadata.Add("ImageProcessedBy", "ImageProcessor.Web/" + AssemblyVersion);
+            blockBlob.Metadata.Add("ImageProcessedBy", "ImageProcessor.Web.Episerver/" + AssemblyVersion);
             await blockBlob.SetMetadataAsync();
         }
 
