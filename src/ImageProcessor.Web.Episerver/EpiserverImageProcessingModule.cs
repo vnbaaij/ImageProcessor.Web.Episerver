@@ -11,7 +11,7 @@ namespace ImageProcessor.Web.Episerver
 
         protected override string GetRequestUrl(HttpRequest request)
         {
-            string requestUrl = request.Url.PathAndQuery;
+            string requestUrl = request.Url.AbsoluteUri;
 
             requestUrl = PathRegex.Replace(requestUrl, string.Empty);
             requestUrl = QuestionMarkRegex.Replace(requestUrl, new SecondOccuranceFinder("&").MatchEvaluator);
@@ -29,9 +29,7 @@ namespace ImageProcessor.Web.Episerver
         }
 
         private string _replaceWith;
-        public MatchEvaluator MatchEvaluator
-        {
-            get; }
+        public MatchEvaluator MatchEvaluator { get; }
 
         private int _matchIndex;
         public string IsSecondOccurance(Match m)
