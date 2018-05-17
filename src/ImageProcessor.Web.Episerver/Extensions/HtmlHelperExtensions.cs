@@ -1,11 +1,29 @@
 ﻿using System;
+using System.Configuration;
+using System.Web;
 using System.Web.Mvc;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.Web.Routing;
 
+
+
 namespace ImageProcessor.Web.Episerver
 {
+    public class ImageType
+    {
+        public int? DefaultImgWidth { get; set; } //this size will be used in browsers that don't support the picture element
+        public int[] SrcSetWidths { get; set; } // the different image widths you want the browser to select from
+        public string[] SrcSetSizes { get; set; }
+        public double HeightRatio { get; set; }
+        public int Quality { get; set; }
+
+        public ImageType()
+        {
+            Quality = 80; //default quality
+        }
+    }
+
     public static class HtmlHelperExtensions
     {
         public static UrlBuilder ProcessImage(this HtmlHelper helper, ContentReference image)
@@ -44,3 +62,5 @@ namespace ImageProcessor.Web.Episerver
         }
     }
 }
+
+

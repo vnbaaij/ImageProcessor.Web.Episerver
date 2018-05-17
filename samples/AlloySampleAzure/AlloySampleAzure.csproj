@@ -135,6 +135,9 @@
     <Reference Include="ImageProcessor, Version=2.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ImageProcessor.2.6.0\lib\net452\ImageProcessor.dll</HintPath>
     </Reference>
+    <Reference Include="ImageProcessor.Plugins.WebP, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.Plugins.WebP.1.1.0\lib\net452\ImageProcessor.Plugins.WebP.dll</HintPath>
+    </Reference>
     <Reference Include="ImageProcessor.Web, Version=4.9.1.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ImageProcessor.Web.4.9.1.2\lib\net452\ImageProcessor.Web.dll</HintPath>
     </Reference>
@@ -324,6 +327,7 @@
     <Compile Include="Business\Rendering\ErrorHandlingContentRenderer.cs" />
     <Compile Include="Business\Rendering\IContainerPage.cs" />
     <Compile Include="Business\Rendering\ICustomCssInContentArea.cs" />
+    <Compile Include="Business\Rendering\ImageTypes.cs" />
     <Compile Include="Business\Rendering\SiteViewEngine.cs" />
     <Compile Include="Business\Rendering\TemplateCoordinator.cs" />
     <Compile Include="Business\ServiceLocatorDependencyResolver.cs" />
