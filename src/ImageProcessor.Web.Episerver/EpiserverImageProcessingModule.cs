@@ -1,6 +1,9 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
+using ImageProcessor.Web.Configuration;
 using ImageProcessor.Web.HttpModules;
+using ImageProcessor.Web.Services;
 
 namespace ImageProcessor.Web.Episerver
 {
@@ -11,7 +14,16 @@ namespace ImageProcessor.Web.Episerver
 
         protected override string GetRequestUrl(HttpRequest request)
         {
-            string requestUrl = request.Url.AbsoluteUri;
+            string requestUrl = "";
+
+            var service = ImageProcessorConfiguration.Instance.ImageServices.FirstOrDefault<IImageService>();
+
+            if (service != null && service.Settings.Count == 0)
+                //No settings, so it must be local BLOB storage
+                requestUrl = request.Url.PathAndQuery;
+            else
+                //Otherwise its on Azure
+                requestUrl = request.Url.AbsoluteUri;
 
             requestUrl = PathRegex.Replace(requestUrl, string.Empty);
             requestUrl = QuestionMarkRegex.Replace(requestUrl, new SecondOccuranceFinder("&").MatchEvaluator);
