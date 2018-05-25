@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ImageProcessor.Web.Episerver")]
-[assembly: AssemblyDescription("Integrate ImageProcessor into Episerver")]
+[assembly: AssemblyDescription("Use ImageProcessor in Episerver. Comes with fluent API to manipulate images and generate responsive images using picture element")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Vincent Baaij")]
 [assembly: AssemblyProduct("ImageProcessor.Web.Episerver")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyVersion("2.0.1.5")]
-[assembly: AssemblyFileVersion("2.0.1.5")]
+[assembly: AssemblyVersion("2.1.0.0")]
+[assembly: AssemblyFileVersion("2.1.0.0")]

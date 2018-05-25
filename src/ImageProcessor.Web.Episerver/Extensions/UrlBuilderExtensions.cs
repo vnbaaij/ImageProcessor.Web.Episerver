@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Configuration;
 using System.Drawing;
-using System.Drawing.Text;
+using System.Web.Mvc;
 using EPiServer;
 using ImageProcessor.Imaging;
 

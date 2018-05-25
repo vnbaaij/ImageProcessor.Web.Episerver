@@ -11,10 +11,10 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Supports Episerver 11 and higher</releaseNotes>
-    <copyright>Copyright 2017</copyright>
+    <copyright>Copyright 2018</copyright>
     <tags>Episerver ImageProcessor Blob Cache Fluent API Azure</tags>
     <dependencies>
-      <dependency id="ImageProcessor.Web.Episerver" version="2.0.1.3" />
+      <dependency id="ImageProcessor.Web.Episerver" version="2.1.0.0" />
       <dependency id="EPiServer.Azure" version="[9.4.0, 10.0)" />
     </dependencies>
   </metadata>
