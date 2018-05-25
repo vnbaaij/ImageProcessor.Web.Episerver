@@ -10,7 +10,6 @@ using EPiServer;
 using EPiServer.Core;
 using EPiServer.Framework.Configuration;
 using EPiServer.Logging;
-using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
 
 using ImageProcessor.Web.Caching;

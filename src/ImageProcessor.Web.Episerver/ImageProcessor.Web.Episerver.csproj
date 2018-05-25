@@ -131,6 +131,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\PictureHelper.cs" />
     <Compile Include="FileBlobCache.cs" />
     <Compile Include="ImageService.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
@@ -142,7 +143,9 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="ImageProcessor.Web.Episerver.nuspec" />
+    <None Include="ImageProcessor.Web.Episerver.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
