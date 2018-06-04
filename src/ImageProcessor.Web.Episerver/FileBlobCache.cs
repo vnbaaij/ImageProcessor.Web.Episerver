@@ -94,12 +94,9 @@ namespace ImageProcessor.Web.Episerver
                                         ? EPiServerFrameworkSection.Instance.AppData.BasePath
                                         : "~/" + EPiServerFrameworkSection.Instance.AppData.BasePath;
 
-            string configuredPath = Settings.ContainsKey("VirtualCachePath")
-                                        ? Settings["VirtualCachePath"]
-                                        : basePath + "/blobs";
+            string configuredPath = basePath + "/blobs";
 
-            absoluteCachePath = GetValidatedAbsolutePath(configuredPath, out string virtualPath);
-            virtualCachePath = virtualPath;
+            absoluteCachePath = GetValidatedAbsolutePath(configuredPath, out virtualCachePath);
         }
 
         /// <summary>
