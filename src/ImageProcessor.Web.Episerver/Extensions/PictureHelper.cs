@@ -59,7 +59,8 @@ namespace ImageProcessor.Web.Episerver
 
             //create img element
             var imgElement = new TagBuilder("img");
-            imgElement.Attributes.Add("src", BuildQueryString(imageUrl, imageType, imageType.DefaultImgWidth));
+	        imgElement.Attributes.Add("alt", "");
+			imgElement.Attributes.Add("src", BuildQueryString(imageUrl, imageType, imageType.DefaultImgWidth));
             if (!string.IsNullOrEmpty(cssClass))
             {
                 imgElement.Attributes.Add("class", cssClass);
