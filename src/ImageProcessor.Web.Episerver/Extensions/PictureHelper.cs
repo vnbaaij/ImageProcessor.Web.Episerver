@@ -23,7 +23,7 @@ namespace ImageProcessor.Web.Episerver
 
     public static class PictureHelper
     {
-        public static IHtmlString Picture(this HtmlHelper helper, string imageUrl, ImageType imageType, string cssClass = "")
+        public static IHtmlString Picture(this HtmlHelper helper, string imageUrl, ImageType imageType, string cssClass = "", bool lazyLoad = false)
         {
             if (imageUrl == null)
             {
@@ -32,10 +32,10 @@ namespace ImageProcessor.Web.Episerver
 
             var urlBuilder = new UrlBuilder(imageUrl);
 
-            return Picture(helper, urlBuilder, imageType, cssClass);
+            return Picture(helper, urlBuilder, imageType, cssClass, lazyLoad);
         }
 
-        public static IHtmlString Picture(this HtmlHelper helper, UrlBuilder imageUrl, ImageType imageType, string cssClass = "")
+        public static IHtmlString Picture(this HtmlHelper helper, UrlBuilder imageUrl, ImageType imageType, string cssClass = "", bool lazyLoad = false)
         {
             if (imageUrl == null)
             {
@@ -50,17 +50,18 @@ namespace ImageProcessor.Web.Episerver
                 //if jpg, also add webp source element
                 if (imageUrl.Path.EndsWith(".jpg"))
                 {
-                    pictureElement.InnerHtml += BuildSourceElement(imageUrl, imageType, "webp");
+                    pictureElement.InnerHtml += BuildSourceElement(imageUrl, imageType, lazyLoad, "webp");
                 }
 
                 //add source element to picture element
-                pictureElement.InnerHtml += BuildSourceElement(imageUrl, imageType);
+                pictureElement.InnerHtml += BuildSourceElement(imageUrl, imageType, lazyLoad);
             }
 
             //create img element
             var imgElement = new TagBuilder("img");
 	        imgElement.Attributes.Add("alt", "");
-			imgElement.Attributes.Add("src", BuildQueryString(imageUrl, imageType, imageType.DefaultImgWidth));
+	        var attributeName = lazyLoad ? "data-src" : "src";
+			imgElement.Attributes.Add(attributeName, BuildQueryString(imageUrl, imageType, imageType.DefaultImgWidth));
             if (!string.IsNullOrEmpty(cssClass))
             {
                 imgElement.Attributes.Add("class", cssClass);
@@ -71,7 +72,7 @@ namespace ImageProcessor.Web.Episerver
             return new MvcHtmlString(pictureElement.ToString());
         }
 
-        private static string BuildSourceElement(UrlBuilder imageUrl, ImageType imageType, string format = "")
+        private static string BuildSourceElement(UrlBuilder imageUrl, ImageType imageType, bool lazyLoad, string format = "")
         {
             var sourceElement = new TagBuilder("source");
 
@@ -81,14 +82,15 @@ namespace ImageProcessor.Web.Episerver
                 sourceElement.Attributes.Add("type", "image/" + format);
             }
 
-            //add srcset attribute
+            //add srcset (or data-srcset) attribute
             var srcset = string.Empty;
             foreach (var width in imageType.SrcSetWidths)
             {
                 srcset += BuildQueryString(imageUrl, imageType, width, format) + " " + width + "w, ";
             }
             srcset = srcset.TrimEnd(',', ' ');
-            sourceElement.Attributes.Add("srcset", srcset);
+	        var attributeName = lazyLoad ? "data-srcset" : "srcset";
+	        sourceElement.Attributes.Add(attributeName, srcset);
 
             //add sizes attribute
             sourceElement.Attributes.Add("sizes", string.Join(", ", imageType.SrcSetSizes));
