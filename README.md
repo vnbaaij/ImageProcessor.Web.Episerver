@@ -43,3 +43,18 @@ Alternatively you could supply the image with all the parameters in the HTML:
 <img src="@Url.ContentUrl(Model.Image)?width=75" />
 ```
 See http://imageprocessor.org/imageprocessor-web/imageprocessingmodule/ for all options
+
+## Picture Helper
+This package also include an Html helper that renders a Picture element that let's you have responsive, optimized, and lazy loaded images.
+
+Example usage
+```
+@Html.Picture(Url.ContentUrl(Model.Image), ImageTypes.Teaser, lazyLoad: true)
+```
+#### Parameters
+* **imageUrl (string or UrlBuilder)** <br/> 
+* **imageType (ImageProcessor.Web.Episerver.ImageType)** <br/> An "Image type" defines the possible sizes and quality for an image.
+* **cssClass (string)** <br/> Will be added to the rendered img element.
+* **layzLoad (bool)** <br/> When true, the srcset attribute of the source element (inside the rendered picture element) will be empty, and an additional attribute (data-srcset) will be added that contains the image url. That enables you to lazy load the image after the rest of your page contnet is loaded. TODO: link to Javascript example of how to lazy load the images
+
+The picture helper is described in more detail [here](https://hacksbyme.net/2018/03/19/picture-element-imageprocessor-responsive-images-made-easy/) and [here](https://hacksbyme.net/2018/05/12/optimize-your-images-with-imageprocessor/)

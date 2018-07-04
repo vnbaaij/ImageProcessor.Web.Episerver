@@ -46,5 +46,3 @@ function loadImage(imageElement) {
   // Set img src attribute
   imageElement.src = imageElement.dataset.src;
 }
-
-initializeLazyImages();
