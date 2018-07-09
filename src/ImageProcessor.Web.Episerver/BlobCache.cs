@@ -2,9 +2,12 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 using EPiServer;
+using EPiServer.Azure.Blobs;
 using EPiServer.Core;
 using EPiServer.Framework.Blobs;
+using EPiServer.Framework.Configuration;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
 using ImageProcessor.Web.Caching;
@@ -18,6 +21,17 @@ namespace ImageProcessor.Web.Episerver
         /// </summary>
         private DateTime cachedImageCreationTimeUtc = DateTime.MinValue;
 
+        public bool IsFileBlobCache { get; set; } = true;
+
+        /// <summary>
+        /// The cached Uri of a blob.
+        /// </summary>
+        private Uri CachedUri { get; set; }
+        public Uri CachedContainerUri { get; private set; }
+
+        private readonly IBlobFactory factory;
+        private readonly string provider;
+        private const string scheme = "epi.fx.blob";
         private const string prefix = "3p!_";
 
         /// <summary>
@@ -35,6 +49,10 @@ namespace ImageProcessor.Web.Episerver
         public BlobCache(string requestPath, string fullPath, string querystring)
             : base(requestPath, fullPath, querystring)
         {
+            factory = ServiceLocator.Current.GetInstance<IBlobFactory>();
+            var registry = ServiceLocator.Current.GetInstance<IBlobProviderRegistry>();
+
+            provider = registry.DefaultProvider; 
 
         }
 
@@ -46,56 +64,38 @@ namespace ImageProcessor.Web.Episerver
         /// </returns>
         public override async Task<bool> IsNewOrUpdatedAsync()
         {
-            var blobFactory = ServiceLocator.Current.GetInstance<IBlobFactory>();
+            string cachedFilename = prefix + await CreateCachedFileNameAsync();
 
-            string cachedFileName = prefix + await CreateCachedFileNameAsync();
+            var media = UrlResolver.Current.Route(new UrlBuilder(FullPath)) as MediaData;
 
-            var blob = UrlResolver.Current.Route(new UrlBuilder(FullPath)) as IBinaryStorable;
+            string container = media?.BinaryDataContainer?.Segments[1];
+            if (container == null)
+            {
+                return true;
+            }
 
-            string blobFolder = blob?.BinaryDataContainer?.Segments[1];
+            string id = media.BinaryData.ID.ToString();
 
-            if (blobFolder == null) return true;
-
-            CachedPath = new UrlBuilder(string.Join("/", blobFolder, cachedFileName)).ToString();
-
+            CachedContainerUri = new Uri($"{scheme}://{provider}/{container}");
+            CachedUri = new Uri($"{scheme}://{provider}/{container}/{cachedFilename}");
+            CachedPath = CachedUri.ToString();
 
             bool isUpdated = false;
-            CachedImage cachedImage = CacheIndexer.Get(CachedPath);
+            CachedImage cachedImage = CacheIndexer.Get(id);
 
             if (cachedImage == null)
             {
-                if (blobFactory.GetBlob(new UrlBuilder(CachedPath).Uri))
+                if (GetBlobCreationTime(out DateTime dateTime))
                 {
                     cachedImage = new CachedImage
                     {
                         Key = Path.GetFileNameWithoutExtension(CachedPath),
                         Path = CachedPath,
-                        CreationTimeUtc = File.GetCreationTimeUtc(CachedPath)
+                        CreationTimeUtc = dateTime
                     };
 
                     CacheIndexer.Add(cachedImage);
                 }
-
-                //string blobPath = CachedPath.Substring(blobContainer.Uri.ToString().Length + 1);
-                //CloudBlockBlob blockBlob = blobContainer.GetBlockBlobReference(blobPath);
-
-                //if (await blockBlob.ExistsAsync())
-                //{
-                //    // Pull the latest info.
-                //    await blockBlob.FetchAttributesAsync();
-
-                //    if (blockBlob.Properties.LastModified.HasValue)
-                //    {
-                //        cachedImage = new CachedImage
-                //        {
-                //            Key = Path.GetFileNameWithoutExtension(CachedPath),
-                //            Path = CachedPath,
-                //            CreationTimeUtc = blockBlob.Properties.LastModified.Value.UtcDateTime
-                //        };
-
-                //        CacheIndexer.Add(cachedImage);
-                //    }
-                //}
             }
 
             if (cachedImage == null)
@@ -107,7 +107,7 @@ namespace ImageProcessor.Web.Episerver
             {
                 // Check to see if the cached image is set to expire
                 // or a new file with the same name has replaced our current image
-                if (IsExpired(cachedImage.CreationTimeUtc) || await IsUpdatedAsync(cachedImage.CreationTimeUtc))
+                if (IsExpired(cachedImage.CreationTimeUtc) || IsUpdated(cachedImage.CreationTimeUtc))
                 {
                     CacheIndexer.Remove(CachedPath);
                     isUpdated = true;
@@ -122,19 +122,60 @@ namespace ImageProcessor.Web.Episerver
             return isUpdated;
         }
 
+        private bool GetBlobCreationTime(out DateTime creationTimeUtc)
+        {
+           var blob = factory.GetBlob(CachedUri);
+            if (blob != null)
+            {
+                DateTime dateTime = DateTime.MinValue;
+                if (blob.GetType() == typeof(FileBlob))
+                {
+                    creationTimeUtc = File.GetCreationTimeUtc((blob as FileBlob).FilePath);
+                    if (creationTimeUtc == DateTime.MinValue) return false;
+                    return true;
+                }
+                if (blob.GetType() == typeof(AzureBlob))
+                {
+                    creationTimeUtc = (blob as AzureBlob).Properties.LastModified.Value.UtcDateTime;
+                    if (creationTimeUtc == DateTime.MinValue) return false;
+                    return true;
+                }
+            }
+            creationTimeUtc = DateTime.MinValue;
+            return false;
+        }
+
         public override Task AddImageToCacheAsync(Stream stream, string contentType)
         {
-                    throw new NotImplementedException();
+            var blob = factory.CreateBlob(CachedContainerUri, Path.GetExtension(CachedPath));
+
+            if (blob.GetType() == typeof(AzureBlob))
+            {
+                var azureBlob = blob as AzureBlob;
+                azureBlob.Properties.ContentType = contentType;
+                azureBlob.Properties.CacheControl = $"public, max-age={BrowserMaxDays * 86400}";
+
+                //azureBlob.Metadata.Add("ImageProcessedBy", "ImageProcessor.Web.Episerver.Azure" + AssemblyVersion);
+            }
+
+            blob.Write(stream);
+
+            return Task.CompletedTask;
         }
 
         public override void RewritePath(HttpContext context)
         {
-            throw new NotImplementedException();
+            // The cached file is valid so just rewrite the path.
+            var virtualCachedFilePath = "~/" + EPiServerFrameworkSection.Instance.AppData.BasePath + "/blobs/" + CachedUri.Segments[1] + CachedUri.Segments[2];
+
+            context.RewritePath(virtualCachedFilePath, false);
+            return;
+            //throw new NotImplementedException();
         }
 
         public override Task TrimCacheAsync()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(0);
         }
 
         /// <summary>
@@ -142,36 +183,16 @@ namespace ImageProcessor.Web.Episerver
         /// </summary>
         /// <param name="creationDate">The creation date.</param>
         /// <returns>The <see cref="bool"/></returns>
-        private async Task<bool> IsUpdatedAsync(DateTime creationDate)
+        private bool IsUpdated(DateTime creationDate)
         {
             bool isUpdated = false;
 
             try
             {
-                //string blobPath = CachedPath.Substring(blobContainer.Uri.ToString().Length + 1);
-                //CloudBlockBlob blockBlob = blobContainer.GetBlockBlobReference(blobPath);
+                GetBlobCreationTime(out DateTime dateTime);
 
-                //if (await blockBlob.ExistsAsync())
-                //{
-                //    // Pull the latest info.
-                //    await blockBlob.FetchAttributesAsync();
+                isUpdated = dateTime > creationDate;
 
-                //    if (blockBlob.Properties.LastModified.HasValue)
-                //    {
-                //        isUpdated = blockBlob.Properties.LastModified.Value.UtcDateTime > creationDate;
-                //    }
-                //}
-                //else
-                //{
-                //    // Try and get the headers for the file, this should allow cache busting for remote files.
-                //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(RequestPath);
-                //    request.Method = "HEAD";
-
-                //    using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
-                //    {
-                //        isUpdated = response.LastModified.ToUniversalTime() > creationDate;
-                //    }
-                //}
             }
             catch
             {

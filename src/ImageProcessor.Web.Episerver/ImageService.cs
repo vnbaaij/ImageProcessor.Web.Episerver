@@ -82,8 +82,8 @@ namespace ImageProcessor.Web.Episerver
             if (content != null)
             {
                 if (content.QueryDistinctAccess(AccessLevel.Read))
-                    if (content is IBinaryStorable binary)
-                        return await Task.FromResult(binary.BinaryData.ReadAllBytes());
+                    if (content is IBinaryStorable blob)
+                        return await Task.FromResult(blob.BinaryData.ReadAllBytes());
             }
             else
             {
