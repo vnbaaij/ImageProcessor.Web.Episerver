@@ -1,4 +1,4 @@
-@using System.Web.Optimization
+﻿@using System.Web.Optimization
 @using EPiServer.Framework.Web.Mvc.Html
 @using AlloySample.Business
 @model IPageViewModel<SitePageData>
@@ -37,5 +37,9 @@
             }
         </div>
         @Html.RequiredClientResources("Footer")
+        <script src="/Static/js/lazyImages.js"></script>
+        <script type="text/javascript">
+            window.onload = initializeLazyImages();    
+        </script>
     </body>
 </html>

@@ -14,7 +14,8 @@
         <h2 @Html.EditAttributes(x => x.Heading)>@Model.Heading</h2>
         <p @Html.EditAttributes(x => x.Text)>@Model.Text</p>
         <div @Html.EditAttributes(x => x.Image)>
-            @Html.Picture(Html.ProcessImage(Model.Image).Resize(378, null).ReplaceColor("fff", "f00", 99).Watermark("Episerver", new Point(100, 100), "fff"), ImageTypes.Teaser)
+@*            @Html.Picture(Html.ProcessImage(Model.Image).Resize(378, null).ReplaceColor("fff", "f00", 99).Watermark("Episerver", new Point(100, 100), "fff"), ImageTypes.Teaser, lazyLoad: true)*@
+            @Html.Picture(Url.ContentUrl(Model.Image), ImageTypes.Teaser, lazyLoad: true)
         </div>
     }
 
