@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Hosting;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.Framework.Blobs;
@@ -50,7 +54,7 @@ namespace ImageProcessor.Web.Episerver
         /// <returns>
         /// <c>True</c> if the request is valid; otherwise, <c>False</c>.
         /// </returns>
-        public bool IsValidRequest(string path)
+        public virtual bool IsValidRequest(string path)
         {
             return ImageHelpers.IsValidImageExtension(path);
         }
@@ -64,16 +68,45 @@ namespace ImageProcessor.Web.Episerver
         /// <returns>
         /// The <see cref="System.Byte"/> array containing the image data.
         /// </returns>
-        public async Task<byte[]> GetImage(object id)
+        public virtual async Task<byte[]> GetImage(object id)
         {
-            var content = UrlResolver.Current.Route(new UrlBuilder((string)id));
+            string image = id.ToString();
+            byte[] buffer;
 
-            if (content != null && content.QueryDistinctAccess(AccessLevel.Read))
+            // Check to see if the file exists.
+
+
+            //return buffer;
+            var content = UrlResolver.Current.Route(new UrlBuilder(image));
+
+            if (content != null)
             {
-                if (content is IBinaryStorable binary)
-                    return await Task.FromResult(binary.BinaryData.ReadAllBytes());
+                if (content.QueryDistinctAccess(AccessLevel.Read))
+                    if (content is IBinaryStorable blob)
+                        return await Task.FromResult(blob.BinaryData.ReadAllBytes());
             }
+            else
+            {
+                // Map the request path if file local.
+                Url url = new Url(image);
+                var path = url.PathAndQuery;
+                image = HostingEnvironment.MapPath(path);
 
+                // Check to see if the file exists.
+                if (!File.Exists(image))
+                {
+                    throw new HttpException((int)HttpStatusCode.NotFound, $"No image exists at {image}");
+                }
+
+                using (FileStream file = new FileStream(image, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true))
+                {
+                    buffer = new byte[file.Length];
+                    await file.ReadAsync(buffer, 0, (int)file.Length).ConfigureAwait(false);
+                }
+
+                return buffer;
+
+            }
             return null;
         }
     }
