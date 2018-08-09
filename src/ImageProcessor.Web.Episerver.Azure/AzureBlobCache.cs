@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -292,52 +293,202 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// </param>
         public override void RewritePath(HttpContext context)
         {
-            //context.RewritePath(CachedPath, false);
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(CachedPath);
 
+            CloudBlockBlob blockBlob = rootContainer.GetBlockBlobReference(blobPath);
+            string p = GetSaSForBlob(blockBlob, SharedAccessBlobPermissions.Read);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(p);
 
-            // Redirect the request to the blob URL
-            request.Method = "HEAD";
-            request.Timeout = timeout;
-
-            HttpWebResponse response;
-            try
-            {
-                response = (HttpWebResponse)request.GetResponse();
-                response.Dispose();
-                ImageProcessingModule.AddCorsRequestHeaders(context);
-                context.Response.Redirect(CachedPath, false);
-            }
-            catch (WebException ex)
-            {
-                response = (HttpWebResponse)ex.Response;
-
-                if (response != null)
+            //if (true)
+            //{
+                // Map headers to enable 304s to pass through
+                if (context.Request.Headers["If-Modified-Since"] != null)
                 {
-                    HttpStatusCode responseCode = response.StatusCode;
+                    TrySetIfModifiedSinceDate(context, request);
+                }
 
-                    // A 304 (NotModified) is not an error
+                string[] mapRequestHeaders = { "Cache-Control", "If-None-Match" };
+                foreach (string h in mapRequestHeaders)
+                {
+                    if (context.Request.Headers[h] != null)
+                    {
+                        request.Headers.Add(h, context.Request.Headers[h]);
+                    }
+                }
+
+                // Write the blob storage directly to the stream
+                request.Method = "GET";
+                request.Timeout = timeout;
+
+                HttpWebResponse response = null;
+                try
+                {
+                    response = (HttpWebResponse)request.GetResponse();
+                }
+                catch (WebException ex)
+                {
+                    // A 304 is not an error
                     // It appears that some CDN's on Azure (Akamai) do not work properly when making head requests.
                     // They will return a response url and other headers but a 500 status code.
-                    if (responseCode == HttpStatusCode.NotModified || response.ResponseUri.AbsoluteUri.Equals(CachedPath, StringComparison.OrdinalIgnoreCase))
+                    if (ex.Response != null && (((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.NotModified
+                        || ex.Response.ResponseUri.AbsoluteUri.Equals(CachedPath, StringComparison.OrdinalIgnoreCase)))
                     {
-                        response.Dispose();
-                        ImageProcessingModule.AddCorsRequestHeaders(context);
-                        context.Response.Redirect(CachedPath, false);
+                        response = (HttpWebResponse)ex.Response;
                     }
                     else
                     {
-                        response.Dispose();
-                        logger.Error("Unable to rewrite cached path to: " + CachedPath);
+                        response?.Dispose();
+                        logger.Error("Unable to stream cached path: " + CachedPath);
+                        return;
+                    }
+                }
+
+                Stream cachedStream = response.GetResponseStream();
+
+                if (cachedStream != null)
+                {
+                    HttpResponse contextResponse = context.Response;
+
+                    // If streaming but not using a CDN the headers will be null.
+                    // See https://github.com/JimBobSquarePants/ImageProcessor/pull/466
+                    string etagHeader = response.Headers["ETag"];
+                    if (!string.IsNullOrWhiteSpace(etagHeader))
+                    {
+                        contextResponse.Headers.Add("ETag", etagHeader);
+                    }
+
+                    string lastModifiedHeader = response.Headers["Last-Modified"];
+                    if (!string.IsNullOrWhiteSpace(lastModifiedHeader))
+                    {
+                        contextResponse.Headers.Add("Last-Modified", lastModifiedHeader);
+                    }
+
+                    cachedStream.CopyTo(contextResponse.OutputStream); // Will be empty on 304s
+                    ImageProcessingModule.SetHeaders(
+                        context,
+                        response.StatusCode == HttpStatusCode.NotModified ? null : response.ContentType,
+                        null,
+                        BrowserMaxDays,
+                        response.StatusCode);
+                }
+
+                cachedStream?.Dispose();
+                response.Dispose();
+            //}
+            //else
+            //{
+
+            //    // Redirect the request to the blob URL
+            //    request.Method = "HEAD";
+            //    request.Timeout = timeout;
+
+            //    HttpWebResponse response;
+            //    try
+            //    {
+            //        response = (HttpWebResponse)request.GetResponse();
+            //        response.Dispose();
+            //        ImageProcessingModule.AddCorsRequestHeaders(context);
+            //        context.Response.Redirect(CachedPath, false);
+            //    }
+            //    catch (WebException ex)
+            //    {
+            //        response = (HttpWebResponse)ex.Response;
+
+            //        if (response != null)
+            //        {
+            //            HttpStatusCode responseCode = response.StatusCode;
+
+            //            // A 304 (NotModified) is not an error
+            //            // It appears that some CDN's on Azure (Akamai) do not work properly when making head requests.
+            //            // They will return a response url and other headers but a 500 status code.
+            //            if (responseCode == HttpStatusCode.NotModified || response.ResponseUri.AbsoluteUri.Equals(CachedPath, StringComparison.OrdinalIgnoreCase))
+            //            {
+            //                response.Dispose();
+            //                ImageProcessingModule.AddCorsRequestHeaders(context);
+            //                context.Response.Redirect(CachedPath, false);
+            //            }
+            //            else
+            //            {
+            //                response.Dispose();
+            //                logger.Error("Unable to rewrite cached path to: " + CachedPath);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            // It's a 404, we should redirect to the cached path we have just saved to.
+            //            ImageProcessingModule.AddCorsRequestHeaders(context);
+            //            context.Response.Redirect(CachedPath, false);
+            //        }
+            //    }
+            //}
+        }
+
+
+        /// <summary>
+        /// Tries to set IfModifiedSince header however this crashes when context.Request.Headers["If-Modified-Since"] exists,
+        /// but cannot be parsed. It cannot be parsed when it comes from Google Bot as UTC <example>Sun, 27 Nov 2016 20:01:45 UTC</example>
+        /// so DateTime.TryParse. If it returns false, then log the error.
+        /// </summary>
+        /// <param name="context">The current context</param>
+        /// <param name="request">The current request</param>
+        private static void TrySetIfModifiedSinceDate(HttpContext context, HttpWebRequest request)
+        {
+
+            string ifModifiedFromRequest = context.Request.Headers["If-Modified-Since"];
+
+            if (DateTime.TryParse(ifModifiedFromRequest, out DateTime ifModifiedDate))
+            {
+                request.IfModifiedSince = ifModifiedDate;
+            }
+            else
+            {
+                if (ifModifiedFromRequest.ToLower().Contains("utc"))
+                {
+                    ifModifiedFromRequest = ifModifiedFromRequest.ToLower().Replace("utc", string.Empty);
+
+                    if (DateTime.TryParse(ifModifiedFromRequest, out ifModifiedDate))
+                    {
+                        request.IfModifiedSince = ifModifiedDate;
                     }
                 }
                 else
                 {
-                    // It's a 404, we should redirect to the cached path we have just saved to.
-                    ImageProcessingModule.AddCorsRequestHeaders(context);
-                    context.Response.Redirect(CachedPath, false);
+                    logger.Error($"Unable to parse date {context.Request.Headers["If-Modified-Since"]} for {context.Request.Url}");
                 }
             }
+        }
+
+        /// <summary>
+        /// Creates a SAS URI for the blob container.
+        /// </summary>
+        /// <param name="blobContainer"></param>
+        /// <param name="permission"></param>
+        /// <returns></returns>
+        static string GetSaSForBlobContainer(CloudBlobContainer blobContainer, SharedAccessBlobPermissions permission)
+        {
+            var sas = blobContainer.GetSharedAccessSignature(new SharedAccessBlobPolicy()
+            {
+                Permissions = permission,
+                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-5),//SAS Start time is back by 5 minutes to take clock skewness into consideration
+                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(15),
+            });
+            return string.Format(CultureInfo.InvariantCulture, "{0}{1}", blobContainer.Uri, sas);
+        }
+
+        /// <summary>
+        /// Creates a SAS URI for the blob.
+        /// </summary>
+        /// <param name="blob"></param>
+        /// <param name="permission"></param>
+        /// <returns></returns>
+        static string GetSaSForBlob(CloudBlockBlob blob, SharedAccessBlobPermissions permission)
+        {
+            var sas = blob.GetSharedAccessSignature(new SharedAccessBlobPolicy()
+            {
+                Permissions = permission,
+                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-5),
+                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(15),
+            });
+            return string.Format(CultureInfo.InvariantCulture, "{0}{1}", blob.Uri, sas);
         }
     }
 }

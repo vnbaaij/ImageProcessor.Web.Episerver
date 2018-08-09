@@ -15,7 +15,7 @@
         <p @Html.EditAttributes(x => x.Text)>@Model.Text</p>
         <div @Html.EditAttributes(x => x.Image)>
 
-            @Html.Picture(Html.ProcessImage(Model.Image).Resize(378, null).ReplaceColor("fff", "f00", 99).Watermark("Episerver", new Point(100, 100), "fff"), ImageTypes.Teaser)
+            @Html.Picture(Html.ProcessImage(Model.Image).Resize(378, null).ReplaceColor("fff", "f00", 99).Watermark("Episerver", new Point(100, 100), "fff"), ImageTypes.Teaser, lazyLoad: false)
 
         </div>
     }
