@@ -75,6 +75,8 @@ namespace ImageProcessor.Web.Episerver
 	    {
 			var imgElement = new TagBuilder("img");
 		    imgElement.Attributes.Add("alt", "");
+
+			//add src and/or data-src attribute
 		    var imgSrc = BuildQueryString(imageUrl, imageType, imageType.DefaultImgWidth);
 		    switch (lazyLoadType)
 		    {
@@ -82,13 +84,16 @@ namespace ImageProcessor.Web.Episerver
 				    imgElement.Attributes.Add("data-src", imgSrc);
 				    break;
 			    case LazyLoadType.Progressive:
-				    imgElement.Attributes.Add("src", imgSrc);
-				    imgElement.Attributes.Add("data-src", imgSrc);
+					var imgSrcLowQuality = BuildQueryString(imageUrl, imageType, imageType.DefaultImgWidth, overrideQuality: 1);
+				    imgElement.Attributes.Add("src", imgSrcLowQuality);
+					imgElement.Attributes.Add("data-src", imgSrc);
 				    break;
 			    default:
 				    imgElement.Attributes.Add("src", imgSrc);
 				    break;
 		    }
+
+			//add class attribute
 		    if (!string.IsNullOrEmpty(cssClass))
 		    {
 			    imgElement.Attributes.Add("class", cssClass);
