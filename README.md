@@ -63,3 +63,35 @@ When lazy load type is "Progressive", the srcset attribute will contain image ur
 [Javascript example of how to lazy load the images](https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/samples/AlloySampleLocal/Static/js/lazyImages.js)
 
 The picture helper is described in more detail [here](https://hacksbyme.net/2018/03/19/picture-element-imageprocessor-responsive-images-made-easy/) and [here](https://hacksbyme.net/2018/05/12/optimize-your-images-with-imageprocessor/)
+
+## Change log
+To get a more exact overview of the changes, you can also take a look at the commit history.
+
+#### V4.1.0
+- UNC path support is back! 
+
+#### V4.0.0
+- New major version number because of breaking change in lazy loading functionality for the Picture element
+
+#### V3.0.1
+- Don't stream blobs directly anymore. 
+- Works with private containers now (DXC Service)! Now uses Shared Access Signature for downloading from blob storage. 
+
+#### V3.0.0
+- Use ImageProcessor on static files!
+- Added support for lazy loading images in Picture element
+- Simplifying caches (both File and Azure) and configuration
+- Removed Azure specific `IImageService`
+- **Changes no longer backported to CMS 10**
+- See https://world.episerver.com/blogs/vincent-baaij/dates/2018/7/imageprocessor-web-episerver-new-versions/
+
+#### V2.1.0
+- Added Picture element for responsive images. See https://world.episerver.com/blogs/vincent-baaij/dates/2018/5/episever-and-imageprocessor-new-versions/
+
+#### V2.0.0
+- Added Azure Blob Storage support.
+- CMS 11 support
+- See https://world.episerver.com/blogs/vincent-baaij/dates/2017/11/episerver-and-imageprocessor-now-also-on-azure-and-cms-11/
+
+#### V1.0.0
+- Initial version. See https://world.episerver.com/blogs/vincent-baaij/dates/2017/10/episerver-and-imageprocessor-more-choice-for-developers-and-designers/
