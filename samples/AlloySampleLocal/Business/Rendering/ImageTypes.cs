@@ -28,8 +28,8 @@ namespace AlloySample.Business.Rendering
 
         // A Teaser image for the Episerver Alloy site.
         // Up to 980 pixels viewport width, the image "viewable width" will be 100% of the viewport - 40 pixels (margins).
-        // Up to 1200 pixels viewport width, the image "viewable width" will be 298 pixels.
-        // On larger viewport width, the image "viewable width" will be 368 pixels.
+        // Up to 1200 pixels viewport width, the image "viewable width" will be 368 pixels.
+        // On larger viewport width, the image "viewable width" will be 750 pixels.
         // Note that the "viewable width" is not the same as the image file width (but it can be, on a screen with a "device pixel ratio" of 1).
         public static ImageType Teaser = new ImageType
         {
