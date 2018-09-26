@@ -10,15 +10,28 @@ namespace ImageProcessor.Web.Episerver
 {
     public class ImageType
     {
-        public int? DefaultImgWidth { get; set; } //this size will be used in browsers that don't support the picture element
-        public int[] SrcSetWidths { get; set; } // the different image widths you want the browser to select from
+		/// <summary>
+		/// This size will be used in browsers that don't support the picture element.
+		/// </summary>
+		public int? DefaultImgWidth { get; set; }
+
+		/// <summary>
+		/// The different image widths that the browser will select from.
+		/// </summary>
+		public int[] SrcSetWidths { get; set; } 
+
         public string[] SrcSetSizes { get; set; }
+
         public double HeightRatio { get; set; }
+
+		/// <summary>
+		/// Default value for quality = 80
+		/// </summary>
         public int Quality { get; set; }
 
         public ImageType()
         {
-            Quality = 80; //default quality
+            Quality = 80;
         }
     }
 
@@ -115,12 +128,13 @@ namespace ImageProcessor.Web.Episerver
             //add srcset (and/or data-srcset) attribute
             var srcset = string.Empty;
 	        var srcsetLowQuality = string.Empty;
-            foreach (var width in imageType.SrcSetWidths)
+	        var lowQualityValue = format == "webp" ? 3 : 13; //webp can have lower quality value 
+			foreach (var width in imageType.SrcSetWidths)
             {
                 srcset += BuildQueryString(imageUrl, imageType, width, format) + " " + width + "w, ";
 	            if (lazyLoadType == LazyLoadType.Progressive)
 	            {
-		            srcsetLowQuality += imageUrl + BuildQueryString(imageUrl, imageType, width, format, 1) + " " + width + "w, ";
+		            srcsetLowQuality += imageUrl + BuildQueryString(imageUrl, imageType, width, format, lowQualityValue) + " " + width + "w, ";
 	            }
 			}
             srcset = srcset.TrimEnd(',', ' ');
