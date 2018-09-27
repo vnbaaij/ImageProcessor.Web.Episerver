@@ -166,7 +166,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\PictureHelper.cs" />
+    <Compile Include="Extensions\Picture\Enums.cs" />
+    <Compile Include="Extensions\Picture\ImageType.cs" />
+    <Compile Include="Extensions\Picture\PictureUtils.cs" />
+    <Compile Include="Extensions\Picture\PictureHelper.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="FileBlobCache.cs" />
     <Compile Include="ImageService.cs" />
