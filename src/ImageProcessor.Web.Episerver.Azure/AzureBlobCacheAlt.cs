@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using EPiServer;
+using EPiServer.Core;
+using EPiServer.Framework.Configuration;
+using EPiServer.Web.Routing;
 using ImageProcessor.Configuration;
 using ImageProcessor.Web.Caching;
 using ImageProcessor.Web.HttpModules;
@@ -41,10 +46,10 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// </summary>
         private static CloudBlobContainer cloudCachedBlobContainer;
 
-        /// <summary>
-        /// The cloud source blob container.
-        /// </summary>
-        private static CloudBlobContainer cloudSourceBlobContainer;
+        ///// <summary>
+        ///// The cloud source blob container.
+        ///// </summary>
+        //private static CloudBlobContainer cloudSourceBlobContainer;
 
         /// <summary>
         /// The cached root url for a content delivery network.
@@ -67,6 +72,13 @@ namespace ImageProcessor.Web.Episerver.Azure
         private string cachedRewritePath;
 
         /// <summary>
+        /// The cache blob name.prefix
+        /// </summary>
+        private const string prefix = "3p!_";
+
+        public string blobPath;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AzureBlobCache"/> class.
         /// </summary>
         /// <param name="requestPath">
@@ -81,51 +93,53 @@ namespace ImageProcessor.Web.Episerver.Azure
         public AzureBlobCacheAlt(string requestPath, string fullPath, string querystring)
             : base(requestPath, fullPath, querystring)
         {
+            // Get the name of the configured blob provider
+            string providerName = EPiServerFrameworkSection.Instance.Blob.DefaultProvider;
+
             if (cloudCachedBlobClient == null)
             {
-                // Retrieve storage accounts from connection string.
-                CloudStorageAccount cloudCachedStorageAccount = CloudStorageAccount.Parse(this.Settings["CachedStorageAccount"]);
+                // Get the name of the connection string from there
+                string connectionStringName = EPiServerFrameworkSection.Instance.Blob.Providers[providerName].Parameters["connectionStringName"];
 
+                // Retrieve storage account from connection string.
+                CloudStorageAccount cloudCachedStorageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString);
                 // Create the blob clients.
                 cloudCachedBlobClient = cloudCachedStorageAccount.CreateCloudBlobClient();
+
+                // Retrieve reference to the container. Container is already created as part of the initialization process for the BlobProvider
+                cloudCachedBlobContainer = cloudCachedBlobClient.GetContainerReference(EPiServerFrameworkSection.Instance.Blob.Providers[providerName].Parameters["container"]);
             }
 
-            if (cloudCachedBlobContainer == null)
-            {
-                // Retrieve references to a container.
-                cloudCachedBlobContainer = CreateContainer(cloudCachedBlobClient, this.Settings["CachedBlobContainer"], BlobContainerPublicAccessType.Blob);
-            }
+            //if (cloudSourceBlobContainer == null)
+            //{
+            //    string sourceAccount = this.Settings.ContainsKey("SourceStorageAccount")
+            //                               ? this.Settings["SourceStorageAccount"]
+            //                               : string.Empty;
 
-            if (cloudSourceBlobContainer == null)
-            {
-                string sourceAccount = this.Settings.ContainsKey("SourceStorageAccount")
-                                           ? this.Settings["SourceStorageAccount"]
-                                           : string.Empty;
+            //    // Repeat for source if it exists
+            //    if (!string.IsNullOrWhiteSpace(sourceAccount))
+            //    {
+            //        CloudStorageAccount cloudSourceStorageAccount = CloudStorageAccount.Parse(this.Settings["SourceStorageAccount"]);
+            //        CloudBlobClient cloudSourceBlobClient = cloudSourceStorageAccount.CreateCloudBlobClient();
+            //        cloudSourceBlobContainer = cloudSourceBlobClient.GetContainerReference(this.Settings["SourceBlobContainer"]);
+            //    }
+            //}
 
-                // Repeat for source if it exists
-                if (!string.IsNullOrWhiteSpace(sourceAccount))
-                {
-                    CloudStorageAccount cloudSourceStorageAccount = CloudStorageAccount.Parse(this.Settings["SourceStorageAccount"]);
-                    CloudBlobClient cloudSourceBlobClient = cloudSourceStorageAccount.CreateCloudBlobClient();
-                    cloudSourceBlobContainer = cloudSourceBlobClient.GetContainerReference(this.Settings["SourceBlobContainer"]);
-                }
-            }
-
-            this.cachedCdnRoot = this.Settings.ContainsKey("CachedCDNRoot")
-                                     ? this.Settings["CachedCDNRoot"]
+            cachedCdnRoot = Settings.ContainsKey("CachedCDNRoot")
+                                     ? Settings["CachedCDNRoot"]
                                      : cloudCachedBlobContainer.Uri.ToString().TrimEnd(cloudCachedBlobContainer.Name.ToCharArray());
 
-            if (this.Settings.ContainsKey("CachedCDNTimeout"))
+            if (Settings.ContainsKey("CachedCDNTimeout"))
             {
                 int t;
-                int.TryParse(this.Settings["CachedCDNTimeout"], out t);
-                this.timeout = t;
+                int.TryParse(Settings["CachedCDNTimeout"], out t);
+                timeout = t;
             }
 
             // This setting was added to facilitate streaming of the blob resource directly instead of a redirect. This is beneficial for CDN purposes
             // but caution should be taken if not used with a CDN as it will add quite a bit of overhead to the site.
             // See: https://github.com/JimBobSquarePants/ImageProcessor/issues/161
-            this.streamCachedImage = this.Settings.ContainsKey("StreamCachedImage") && this.Settings["StreamCachedImage"].ToLower() == "true";
+            streamCachedImage = Settings.ContainsKey("StreamCachedImage") && Settings["StreamCachedImage"].ToLower() == "true";
         }
 
         /// <summary>
@@ -136,29 +150,39 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// </returns>
         public override async Task<bool> IsNewOrUpdatedAsync()
         {
-            // TODO: Before this check is performed it should be throttled. For example, only perform this check
-            // if the last time it was checked is greater than 5 seconds. This would be much better for perf
-            // if there is a high throughput of image requests.
-            string cachedFileName = await this.CreateCachedFileNameAsync();
-            this.CachedPath = CachedImageHelper.GetCachedPath(cloudCachedBlobContainer.Uri.ToString(), cachedFileName, true, this.FolderDepth);
+            string cachedFileName = prefix + await CreateCachedFileNameAsync();
+
+            var media = UrlResolver.Current.Route(new UrlBuilder(FullPath)) as MediaData;
+
+            string containerName = media?.BinaryDataContainer?.Segments[1];
+
+            if (containerName == null)
+            {
+                // We're working with a static file here
+                containerName = $"_{prefix}static";
+            }
+
+            blobPath = $"{containerName}/{cachedFileName}";
 
             // Do we insert the cache container? This seems to break some setups.
-            bool useCachedContainerInUrl = this.Settings.ContainsKey("UseCachedContainerInUrl") && this.Settings["UseCachedContainerInUrl"].ToLower() != "false";
+            bool useCachedContainerInUrl = Settings.ContainsKey("UseCachedContainerInUrl") && Settings["UseCachedContainerInUrl"].ToLower() != "false";
 
-            this.cachedRewritePath = CachedImageHelper.GetCachedPath(useCachedContainerInUrl ? Path.Combine(this.cachedCdnRoot, cloudCachedBlobContainer.Name) : this.cachedCdnRoot, cachedFileName, true, this.FolderDepth);
+            CachedPath = $"{cloudCachedBlobContainer.Uri.ToString()}/{containerName}/{cachedFileName}";
+
+            cachedRewritePath = (useCachedContainerInUrl ? Path.Combine(cachedCdnRoot, containerName) : cachedCdnRoot) + cachedFileName; // + FullPath;
 
             bool isUpdated = false;
-            CachedImage cachedImage = CacheIndexer.Get(this.CachedPath);
+            CachedImage cachedImage = CacheIndexer.Get(CachedPath);
 
-            if (new Uri(this.CachedPath).IsFile)
+            if (new Uri(CachedPath).IsFile)
             {
-                if (File.Exists(this.CachedPath))
+                if (File.Exists(CachedPath))
                 {
                     cachedImage = new CachedImage
                     {
-                        Key = Path.GetFileNameWithoutExtension(this.CachedPath),
-                        Path = this.CachedPath,
-                        CreationTimeUtc = File.GetCreationTimeUtc(this.CachedPath)
+                        Key = Path.GetFileNameWithoutExtension(CachedPath),
+                        Path = CachedPath,
+                        CreationTimeUtc = File.GetCreationTimeUtc(CachedPath)
                     };
 
                     CacheIndexer.Add(cachedImage, ImageCacheMaxMinutes);
@@ -167,7 +191,7 @@ namespace ImageProcessor.Web.Episerver.Azure
 
             if (cachedImage == null)
             {
-                string blobPath = this.CachedPath.Substring(cloudCachedBlobContainer.Uri.ToString().Length + 1);
+                string blobPath = CachedPath.Substring(cloudCachedBlobContainer.Uri.ToString().Length + 1);
                 CloudBlockBlob blockBlob = cloudCachedBlobContainer.GetBlockBlobReference(blobPath);
 
                 if (await blockBlob.ExistsAsync())
@@ -179,12 +203,12 @@ namespace ImageProcessor.Web.Episerver.Azure
                     {
                         cachedImage = new CachedImage
                         {
-                            Key = Path.GetFileNameWithoutExtension(this.CachedPath),
-                            Path = this.CachedPath,
+                            Key = Path.GetFileNameWithoutExtension(CachedPath),
+                            Path = CachedPath,
                             CreationTimeUtc = blockBlob.Properties.LastModified.Value.UtcDateTime
                         };
 
-                        CacheIndexer.Add(cachedImage, this.ImageCacheMaxMinutes);
+                        CacheIndexer.Add(cachedImage, ImageCacheMaxMinutes);
                     }
                 }
             }
@@ -198,9 +222,9 @@ namespace ImageProcessor.Web.Episerver.Azure
             {
                 // Check to see if the cached image is set to expire
                 // or a new file with the same name has replaced our current image
-                if (this.IsExpired(cachedImage.CreationTimeUtc) || await this.IsUpdatedAsync(cachedImage.CreationTimeUtc))
+                if (IsExpired(cachedImage.CreationTimeUtc) || await IsUpdatedAsync(cachedImage.CreationTimeUtc))
                 {
-                    CacheIndexer.Remove(this.CachedPath);
+                    CacheIndexer.Remove(CachedPath);
                     isUpdated = true;
                 }
             }
@@ -222,16 +246,16 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// </returns>
         public override async Task AddImageToCacheAsync(Stream stream, string contentType)
         {
-            string blobPath = this.CachedPath.Substring(cloudCachedBlobContainer.Uri.ToString().Length + 1);
+            string blobPath = CachedPath.Substring(cloudCachedBlobContainer.Uri.ToString().Length + 1);
             CloudBlockBlob blockBlob = cloudCachedBlobContainer.GetBlockBlobReference(blobPath);
 
             await blockBlob.UploadFromStreamAsync(stream);
 
             blockBlob.Properties.ContentType = contentType;
-            blockBlob.Properties.CacheControl = $"public, max-age={this.BrowserMaxDays * 86400}";
+            blockBlob.Properties.CacheControl = $"public, max-age={BrowserMaxDays * 86400}";
             await blockBlob.SetPropertiesAsync();
 
-            blockBlob.Metadata.Add("ImageProcessedBy", "ImageProcessor.Web/" + AssemblyVersion);
+            blockBlob.Metadata.Add("ImageProcessedBy", "ImageProcessor.Web.Episerver/" + AssemblyVersion);
             await blockBlob.SetMetadataAsync();
         }
 
@@ -243,19 +267,19 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// </returns>
         public override Task TrimCacheAsync()
         {
-            if (!this.TrimCache)
+            if (!TrimCache)
             {
                 return Task.FromResult(0);
             }
 
-            this.ScheduleCacheTrimmer(async token =>
+            ScheduleCacheTrimmer(async token =>
             {
                 // Jump up to the parent branch to clean through the cache.
                 string parent = string.Empty;
 
-                if (this.FolderDepth > 0)
+                if (FolderDepth > 0)
                 {
-                    Uri uri = new Uri(this.CachedPath);
+                    Uri uri = new Uri(CachedPath);
                     string path = uri.GetLeftPart(UriPartial.Path).Substring(cloudCachedBlobContainer.Uri.ToString().Length + 1);
                     parent = path.Substring(0, 2);
                 }
@@ -279,7 +303,7 @@ namespace ImageProcessor.Web.Episerver.Azure
                            .Cast<CloudBlockBlob>()
                            .OrderBy(b => b.Properties.LastModified?.UtcDateTime ?? new DateTime()))
                 {
-                    if (token.IsCancellationRequested || (blob.Properties.LastModified.HasValue && !this.IsExpired(blob.Properties.LastModified.Value.UtcDateTime)))
+                    if (token.IsCancellationRequested || (blob.Properties.LastModified.HasValue && !IsExpired(blob.Properties.LastModified.Value.UtcDateTime)))
                     {
                         break;
                     }
@@ -301,9 +325,9 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// </param>
         public override void RewritePath(HttpContext context)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(this.cachedRewritePath);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(cachedRewritePath);
 
-            if (this.streamCachedImage)
+            if (streamCachedImage)
             {
                 // Map headers to enable 304s to pass through
                 if (context.Request.Headers["If-Modified-Since"] != null)
@@ -322,7 +346,7 @@ namespace ImageProcessor.Web.Episerver.Azure
 
                 // Write the blob storage directly to the stream
                 request.Method = "GET";
-                request.Timeout = this.timeout;
+                request.Timeout = timeout;
 
                 HttpWebResponse response = null;
                 try
@@ -335,14 +359,14 @@ namespace ImageProcessor.Web.Episerver.Azure
                     // It appears that some CDN's on Azure (Akamai) do not work properly when making head requests.
                     // They will return a response url and other headers but a 500 status code.
                     if (ex.Response != null && (((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.NotModified
-                        || ex.Response.ResponseUri.AbsoluteUri.Equals(this.cachedRewritePath, StringComparison.OrdinalIgnoreCase)))
+                        || ex.Response.ResponseUri.AbsoluteUri.Equals(cachedRewritePath, StringComparison.OrdinalIgnoreCase)))
                     {
                         response = (HttpWebResponse)ex.Response;
                     }
                     else
                     {
                         response?.Dispose();
-                        ImageProcessorBootstrapper.Instance.Logger.Log<AzureBlobCache>("Unable to stream cached path: " + this.cachedRewritePath);
+                        ImageProcessorBootstrapper.Instance.Logger.Log<AzureBlobCache>("Unable to stream cached path: " + cachedRewritePath);
                         return;
                     }
                 }
@@ -372,7 +396,7 @@ namespace ImageProcessor.Web.Episerver.Azure
                         context,
                         response.StatusCode == HttpStatusCode.NotModified ? null : response.ContentType,
                         null,
-                        this.BrowserMaxDays,
+                        BrowserMaxDays,
                         response.StatusCode);
                 }
 
@@ -382,16 +406,16 @@ namespace ImageProcessor.Web.Episerver.Azure
             else
             {
                 // Prevent redundant metadata request if paths match.
-                if (this.CachedPath == this.cachedRewritePath)
+                if (CachedPath == cachedRewritePath)
                 {
                     ImageProcessingModule.AddCorsRequestHeaders(context);
-                    context.Response.Redirect(this.CachedPath, false);
+                    context.Response.Redirect(CachedPath, false);
                     return;
                 }
 
                 // Redirect the request to the blob URL
                 request.Method = "HEAD";
-                request.Timeout = this.timeout;
+                request.Timeout = timeout;
 
                 HttpWebResponse response;
                 try
@@ -399,7 +423,7 @@ namespace ImageProcessor.Web.Episerver.Azure
                     response = (HttpWebResponse)request.GetResponse();
                     response.Dispose();
                     ImageProcessingModule.AddCorsRequestHeaders(context);
-                    context.Response.Redirect(this.cachedRewritePath, false);
+                    context.Response.Redirect(cachedRewritePath, false);
                 }
                 catch (WebException ex)
                 {
@@ -413,23 +437,23 @@ namespace ImageProcessor.Web.Episerver.Azure
                         // It appears that some CDN's on Azure (Akamai) do not work properly when making head requests.
                         // They will return a response url and other headers but a 500 status code.
                         if (responseCode == HttpStatusCode.NotModified
-                            || response.ResponseUri.AbsoluteUri.Equals(this.cachedRewritePath, StringComparison.OrdinalIgnoreCase))
+                            || response.ResponseUri.AbsoluteUri.Equals(cachedRewritePath, StringComparison.OrdinalIgnoreCase))
                         {
                             response.Dispose();
                             ImageProcessingModule.AddCorsRequestHeaders(context);
-                            context.Response.Redirect(this.cachedRewritePath, false);
+                            context.Response.Redirect(cachedRewritePath, false);
                         }
                         else
                         {
                             response.Dispose();
-                            ImageProcessorBootstrapper.Instance.Logger.Log<AzureBlobCache>("Unable to rewrite cached path to: " + this.cachedRewritePath);
+                            ImageProcessorBootstrapper.Instance.Logger.Log<AzureBlobCache>("Unable to rewrite cached path to: " + cachedRewritePath);
                         }
                     }
                     else
                     {
                         // It's a 404, we should redirect to the cached path we have just saved to.
                         ImageProcessingModule.AddCorsRequestHeaders(context);
-                        context.Response.Redirect(this.CachedPath, false);
+                        context.Response.Redirect(CachedPath, false);
                     }
                 }
             }
@@ -446,36 +470,36 @@ namespace ImageProcessor.Web.Episerver.Azure
 
             try
             {
-                if (new Uri(this.RequestPath).IsFile)
+                if (new Uri(RequestPath).IsFile)
                 {
-                    if (File.Exists(this.RequestPath))
+                    if (File.Exists(RequestPath))
                     {
                         // If it's newer than the cached file then it must be an update.
-                        isUpdated = File.GetLastWriteTimeUtc(this.RequestPath) > creationDate;
+                        isUpdated = File.GetLastWriteTimeUtc(RequestPath) > creationDate;
                     }
                 }
-                else if (cloudSourceBlobContainer != null)
-                {
-                    string container = RemoteRegex.Replace(cloudSourceBlobContainer.Uri.ToString(), string.Empty);
-                    string blobPath = RemoteRegex.Replace(this.RequestPath, string.Empty);
-                    blobPath = blobPath.Replace(container, string.Empty).TrimStart('/');
-                    CloudBlockBlob blockBlob = cloudSourceBlobContainer.GetBlockBlobReference(blobPath);
+                //else if (cloudSourceBlobContainer != null)
+                //{
+                //    string container = RemoteRegex.Replace(cloudSourceBlobContainer.Uri.ToString(), string.Empty);
+                //    string blobPath = RemoteRegex.Replace(RequestPath, string.Empty);
+                //    blobPath = blobPath.Replace(container, string.Empty).TrimStart('/');
+                //    CloudBlockBlob blockBlob = cloudSourceBlobContainer.GetBlockBlobReference(blobPath);
 
-                    if (await blockBlob.ExistsAsync())
-                    {
-                        // Pull the latest info.
-                        await blockBlob.FetchAttributesAsync();
+                //    if (await blockBlob.ExistsAsync())
+                //    {
+                //        // Pull the latest info.
+                //        await blockBlob.FetchAttributesAsync();
 
-                        if (blockBlob.Properties.LastModified.HasValue)
-                        {
-                            isUpdated = blockBlob.Properties.LastModified.Value.UtcDateTime > creationDate;
-                        }
-                    }
-                }
+                //        if (blockBlob.Properties.LastModified.HasValue)
+                //        {
+                //            isUpdated = blockBlob.Properties.LastModified.Value.UtcDateTime > creationDate;
+                //        }
+                //    }
+                //}
                 else
                 {
                     // Try and get the headers for the file, this should allow cache busting for remote files.
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(this.RequestPath);
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(RequestPath);
                     request.Method = "HEAD";
 
                     using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
@@ -527,24 +551,24 @@ namespace ImageProcessor.Web.Episerver.Azure
             }
         }
 
-        /// <summary>
-        /// Returns the cache container, creating a new one if none exists.
-        /// </summary>
-        /// <param name="cloudBlobClient"><see cref="CloudBlobClient"/> where the container is stored.</param>
-        /// <param name="containerName">The name of the container.</param>
-        /// <param name="accessType"><see cref="BlobContainerPublicAccessType"/> indicating the access permissions.</param>
-        /// <returns>The <see cref="CloudBlobContainer"/></returns>
-        private static CloudBlobContainer CreateContainer(CloudBlobClient cloudBlobClient, string containerName, BlobContainerPublicAccessType accessType)
-        {
-            CloudBlobContainer container = cloudBlobClient.GetContainerReference(containerName);
+        ///// <summary>
+        ///// Returns the cache container, creating a new one if none exists.
+        ///// </summary>
+        ///// <param name="cloudBlobClient"><see cref="CloudBlobClient"/> where the container is stored.</param>
+        ///// <param name="containerName">The name of the container.</param>
+        ///// <param name="accessType"><see cref="BlobContainerPublicAccessType"/> indicating the access permissions.</param>
+        ///// <returns>The <see cref="CloudBlobContainer"/></returns>
+        //private static CloudBlobContainer CreateContainer(CloudBlobClient cloudBlobClient, string containerName, BlobContainerPublicAccessType accessType)
+        //{
+        //    CloudBlobContainer container = cloudBlobClient.GetContainerReference(containerName);
 
-            if (!container.Exists())
-            {
-                container.Create();
-                container.SetPermissions(new BlobContainerPermissions { PublicAccess = accessType });
-            }
+        //    if (!container.Exists())
+        //    {
+        //        container.Create();
+        //        container.SetPermissions(new BlobContainerPermissions { PublicAccess = accessType });
+        //    }
 
-            return container;
-        }
+        //    return container;
+        //}
     }
 }
