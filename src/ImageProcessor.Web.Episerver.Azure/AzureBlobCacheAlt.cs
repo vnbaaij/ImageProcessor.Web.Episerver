@@ -169,7 +169,7 @@ namespace ImageProcessor.Web.Episerver.Azure
 
             CachedPath = $"{cloudCachedBlobContainer.Uri.ToString()}/{containerName}/{cachedFileName}";
 
-            cachedRewritePath = (useCachedContainerInUrl ? Path.Combine(cachedCdnRoot, containerName) : cachedCdnRoot) + cachedFileName; // + FullPath;
+            cachedRewritePath = (useCachedContainerInUrl ? Path.Combine(cachedCdnRoot, containerName) : cachedCdnRoot) + RequestPath; // + FullPath;
 
             bool isUpdated = false;
             CachedImage cachedImage = CacheIndexer.Get(CachedPath);
