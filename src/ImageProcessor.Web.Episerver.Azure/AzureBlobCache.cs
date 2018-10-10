@@ -13,8 +13,9 @@ using EPiServer.Framework.Configuration;
 using EPiServer.Logging;
 using EPiServer.Web.Routing;
 
+using ImageProcessor.Web.Episerver;
 using ImageProcessor.Web.Caching;
-using ImageProcessor.Web.HttpModules;
+//using ImageProcessor.Web.HttpModules;
 
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -30,7 +31,7 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// <summary>
         /// The assembly version.
         /// </summary>
-        private static readonly string AssemblyVersion = typeof(ImageProcessingModule).Assembly.GetName().Version.ToString();
+        private static readonly string AssemblyVersion = typeof(EpiserverImageProcessingModule).Assembly.GetName().Version.ToString();
 
         /// <summary>
         /// Use the configured logging mechanism
@@ -43,11 +44,6 @@ namespace ImageProcessor.Web.Episerver.Azure
         private static CloudBlobContainer rootContainer;
 
         /// <summary>
-        /// The cached root url for a content delivery network.
-        /// </summary>
-        private readonly string cachedCdnRoot;
-
-        /// <summary>
         /// Determines if the CDN request is redirected or rewritten
         /// </summary>
         private readonly bool streamCachedImage;
@@ -57,17 +53,7 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// </summary>
         private readonly int timeout = 1000;
 
-        /// <summary>
-        /// The cached rewrite path.
-        /// </summary>
-        private string cachedRewritePath;
-
         public string blobPath;
-
-        /// <summary>
-        /// The provider name
-        /// </summary>
-        private static string providerName;
 
         private const string prefix = "3p!_";
 
@@ -87,7 +73,7 @@ namespace ImageProcessor.Web.Episerver.Azure
             : base(requestPath, fullPath, querystring)
         {
             // Get the name of the configured blob provider
-            providerName = EPiServerFrameworkSection.Instance.Blob.DefaultProvider;
+            string providerName = EPiServerFrameworkSection.Instance.Blob.DefaultProvider;
 
 
             if (rootContainer == null)
@@ -105,16 +91,19 @@ namespace ImageProcessor.Web.Episerver.Azure
                 rootContainer = cloudBlobClient.GetContainerReference(EPiServerFrameworkSection.Instance.Blob.Providers[providerName].Parameters["container"]);
             }
 
-            cachedCdnRoot = Settings.ContainsKey("CachedCDNRoot")
-                                     ? Settings["CachedCDNRoot"]
-                                     : rootContainer.Uri.ToString().TrimEnd(rootContainer.Name.ToCharArray());
+            //cachedCdnRoot = Settings.ContainsKey("CachedCDNRoot")
+            //                         ? Settings["CachedCDNRoot"]
+            //                         : rootContainer.Uri.ToString().TrimEnd(rootContainer.Name.ToCharArray());
 
-            if (Settings.ContainsKey("CachedCDNTimeout"))
+            if (Settings.ContainsKey("CDNTimeout"))
             {
-                int t;
-                int.TryParse(Settings["CachedCDNTimeout"], out t);
-                this.timeout = t;
+                int.TryParse(Settings["CDNTimeout"], out int t);
+                timeout = t;
             }
+
+            // This setting was added to facilitate streaming of the blob resource directly instead of a redirect. This is beneficial for CDN purposes
+            // but caution should be taken if not used with a CDN as it will add quite a bit of overhead to the site.
+            // See: https://github.com/JimBobSquarePants/ImageProcessor/issues/161
             streamCachedImage = Settings.ContainsKey("StreamCachedImage") && Settings["StreamCachedImage"].ToLower() == "true";
         }
 
@@ -140,10 +129,6 @@ namespace ImageProcessor.Web.Episerver.Azure
 
             blobPath = $"{containerName}/{cachedFilename}";
 
-            bool useCachedContainerInUrl = this.Settings.ContainsKey("UseCachedContainerInUrl") && this.Settings["UseCachedContainerInUrl"].ToLower() != "false";
-
-            cachedRewritePath = (useCachedContainerInUrl ? Path.Combine(cachedCdnRoot, containerName) : cachedCdnRoot)  + FullPath;
-
             CachedPath = $"{rootContainer.Uri.ToString()}/{containerName}/{cachedFilename}";
 
             bool isUpdated = false;
@@ -152,7 +137,7 @@ namespace ImageProcessor.Web.Episerver.Azure
             if (cachedImage == null)
             {
                 CloudBlockBlob blockBlob = rootContainer.GetBlockBlobReference(blobPath);
-                string t = GetSaSForBlob(blockBlob, SharedAccessBlobPermissions.Read);
+                //string t = GetSaSForBlob(blockBlob, SharedAccessBlobPermissions.Read);
 
                 if (await blockBlob.ExistsAsync())
                 {
@@ -168,7 +153,7 @@ namespace ImageProcessor.Web.Episerver.Azure
                             CreationTimeUtc = blockBlob.Properties.LastModified.Value.UtcDateTime
                         };
 
-                        CacheIndexer.Add(cachedImage);
+                        CacheIndexer.Add(cachedImage, ImageCacheMaxMinutes);
                     }
                 }
             }
@@ -328,11 +313,9 @@ namespace ImageProcessor.Web.Episerver.Azure
         public override void RewritePath(HttpContext context)
         {
 
-            //CloudBlockBlob blockBlob = rootContainer.GetBlockBlobReference(blobPath);
-            //string p = GetSaSForBlob(blockBlob, SharedAccessBlobPermissions.Read);
-            //HttpWebRequest request = (HttpWebRequest)WebRequest.Create(p);
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(this.cachedRewritePath);
+            CloudBlockBlob blockBlob = rootContainer.GetBlockBlobReference(blobPath);
+            string blobWithSAS = GetSaSForBlob(blockBlob, SharedAccessBlobPermissions.Read);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(blobWithSAS);
 
             if (streamCachedImage)
             {
@@ -366,7 +349,7 @@ namespace ImageProcessor.Web.Episerver.Azure
                     // It appears that some CDN's on Azure (Akamai) do not work properly when making head requests.
                     // They will return a response url and other headers but a 500 status code.
                     if (ex.Response != null && (((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.NotModified
-                        || ex.Response.ResponseUri.AbsoluteUri.Equals(cachedRewritePath, StringComparison.OrdinalIgnoreCase)))
+                        || ex.Response.ResponseUri.AbsoluteUri.Equals(CachedPath, StringComparison.OrdinalIgnoreCase)))
                     {
                         response = (HttpWebResponse)ex.Response;
                     }
@@ -401,7 +384,7 @@ namespace ImageProcessor.Web.Episerver.Azure
                     }
 
                     cachedStream.CopyTo(contextResponse.OutputStream); // Will be empty on 304s
-                    ImageProcessingModule.SetHeaders(
+                    EpiserverImageProcessingModule.SetHeaders(
                         context,
                         response.StatusCode == HttpStatusCode.NotModified ? null : response.ContentType,
                         null,
@@ -415,12 +398,12 @@ namespace ImageProcessor.Web.Episerver.Azure
             else
             {
                 // Prevent redundant metadata request if paths match.
-                if (this.CachedPath == this.cachedRewritePath)
-                {
-                    ImageProcessingModule.AddCorsRequestHeaders(context);
-                    context.Response.Redirect(this.CachedPath, false);
-                    return;
-                }
+                //if (this.CachedPath == this.cachedRewritePath)
+                //{
+                //    ImageProcessingModule.AddCorsRequestHeaders(context);
+                //    context.Response.Redirect(this.CachedPath, false);
+                //    return;
+                //}
 
 
                 // Redirect the request to the blob URL
@@ -432,8 +415,8 @@ namespace ImageProcessor.Web.Episerver.Azure
                 {
                     response = (HttpWebResponse)request.GetResponse();
                     response.Dispose();
-                    ImageProcessingModule.AddCorsRequestHeaders(context);
-                    context.Response.Redirect(cachedRewritePath, false);
+                    EpiserverImageProcessingModule.AddCorsRequestHeaders(context);
+                    context.Response.Redirect(blobWithSAS, false);
                 }
                 catch (WebException ex)
                 {
@@ -446,11 +429,11 @@ namespace ImageProcessor.Web.Episerver.Azure
                         // A 304 (NotModified) is not an error
                         // It appears that some CDN's on Azure (Akamai) do not work properly when making head requests.
                         // They will return a response url and other headers but a 500 status code.
-                        if (responseCode == HttpStatusCode.NotModified || response.ResponseUri.AbsoluteUri.Equals(cachedRewritePath, StringComparison.OrdinalIgnoreCase))
+                        if (responseCode == HttpStatusCode.NotModified || response.ResponseUri.AbsoluteUri.Equals(CachedPath, StringComparison.OrdinalIgnoreCase))
                         {
                             response.Dispose();
-                            ImageProcessingModule.AddCorsRequestHeaders(context);
-                            context.Response.Redirect(cachedRewritePath, false);
+                            EpiserverImageProcessingModule.AddCorsRequestHeaders(context);
+                            context.Response.Redirect(CachedPath, false);
                         }
                         else
                         {
@@ -461,7 +444,7 @@ namespace ImageProcessor.Web.Episerver.Azure
                     else
                     {
                         // It's a 404, we should redirect to the cached path we have just saved to.
-                        ImageProcessingModule.AddCorsRequestHeaders(context);
+                        EpiserverImageProcessingModule.AddCorsRequestHeaders(context);
                         context.Response.Redirect(CachedPath, false);
                     }
                 }

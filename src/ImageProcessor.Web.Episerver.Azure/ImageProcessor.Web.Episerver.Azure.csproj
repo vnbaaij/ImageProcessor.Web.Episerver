@@ -188,7 +188,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AzureBlobCache.cs" />
-    <Compile Include="AzureBlobCacheAlt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +198,12 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ImageProcessor.Web.Episerver\ImageProcessor.Web.Episerver.csproj">
+      <Project>{2edae29a-d622-4b01-8853-d26f4d1c0fd8}</Project>
+      <Name>ImageProcessor.Web.Episerver</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

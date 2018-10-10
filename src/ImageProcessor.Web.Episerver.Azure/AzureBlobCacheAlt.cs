@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -131,8 +132,7 @@ namespace ImageProcessor.Web.Episerver.Azure
 
             if (Settings.ContainsKey("CachedCDNTimeout"))
             {
-                int t;
-                int.TryParse(Settings["CachedCDNTimeout"], out t);
+                int.TryParse(Settings["CachedCDNTimeout"], out int t);
                 timeout = t;
             }
 
@@ -169,7 +169,7 @@ namespace ImageProcessor.Web.Episerver.Azure
 
             CachedPath = $"{cloudCachedBlobContainer.Uri.ToString()}/{containerName}/{cachedFileName}";
 
-            cachedRewritePath = (useCachedContainerInUrl ? Path.Combine(cachedCdnRoot, containerName) : cachedCdnRoot) + RequestPath; // + FullPath;
+            cachedRewritePath = (useCachedContainerInUrl ? Path.Combine(cachedCdnRoot, cloudCachedBlobContainer.Name, "/") : cachedCdnRoot) + blobPath;//RequestPath; // + FullPath;
 
             bool isUpdated = false;
             CachedImage cachedImage = CacheIndexer.Get(CachedPath);
@@ -193,6 +193,7 @@ namespace ImageProcessor.Web.Episerver.Azure
             {
                 string blobPath = CachedPath.Substring(cloudCachedBlobContainer.Uri.ToString().Length + 1);
                 CloudBlockBlob blockBlob = cloudCachedBlobContainer.GetBlockBlobReference(blobPath);
+                cachedRewritePath = GetSaSForBlob(blockBlob, SharedAccessBlobPermissions.Read);
 
                 if (await blockBlob.ExistsAsync())
                 {
@@ -525,11 +526,9 @@ namespace ImageProcessor.Web.Episerver.Azure
         /// <param name="request">The current request</param>
         private static void TrySetIfModifiedSinceDate(HttpContext context, HttpWebRequest request)
         {
-            DateTime ifModifiedDate;
-
             string ifModifiedFromRequest = context.Request.Headers["If-Modified-Since"];
 
-            if (DateTime.TryParse(ifModifiedFromRequest, out ifModifiedDate))
+            if (DateTime.TryParse(ifModifiedFromRequest, out DateTime ifModifiedDate))
             {
                 request.IfModifiedSince = ifModifiedDate;
             }
@@ -570,5 +569,39 @@ namespace ImageProcessor.Web.Episerver.Azure
 
         //    return container;
         //}
+
+        /// <summary>
+        /// Creates a SAS URI for the blob container.
+        /// </summary>
+        /// <param name="blobContainer"></param>
+        /// <param name="permission"></param>
+        /// <returns></returns>
+        static string GetSaSForBlobContainer(CloudBlobContainer blobContainer, SharedAccessBlobPermissions permission)
+        {
+            var sas = blobContainer.GetSharedAccessSignature(new SharedAccessBlobPolicy()
+            {
+                Permissions = permission,
+                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-5),//SAS Start time is back by 5 minutes to take clock skewness into consideration
+                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(15),
+            });
+            return string.Format(CultureInfo.InvariantCulture, "{0}{1}", blobContainer.Uri, sas);
+        }
+
+        /// <summary>
+        /// Creates a SAS URI for the blob.
+        /// </summary>
+        /// <param name="blob"></param>
+        /// <param name="permission"></param>
+        /// <returns></returns>
+        static string GetSaSForBlob(CloudBlockBlob blob, SharedAccessBlobPermissions permission)
+        {
+            var sas = blob.GetSharedAccessSignature(new SharedAccessBlobPolicy()
+            {
+                Permissions = permission,
+                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-5),
+                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(15),
+            });
+            return string.Format(CultureInfo.InvariantCulture, "{0}{1}", blob.Uri, sas);
+        }
     }
 }
