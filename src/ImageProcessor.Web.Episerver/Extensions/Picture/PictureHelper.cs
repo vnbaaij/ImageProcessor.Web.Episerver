@@ -64,7 +64,7 @@ namespace ImageProcessor.Web.Episerver
 				    imgElement.Attributes.Add("data-src", imgSrc);
 				    break;
 			    case LazyLoadType.Progressive:
-					var imgSrcLowQuality = PictureUtils.BuildQueryString(imageUrlBuilder, imageType, imageType.DefaultImgWidth, overrideQuality: 1);
+					var imgSrcLowQuality = PictureUtils.BuildQueryString(imageUrlBuilder, imageType, imageType.DefaultImgWidth, overrideQuality: 10);
 				    imgElement.Attributes.Add("src", imgSrcLowQuality);
 					imgElement.Attributes.Add("data-src", imgSrc);
 				    break;
@@ -85,13 +85,13 @@ namespace ImageProcessor.Web.Episerver
         private static string BuildSourceElement(UrlBuilder imageUrlBuilder, ImageType imageType, LazyLoadType lazyLoadType, string format = "")
         {
             var sourceElement = new TagBuilder("source");
-	        var lowQualityValue = 13;
+	        var lowQualityValue = 10;
 
 			if (format == "webp")
             {
                 //add type attribute
                 sourceElement.Attributes.Add("type", "image/" + format);
-	            lowQualityValue = 3; //webp can have lower quality value 
+	            lowQualityValue = 1; //webp can have lower quality value 
 			}
 
             //add srcset (and/or data-srcset) attribute
