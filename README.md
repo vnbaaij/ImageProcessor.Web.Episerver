@@ -67,6 +67,10 @@ The picture helper is described in more detail [here](https://hacksbyme.net/2018
 ## Change log
 To get a more exact overview of the changes, you can also take a look at the commit history.
 
+#### V4.2.0
+- Minor Picture helper improvements
+- Fixed (hopefully!) working with CDN/DXC-S
+
 #### V4.1.0
 - UNC path support is back! 
 

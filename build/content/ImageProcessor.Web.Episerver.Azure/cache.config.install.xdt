@@ -1,7 +1,10 @@
 <caching xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform" currentCache="EpiserverAzureBlobCache" xdt:Transform="SetAttributes(currentCache)">
   <caches>
     <cache name="EpiserverAzureBlobCache" type="ImageProcessor.Web.Episerver.Azure.AzureBlobCache, ImageProcessor.Web.Episerver.Azure" maxDays="365" xdt:Transform="Insert">
-      <settings />
+      <settings>
+        <setting key="StreamCachedImage" value="true" />
+        <setting key="CDNTimeout" value="1000"/>
+      </settings>
     </cache>
   </caches>
 </caching>
