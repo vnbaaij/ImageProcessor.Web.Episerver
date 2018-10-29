@@ -24,7 +24,8 @@ namespace ImageProcessor.Web.Episerver.Picture
 
 		internal static string BuildQueryString(UrlBuilder imageUrlbuilder, ImageType imageType, int? imageWidth, string format = "", int? overrideQuality = null)
 		{
-			var qc = new NameValueCollection();
+		    var currentQueryKeys = imageUrlbuilder.QueryCollection.AllKeys;
+            var qc = new NameValueCollection();
 
 			if (format == "webp" || format == "png8")
 			{
@@ -33,15 +34,27 @@ namespace ImageProcessor.Web.Episerver.Picture
 
 			if (format != "png" &&  format != "png8") //quality is ignored for png anyway
 			{
-				var quality = overrideQuality ?? imageType.Quality;
-				qc.Add("quality", quality.ToString());
+                if (overrideQuality.HasValue)
+                {
+                    qc.Add("quality", overrideQuality.ToString());
+                }
+                else
+                {
+                    if (!currentQueryKeys.Contains("quality"))
+                    {
+                        qc.Add("quality", imageType.Quality.ToString());
+                    }
+                }
 			}
 
 			qc.Add("width", imageWidth.ToString());
 
 			if (imageType.HeightRatio > 0)
 			{
-				qc.Add("mode", "crop");
+			    if (!currentQueryKeys.Contains("mode"))
+			    {
+			        qc.Add("mode", "crop");
+                }
 				qc.Add("heightratio", imageType.HeightRatio.ToString(CultureInfo.InvariantCulture));
 			}
 

@@ -89,7 +89,6 @@ namespace ImageProcessor.Web.Episerver
 
 			if (format == "webp")
             {
-                //add type attribute
                 sourceElement.Attributes.Add("type", "image/" + format);
 	            lowQualityValue = 1; //webp can have lower quality value 
 			}
