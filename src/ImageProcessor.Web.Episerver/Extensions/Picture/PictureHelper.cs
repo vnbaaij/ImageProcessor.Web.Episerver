@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Web;
 using System.Web.Mvc;
 using EPiServer;
+using ImageProcessor.Web.Episerver.Extensions.Picture;
 using ImageProcessor.Web.Episerver.Picture;
 
 namespace ImageProcessor.Web.Episerver
@@ -30,46 +31,46 @@ namespace ImageProcessor.Web.Episerver
                 return new MvcHtmlString(string.Empty);
             }
 
+            var pictureData = PictureUtils.GetPictureData(imageUrl, imageType, includeLowQuality: lazyLoadType == LazyLoadType.Progressive);
+
             //create picture element
             var pictureElement = new TagBuilder("picture");
-	        var currentFormat = PictureUtils.GetFormatFromExtension(imageUrl.Path);
-			if (imageType.SrcSetWidths != null)
-            {
-                //if jpg, also add webp source element
-                if (currentFormat == "jpg")
-                {
-                    pictureElement.InnerHtml += BuildSourceElement(imageUrl, imageType, lazyLoadType, "webp");
-                }
 
+			if (pictureData.SrcSet != null)
+			{
                 //add source element to picture element
-                pictureElement.InnerHtml += BuildSourceElement(imageUrl, imageType, lazyLoadType, currentFormat);
+			    pictureElement.InnerHtml += BuildSourceElement(pictureData, lazyLoadType);
+
+			    if (pictureData.SrcSetWebp != null)
+			    {
+                    //add source element with webp versions
+			        pictureElement.InnerHtml += BuildSourceElement(pictureData, lazyLoadType, "webp");
+			    }
             }
 
             //add img element to picture element
-	        pictureElement.InnerHtml += BuildImgElement(imageUrl, imageType, lazyLoadType, cssClass);
+            pictureElement.InnerHtml += BuildImgElement(pictureData, lazyLoadType, cssClass);
 
             return new MvcHtmlString(System.Web.HttpUtility.HtmlDecode(pictureElement.ToString()));
         }
 
-	    private static string BuildImgElement(UrlBuilder imageUrlBuilder, ImageType imageType, LazyLoadType lazyLoadType, string cssClass)
+	    private static string BuildImgElement(PictureData pictureData, LazyLoadType lazyLoadType, string cssClass)
 	    {
 			var imgElement = new TagBuilder("img");
 		    imgElement.Attributes.Add("alt", "");
 
 			//add src and/or data-src attribute
-		    var imgSrc = PictureUtils.BuildQueryString(imageUrlBuilder, imageType, imageType.DefaultImgWidth);
 		    switch (lazyLoadType)
 		    {
 			    case LazyLoadType.Regular:
-				    imgElement.Attributes.Add("data-src", imgSrc);
+				    imgElement.Attributes.Add("data-src", pictureData.ImgSrc);
 				    break;
 			    case LazyLoadType.Progressive:
-					var imgSrcLowQuality = PictureUtils.BuildQueryString(imageUrlBuilder, imageType, imageType.DefaultImgWidth, overrideQuality: 10);
-				    imgElement.Attributes.Add("src", imgSrcLowQuality);
-					imgElement.Attributes.Add("data-src", imgSrc);
+				    imgElement.Attributes.Add("src", pictureData.ImgSrcLowQuality);
+					imgElement.Attributes.Add("data-src", pictureData.ImgSrc);
 				    break;
 			    default:
-				    imgElement.Attributes.Add("src", imgSrc);
+				    imgElement.Attributes.Add("src", pictureData.ImgSrc);
 				    break;
 		    }
 
@@ -82,38 +83,24 @@ namespace ImageProcessor.Web.Episerver
 			return imgElement.ToString(TagRenderMode.SelfClosing);
 		}
 
-        private static string BuildSourceElement(UrlBuilder imageUrlBuilder, ImageType imageType, LazyLoadType lazyLoadType, string format = "")
+        private static string BuildSourceElement(PictureData pictureData, LazyLoadType lazyLoadType, string format = "")
         {
             var sourceElement = new TagBuilder("source");
-	        var lowQualityValue = 10;
 
+            var srcset = pictureData.SrcSet;
 			if (format == "webp")
             {
+                srcset = pictureData.SrcSetWebp;
                 sourceElement.Attributes.Add("type", "image/" + format);
-	            lowQualityValue = 1; //webp can have lower quality value 
-			}
+            }
 
-            //add srcset (and/or data-srcset) attribute
-            var srcset = string.Empty;
-	        var srcsetLowQuality = string.Empty;
-	        var lowQualityFormat = format == "png" ? "png8" : format; //low quality png will be 8-bit
-			foreach (var width in imageType.SrcSetWidths)
-            {
-                srcset += PictureUtils.BuildQueryString(imageUrlBuilder, imageType, width, format) + " " + width + "w, ";
-	            if (lazyLoadType == LazyLoadType.Progressive)
-	            {
-		            srcsetLowQuality += PictureUtils.BuildQueryString(imageUrlBuilder, imageType, width, lowQualityFormat, lowQualityValue) + " " + width + "w, ";
-	            }
-			}
-            srcset = srcset.TrimEnd(',', ' ');
-	        srcsetLowQuality = srcsetLowQuality.TrimEnd(',', ' ');
 	        switch (lazyLoadType)
 	        {
 		        case LazyLoadType.Regular:
 			        sourceElement.Attributes.Add("data-srcset", srcset);
 			        break;
 		        case LazyLoadType.Progressive:
-			        sourceElement.Attributes.Add("srcset", srcsetLowQuality);
+			        sourceElement.Attributes.Add("srcset", pictureData.SrcSetLowQuality);
 			        sourceElement.Attributes.Add("data-srcset", srcset);
 			        break;
 		        default:
@@ -122,7 +109,7 @@ namespace ImageProcessor.Web.Episerver
 	        }
 
             //add sizes attribute
-            sourceElement.Attributes.Add("sizes", string.Join(", ", imageType.SrcSetSizes));
+            sourceElement.Attributes.Add("sizes", pictureData.SizesAttribute);
 
             return sourceElement.ToString(TagRenderMode.SelfClosing);
         }

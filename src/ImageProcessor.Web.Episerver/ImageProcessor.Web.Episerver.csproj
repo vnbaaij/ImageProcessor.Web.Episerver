@@ -168,6 +168,7 @@
   <ItemGroup>
     <Compile Include="Extensions\Picture\Enums.cs" />
     <Compile Include="Extensions\Picture\ImageType.cs" />
+    <Compile Include="Extensions\Picture\PictureData.cs" />
     <Compile Include="Extensions\Picture\PictureUtils.cs" />
     <Compile Include="Extensions\Picture\PictureHelper.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
