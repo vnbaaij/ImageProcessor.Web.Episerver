@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.Configuration;
-using System.Globalization;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using EPiServer;
 using ImageProcessor.Web.Episerver.Extensions.Picture;
@@ -33,22 +29,22 @@ namespace ImageProcessor.Web.Episerver
 
             var pictureData = PictureUtils.GetPictureData(imageUrl, imageType, includeLowQuality: lazyLoadType == LazyLoadType.Progressive);
 
-            //create picture element
+            //Create picture element
             var pictureElement = new TagBuilder("picture");
 
 			if (pictureData.SrcSet != null)
 			{
-                //add source element to picture element
-			    pictureElement.InnerHtml += BuildSourceElement(pictureData, lazyLoadType);
-
 			    if (pictureData.SrcSetWebp != null)
 			    {
-                    //add source element with webp versions
+			        //Add source element with webp versions. Needs to be rendered before jpg version, browser selects the first version it supports.
 			        pictureElement.InnerHtml += BuildSourceElement(pictureData, lazyLoadType, "webp");
 			    }
+
+                //Add source element to picture element
+                pictureElement.InnerHtml += BuildSourceElement(pictureData, lazyLoadType);
             }
 
-            //add img element to picture element
+            //Add img element to picture element
             pictureElement.InnerHtml += BuildImgElement(pictureData, lazyLoadType, cssClass);
 
             return new MvcHtmlString(System.Web.HttpUtility.HtmlDecode(pictureElement.ToString()));
@@ -59,7 +55,7 @@ namespace ImageProcessor.Web.Episerver
 			var imgElement = new TagBuilder("img");
 		    imgElement.Attributes.Add("alt", "");
 
-			//add src and/or data-src attribute
+			//Add src and/or data-src attribute
 		    switch (lazyLoadType)
 		    {
 			    case LazyLoadType.Regular:
@@ -74,7 +70,7 @@ namespace ImageProcessor.Web.Episerver
 				    break;
 		    }
 
-			//add class attribute
+			//Add class attribute
 		    if (!string.IsNullOrEmpty(cssClass))
 		    {
 			    imgElement.Attributes.Add("class", cssClass);
@@ -108,7 +104,7 @@ namespace ImageProcessor.Web.Episerver
 			        break;
 	        }
 
-            //add sizes attribute
+            //Add sizes attribute
             sourceElement.Attributes.Add("sizes", pictureData.SizesAttribute);
 
             return sourceElement.ToString(TagRenderMode.SelfClosing);
