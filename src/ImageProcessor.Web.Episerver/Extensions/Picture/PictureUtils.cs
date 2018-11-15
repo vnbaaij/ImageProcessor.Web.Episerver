@@ -9,16 +9,21 @@ using ImageProcessor.Web.Episerver.Extensions.Picture;
 
 namespace ImageProcessor.Web.Episerver.Picture
 {
-	internal static class PictureUtils
+	public static class PictureUtils
 	{
-        /// <summary>
-        /// Get the data necessary for rendering a Picture element.
-        /// </summary>
-        /// <param name="imageUrl"></param>
-        /// <param name="imageType"></param>
-        /// <param name="includeLowQuality"></param>
-        /// <returns></returns>
-	    internal static PictureData GetPictureData(UrlBuilder imageUrl, ImageType imageType, bool includeLowQuality = false)
+	    /// <summary>
+	    /// Get the data necessary for rendering a Picture element.
+	    /// </summary>
+	    public static PictureData GetPictureData(string imageUrl, ImageType imageType, bool includeLowQuality = false)
+	    {
+	        var urlBuilder = new UrlBuilder(imageUrl);
+	        return GetPictureData(urlBuilder, imageType, includeLowQuality);
+	    }
+
+	    /// <summary>
+	    /// Get the data necessary for rendering a Picture element.
+	    /// </summary>
+        public static PictureData GetPictureData(UrlBuilder imageUrl, ImageType imageType, bool includeLowQuality = false)
 	    {
             var pData = new PictureData();
 	        var currentFormat = PictureUtils.GetFormatFromExtension(imageUrl.Path);

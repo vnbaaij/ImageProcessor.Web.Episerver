@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ImageProcessor.Web.Episerver.Extensions.Picture
 {
-    class PictureData
+    public class PictureData
     {
         public string SrcSet { get; set; }
         public string SrcSetWebp { get; set; }

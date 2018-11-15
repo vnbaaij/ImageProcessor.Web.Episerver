@@ -1,9 +1,10 @@
 @using EPiServer.Core
 @using AlloySample.Controllers
 @using AlloySample.Business.Rendering
-@using ImageProcessor.Web.Episerver
 @using System.Drawing
 @using ImageProcessor.Imaging
+@using ImageProcessor.Web.Episerver
+@using ImageProcessor.Web.Episerver.Picture
 @model TeaserBlock
 <div class="border">
     @*Link the teaser block only if a link has been set and not displayed in preview*@
@@ -16,9 +17,19 @@
         <p @Html.EditAttributes(x => x.Text)>@Model.Text</p>
         <div @Html.EditAttributes(x => x.Image)>
             @Html.Picture(Html.ProcessImage(Model.Image).Resize(378, null).ReplaceColor("fff", "f00", 99).Watermark("Episerver", new Point(100, 100), "fff"), ImageTypes.Teaser, lazyLoadType: LazyLoadType.Regular)
-            @Html.Picture(Html.ProcessImage(Model.Image).Resize(378, null,ImageProcessor.Imaging.ResizeMode.Crop).ReplaceColor("fff", "f00", 99).Watermark("Episerver", new Point(100, 100), "fff"), ImageTypes.Teaser, lazyLoadType: LazyLoadType.None)
+            @Html.Picture(Html.ProcessImage(Model.Image).Resize(378, null, ImageProcessor.Imaging.ResizeMode.Crop).ReplaceColor("fff", "f00", 99).Watermark("Episerver", new Point(100, 100), "fff"), ImageTypes.Teaser, lazyLoadType: LazyLoadType.None)
             @Html.Picture(Html.ProcessImage(Model.Image).Quality(32).Resize(null, null, ResizeMode.Stretch), ImageTypes.Teaser, lazyLoadType: LazyLoadType.Progressive)
             @Html.Picture(Html.ProcessImage(Model.Image).Quality(32), ImageTypes.Teaser, lazyLoadType: LazyLoadType.None)
+            @Html.Picture(Url.ContentUrl(Model.Image), ImageTypes.Teaser)
+            <pre>
+                @{
+                    var picData = PictureUtils.GetPictureData(Url.ContentUrl(Model.Image), ImageTypes.Teaser, true);
+                    @picData.SrcSet <br />
+                    @picData.SrcSetLowQuality<br />
+                    @picData.SrcSetWebp<br />
+                    @picData.SizesAttribute<br />
+                }
+            </pre>
         </div>
     }
 
