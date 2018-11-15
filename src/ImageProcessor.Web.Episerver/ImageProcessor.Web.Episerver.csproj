@@ -45,6 +45,9 @@
     <Reference Include="EPiServer.Cms.AspNet, Version=11.1.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.CMS.AspNet.11.1.0\lib\net461\EPiServer.Cms.AspNet.dll</HintPath>
     </Reference>
+    <Reference Include="EPiServer.Cms.Shell.UI, Version=11.1.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPiServer.CMS.UI.Core.11.1.0\lib\net461\EPiServer.Cms.Shell.UI.dll</HintPath>
+    </Reference>
     <Reference Include="EPiServer.Configuration, Version=11.1.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.CMS.AspNet.11.1.0\lib\net461\EPiServer.Configuration.dll</HintPath>
     </Reference>
@@ -74,6 +77,15 @@
     </Reference>
     <Reference Include="EPiServer.LinkAnalyzer, Version=11.1.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.CMS.Core.11.1.0\lib\net461\EPiServer.LinkAnalyzer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPiServer.Shell, Version=11.1.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPiServer.CMS.UI.Core.11.1.0\lib\net461\EPiServer.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="EPiServer.Shell.UI, Version=11.1.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPiServer.CMS.UI.Core.11.1.0\lib\net461\EPiServer.Shell.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="EPiServer.UI, Version=11.1.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPiServer.CMS.UI.Core.11.1.0\lib\net461\EPiServer.UI.dll</HintPath>
     </Reference>
     <Reference Include="EPiServer.Web.WebControls, Version=11.1.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.CMS.AspNet.11.1.0\lib\net461\EPiServer.Web.WebControls.dll</HintPath>
@@ -166,15 +178,54 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\ColorPickerEditorDescriptor.cs" />
+    <Compile Include="Business\Enums.cs" />
+    <Compile Include="Business\EnumAttribute.cs" />
+    <Compile Include="Business\EnumSelectionFactory.cs" />
+    <Compile Include="Business\HideCategoryEditorDescriptor.cs" />
     <Compile Include="Extensions\Picture\Enums.cs" />
     <Compile Include="Extensions\Picture\ImageType.cs" />
     <Compile Include="Extensions\Picture\PictureUtils.cs" />
     <Compile Include="Extensions\Picture\PictureHelper.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="FileBlobCache.cs" />
+    <Compile Include="Global.cs" />
     <Compile Include="ImageService.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="EpiserverImageProcessingModule.cs" />
+    <Compile Include="Models\Blocks\AlphaBlock.cs" />
+    <Compile Include="Models\Blocks\AnimationProcessModeBlock.cs" />
+    <Compile Include="Models\Blocks\AutoRotateBlock.cs" />
+    <Compile Include="Models\Blocks\BackgroundColorBlock.cs" />
+    <Compile Include="Models\Blocks\BlurBlock.cs" />
+    <Compile Include="Models\Blocks\BrightnessBlock.cs" />
+    <Compile Include="Models\Blocks\ContrastBlock.cs" />
+    <Compile Include="Models\Blocks\CropBlock.cs" />
+    <Compile Include="Models\Blocks\DetectEdgesBlock.cs" />
+    <Compile Include="Models\Blocks\EntropyCropBlock.cs" />
+    <Compile Include="Models\Blocks\FilterBlock.cs" />
+    <Compile Include="Models\Blocks\FlipBlock.cs" />
+    <Compile Include="Models\Blocks\FormatBlock.cs" />
+    <Compile Include="Models\Blocks\GammaBlock.cs" />
+    <Compile Include="Models\Blocks\HalftoneBlock.cs" />
+    <Compile Include="Models\Blocks\HueBlock.cs" />
+    <Compile Include="Models\Blocks\ImageProcessorMethodBaseBlock.cs" />
+    <Compile Include="Models\Blocks\MaskBlock.cs" />
+    <Compile Include="Models\Blocks\MetaBlock.cs" />
+    <Compile Include="Models\Blocks\OverlayBlock.cs" />
+    <Compile Include="Models\Blocks\PixelateBlock.cs" />
+    <Compile Include="Models\Blocks\ProcessImageBlock.cs" />
+    <Compile Include="Models\Blocks\QualityBlock.cs" />
+    <Compile Include="Models\Blocks\ReplaceColorBlock.cs" />
+    <Compile Include="Models\Blocks\ResizeBlock.cs" />
+    <Compile Include="Models\Blocks\RotateBlock.cs" />
+    <Compile Include="Models\Blocks\RotateBoundedBlock.cs" />
+    <Compile Include="Models\Blocks\RoundedCornersBlock.cs" />
+    <Compile Include="Models\Blocks\SaturationBlock.cs" />
+    <Compile Include="Models\Blocks\SharpenBlock.cs" />
+    <Compile Include="Models\Blocks\TintBlock.cs" />
+    <Compile Include="Models\Blocks\VignetteBlock.cs" />
+    <Compile Include="Models\Blocks\WatermarkBlock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\UrlBuilderExtensions.cs" />
   </ItemGroup>

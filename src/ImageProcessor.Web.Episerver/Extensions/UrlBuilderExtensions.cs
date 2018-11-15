@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Web.Mvc;
 using EPiServer;
 using ImageProcessor.Imaging;
+using ImageProcessor.Web.Episerver.Business;
 
 namespace ImageProcessor.Web.Episerver
 {
@@ -65,7 +66,7 @@ namespace ImageProcessor.Web.Episerver
                 throw new ArgumentNullException(nameof(target));
 
             if (!target.IsEmpty)
-                target.QueryCollection.Add("animationprocessmode", mode.ToString().ToLower());
+                target.QueryCollection.Add("animationprocessmode", mode.ToString().ToLowerInvariant());
 
             return target;
         }
@@ -83,7 +84,7 @@ namespace ImageProcessor.Web.Episerver
                 throw new ArgumentNullException(nameof(target));
 
             if (!target.IsEmpty)
-                target.QueryCollection.Add("autorotate", rotate.ToString().ToLower());
+                target.QueryCollection.Add("autorotate", rotate.ToString().ToLowerInvariant());
 
             return target;
         }
@@ -100,7 +101,7 @@ namespace ImageProcessor.Web.Episerver
                 throw new ArgumentNullException(nameof(target));
 
             if (!target.IsEmpty)
-                target.QueryCollection.Add("bgcolor", color.ToLower());
+                target.QueryCollection.Add("bgcolor", color.ToLowerInvariant());
 
             return target;
         }
@@ -182,6 +183,7 @@ namespace ImageProcessor.Web.Episerver
         /// kayyali, kirsch, aplacian3X3, laplacian5X5, laplacianffgaussian, prewitt, robertscross, scharr, sobel</param>
         /// <param name="greyscale">If the greyscale parameter is set to false the detected edges will maintain the pixel colors of the originl image.</param>
         /// <returns></returns>
+        [Obsolete("This method is deprecated, use DetectEdges method (with filter enum) instead", false)]
         public static UrlBuilder DetectEdges(this UrlBuilder target, string filter, bool greyscale)
         {
             if (target == null)
@@ -190,12 +192,32 @@ namespace ImageProcessor.Web.Episerver
             if (!target.IsEmpty)
             {
                 target.QueryCollection.Add("detectedges", filter);
-                target.QueryCollection.Add("greyscale", greyscale.ToString().ToLower());
+                target.QueryCollection.Add("greyscale", greyscale.ToString().ToLowerInvariant());
             }
 
             return target;
         }
 
+        /// <summary>
+        /// Detects the edges in the current image using various one and two dimensional algorithms.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="filter">Available filters are defined in the <see cref="DetectEdgesFilter"/> enum</param>
+        /// <param name="greyscale">If the greyscale parameter is set to false the detected edges will maintain the pixel colors of the originl image.</param>
+        /// <returns></returns>
+        public static UrlBuilder DetectEdges(this UrlBuilder target, DetectEdgesFilter filter, bool greyscale)
+        {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            if (!target.IsEmpty)
+            {
+                target.QueryCollection.Add("detectedges", filter.ToString().ToLowerInvariant());
+                target.QueryCollection.Add("greyscale", greyscale.ToString().ToLowerInvariant());
+            }
+
+            return target;
+        }
         /// <summary>
         /// Crops an image to the area of greatest entropy. This method works best with images containing large areas of a single color or similar colors around the edges.
         /// </summary>
@@ -220,6 +242,7 @@ namespace ImageProcessor.Web.Episerver
         /// <param name="filter">Available filters are:
         /// blackwhite, comic, gotham, greyscale, hisatch, invert, lomograph, losatch, polaroid, sepia</param>
         /// <returns></returns>
+        [Obsolete("This method is deprecated, use Filter method (with filter enum) instead", false)]
         public static UrlBuilder Filter(this UrlBuilder target, string filter)
         {
             if (target == null)
@@ -232,11 +255,29 @@ namespace ImageProcessor.Web.Episerver
         }
 
         /// <summary>
+        /// Applies a filter to the current image.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="filter"><see cref="Filter"/></param>
+        /// <returns></returns>
+        public static UrlBuilder Filter(this UrlBuilder target, Filter filter)
+        {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            if (!target.IsEmpty)
+                target.QueryCollection.Add("filter", filter.ToString().ToLowerInvariant());
+
+            return target;
+        }
+
+        /// <summary>
         /// Flips the current image.
         /// </summary>
         /// <param name="target"></param>
         /// <param name="direction">horizontal, vertical or both</param>
         /// <returns></returns>
+        [Obsolete("This method is deprecated, use Flip method (with FlipDirection enum) instead", false)]
         public static UrlBuilder Flip(this UrlBuilder target, string direction)
         {
             if (target == null)
@@ -249,12 +290,30 @@ namespace ImageProcessor.Web.Episerver
         }
 
         /// <summary>
+        /// Flips the current image.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="direction"><see cref="FlipDirection"/></param>
+        /// <returns></returns>
+        public static UrlBuilder Flip(this UrlBuilder target, FlipDirection direction)
+        {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            if (!target.IsEmpty)
+                target.QueryCollection.Add("flip", direction.ToString().ToLowerInvariant());
+
+            return target;
+        }
+
+        /// <summary>
         /// Sets the output format of the current image to the given value.
         /// </summary>
         /// <param name="target"></param>
         /// <param name="format">Core supported formats are:
         /// jpg, jpeg, bmp, gif, png, png8, tif, tiff</param>
         /// <returns></returns>
+        [Obsolete("This method is deprecated, use Format method (with ImageFormat enum) instead")]
         public static UrlBuilder Format(this UrlBuilder target, string format)
         {
             if (target == null)
@@ -262,6 +321,23 @@ namespace ImageProcessor.Web.Episerver
 
             if (!target.IsEmpty)
                 target.QueryCollection.Add("format", format);
+
+            return target;
+        }
+
+        /// <summary>
+        /// Sets the output format of the current image to the given value.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="format"><see cref="ImageFormat"/></param>
+        /// <returns></returns>
+        public static UrlBuilder Format(this UrlBuilder target, ImageFormat format)
+        {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            if (!target.IsEmpty)
+                target.QueryCollection.Add("format", format.ToString().ToLowerInvariant());
 
             return target;
         }

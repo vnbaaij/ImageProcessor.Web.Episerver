@@ -329,7 +329,6 @@
     <Compile Include="Models\Blocks\EditorialBlock.cs" />
     <Compile Include="Models\Blocks\JumbotronBlock.cs" />
     <Compile Include="Models\Blocks\PageListBlock.cs" />
-    <Compile Include="Models\Blocks\ProcessedImageBlock.cs" />
     <Compile Include="Models\Blocks\SiteBlockData.cs" />
     <Compile Include="Models\Blocks\SiteLogotypeBlock.cs" />
     <Compile Include="Models\Blocks\TeaserBlock.cs" />
@@ -437,7 +436,14 @@
     </Content>
     <Content Include="App_Data\EPiServerDB_9e1f6e6f.mdf" />
     <Content Include="ClientResources\Images\icons\layoutIcons24x24.png" />
+    <Content Include="ClientResources\Scripts\Editors\ColorPicker.js" />
     <Content Include="ClientResources\Scripts\Editors\StringList.js" />
+    <Content Include="ClientResources\Styles\ColorPicker.css" />
+    <Content Include="ClientResources\Styles\images\hue.png" />
+    <Content Include="ClientResources\Styles\images\hueHandle.png" />
+    <Content Include="ClientResources\Styles\images\hueHandleA11y.png" />
+    <Content Include="ClientResources\Styles\images\pickerPointer.png" />
+    <Content Include="ClientResources\Styles\images\underlay.png" />
     <Content Include="ClientResources\Styles\LayoutIcons.css" />
     <Content Include="ClientResources\Styles\Styles.css" />
     <Content Include="favicon.ico" />
@@ -511,7 +517,9 @@
     <Content Include="modules\_protected\CMS\CMS.zip" />
     <Content Include="App_Data\GeoLiteCity.dat" />
     <None Include="EPiServerLog.config" />
-    <Content Include="module.config" />
+    <Content Include="module.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="License.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>

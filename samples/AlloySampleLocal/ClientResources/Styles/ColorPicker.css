@@ -1,0 +1,136 @@
+﻿
+.dojoxColorPicker {
+    padding: 8px;
+    width: 300px;
+    height: 150px;
+    -moz-border-radius: 4pt;
+    -webkit-border-radius: 5pt;
+    -webkit-drop-shadow: 3pt;
+}
+
+.dojoxColorPickerRightPad {
+    padding-right: 8px;
+}
+
+
+.tundra .dojoxColorPicker {
+    background: #ededed;
+    border: 1px solid #ccc;
+}
+
+.dojoxColorPickerBox {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0;
+    padding: 0;
+}
+
+.dojoxColorPickerUnderlay {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 150px;
+    z-index: 1;
+}
+
+.tundra .dojoxColorPickerUnderlay {
+    border: 1px solid #a0a0a0;
+}
+
+.dojoxHuePickerUnderlay {
+    background: url(images/hue.png) no-repeat top center;
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 150px;
+    width: 20px;
+    z-index: 1;
+}
+
+.dojoxHuePicker {
+    position: relative;
+    left: 0px;
+}
+
+.dojoxHuePickerPoint {
+    position: relative;
+    top: 0;
+    left: -2px !important;
+    width: 20px;
+    height: 8px;
+    z-index: 3;
+    background-color: #666;
+    cursor: move;
+    background: url(images/hueHandle.png) no-repeat center center;
+}
+
+
+.dojoxColorPickerPoint {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    background: url(images/pickerPointer.png) no-repeat center center;
+    border: 0;
+    z-index: 3;
+    cursor: move;
+}
+
+.dojoxColorPickerPreview {
+    visibility: hidden !important;
+    width: 45px;
+    height: 45px;
+    border: 1px solid #a7a7a7;
+    background-color: #fff;
+    position: relative;
+}
+
+.dojoxColorPickerWebSafePreview {
+    display: block;
+    width: 108px;
+    height: 25px;
+    position: relative;
+    left: -46px;
+    top: -5px;
+    border: 1px solid #a7a7a7;
+}
+
+.dojoxColorPickerOptional {
+    position: relative;
+    top: 0px;
+    left: 05px;
+}
+
+.dojoxColorPickerOptional table {
+    border-spacing: 4px;
+}
+
+.dojoxColorPickerPreviewContainer table {
+    border-spacing: 6px 0px;
+}
+
+
+.dojoxColorPickerOptional input {
+    border: 1px solid #a7a7a7;
+    width: 30px;
+    padding: 1px 3px 1px 3px;
+    line-height: 1.1em;
+}
+
+.dojoxColorPickerRgb {
+
+}
+
+.dojoxColorPickerHsv {
+
+}
+
+.dojoxColorPickerHex {
+    position: relative;
+    width: 165px;
+}
+
+.dojoxColorPickerHex input {
+    width: 85px;
+ }
