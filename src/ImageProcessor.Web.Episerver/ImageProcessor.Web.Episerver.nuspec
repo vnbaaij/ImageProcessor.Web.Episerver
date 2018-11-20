@@ -8,6 +8,7 @@
     <owners>Vincent Baaij</owners>
     <projectUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver</projectUrl>
     <licenseUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/LICENSE</licenseUrl>
+    <iconUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/ipepi.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Supports Episerver 11 and higher</releaseNotes>
