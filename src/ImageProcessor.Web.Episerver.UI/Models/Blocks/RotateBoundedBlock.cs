@@ -6,7 +6,7 @@ using EPiServer.DataAnnotations;
 
 namespace ImageProcessor.Web.Episerver.Models.Blocks
 {
-    [ContentType(DisplayName = "RotateBoundedBlock", GUID = "0d536270-8fee-4413-86e9-42d7de84930f", Description = "Rotate the image without expanding the canvas.", GroupName = Global.GroupName)]
+    [ContentType(DisplayName = "Rotate Bounded Block", GUID = "0d536270-8fee-4413-86e9-42d7de84930f", Description = "Rotate the image without expanding the canvas.", GroupName = Global.GroupName)]
     public class RotateBoundedBlock : ImageProcessorMethodBaseBlock
     {
         [Display(Name = "Rotate angle")]
