@@ -460,12 +460,11 @@ namespace ImageProcessor.Web.Episerver
                         };
                     }
 
-                    string virtualCacheFolderPath;
                     string result = GetValidatedCachePathsImpl(
                         originalPath,
                         mapPath,
                         s => new DirectoryInfo(s),
-                        out virtualCacheFolderPath);
+                        out string virtualCacheFolderPath);
 
                     validatedVirtualCachePath = virtualCacheFolderPath;
                     return result;

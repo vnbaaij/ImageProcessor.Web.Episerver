@@ -16,9 +16,7 @@ namespace ImageProcessor.Web.Episerver
         /// <returns>True if the given string is a valid virtual path name</returns>
         public static bool IsValidVirtualPathName(this string expression)
         {
-            Uri uri;
-
-            return Uri.TryCreate(expression, UriKind.Relative, out uri) && uri.IsWellFormedOriginalString();
+            return Uri.TryCreate(expression, UriKind.Relative, out Uri uri) && uri.IsWellFormedOriginalString();
         }
         #endregion
     }

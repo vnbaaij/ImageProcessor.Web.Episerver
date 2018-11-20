@@ -35,6 +35,36 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImageProcessor.Web.Episerve
 		build\content\ImageProcessor.Web.Episerver.Azure\cache.config.uninstall.xdt = build\content\ImageProcessor.Web.Episerver.Azure\cache.config.uninstall.xdt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessor.Web.Episerver.UI", "src\ImageProcessor.Web.Episerver.UI\ImageProcessor.Web.Episerver.UI.csproj", "{0C044F78-5162-418D-AF21-6E9FE4C437FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImageProcessor.Web.Episerver.UI", "ImageProcessor.Web.Episerver.UI", "{46C72CDC-EEAC-4C7E-9C6F-6A93932D5385}"
+	ProjectSection(SolutionItems) = preProject
+		build\content\ImageProcessor.Web.Episerver.UI\module.config = build\content\ImageProcessor.Web.Episerver.UI\module.config
+		build\content\ImageProcessor.Web.Episerver.UI\web.config.install.xdt = build\content\ImageProcessor.Web.Episerver.UI\web.config.install.xdt
+		build\content\ImageProcessor.Web.Episerver.UI\web.config.uninstall.xdt = build\content\ImageProcessor.Web.Episerver.UI\web.config.uninstall.xdt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{E705CE45-31B1-440B-8D91-80379A7FC274}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Styles", "Styles", "{2DDDD264-5B75-4327-A347-8BC5A39B1101}"
+	ProjectSection(SolutionItems) = preProject
+		build\content\ImageProcessor.Web.Episerver.UI\Styles\ColorPicker.css = build\content\ImageProcessor.Web.Episerver.UI\Styles\ColorPicker.css
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Editors", "Editors", "{B04198DD-46AA-495B-9888-B895A05A81AC}"
+	ProjectSection(SolutionItems) = preProject
+		build\content\ImageProcessor.Web.Episerver.UI\Scripts\Editors\ColorPicker.js = build\content\ImageProcessor.Web.Episerver.UI\Scripts\Editors\ColorPicker.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{AAA3373A-7D68-41F1-AD70-836E24649225}"
+	ProjectSection(SolutionItems) = preProject
+		build\content\ImageProcessor.Web.Episerver.UI\Styles\images\hue.png = build\content\ImageProcessor.Web.Episerver.UI\Styles\images\hue.png
+		build\content\ImageProcessor.Web.Episerver.UI\Styles\images\hueHandle.png = build\content\ImageProcessor.Web.Episerver.UI\Styles\images\hueHandle.png
+		build\content\ImageProcessor.Web.Episerver.UI\Styles\images\hueHandleA11y.png = build\content\ImageProcessor.Web.Episerver.UI\Styles\images\hueHandleA11y.png
+		build\content\ImageProcessor.Web.Episerver.UI\Styles\images\pickerPointer.png = build\content\ImageProcessor.Web.Episerver.UI\Styles\images\pickerPointer.png
+		build\content\ImageProcessor.Web.Episerver.UI\Styles\images\underlay.png = build\content\ImageProcessor.Web.Episerver.UI\Styles\images\underlay.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +87,10 @@ Global
 		{B7D6C33B-3E85-4E46-8345-55B12AEA1BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7D6C33B-3E85-4E46-8345-55B12AEA1BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7D6C33B-3E85-4E46-8345-55B12AEA1BEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C044F78-5162-418D-AF21-6E9FE4C437FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C044F78-5162-418D-AF21-6E9FE4C437FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C044F78-5162-418D-AF21-6E9FE4C437FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C044F78-5162-418D-AF21-6E9FE4C437FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +99,11 @@ Global
 		{A2F15FD9-ED7E-4216-AB79-3F6F8FAACFD3} = {4032C020-B6AD-435F-A52C-08B27B92466B}
 		{CAE49B13-C2A3-4060-B1AF-85910E764278} = {A2F15FD9-ED7E-4216-AB79-3F6F8FAACFD3}
 		{9739BC36-773A-4D21-B56A-153CAD90ABD0} = {A2F15FD9-ED7E-4216-AB79-3F6F8FAACFD3}
+		{46C72CDC-EEAC-4C7E-9C6F-6A93932D5385} = {A2F15FD9-ED7E-4216-AB79-3F6F8FAACFD3}
+		{E705CE45-31B1-440B-8D91-80379A7FC274} = {46C72CDC-EEAC-4C7E-9C6F-6A93932D5385}
+		{2DDDD264-5B75-4327-A347-8BC5A39B1101} = {46C72CDC-EEAC-4C7E-9C6F-6A93932D5385}
+		{B04198DD-46AA-495B-9888-B895A05A81AC} = {E705CE45-31B1-440B-8D91-80379A7FC274}
+		{AAA3373A-7D68-41F1-AD70-836E24649225} = {2DDDD264-5B75-4327-A347-8BC5A39B1101}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E3289EDC-30FC-441A-AD01-FF9B67AEDDE4}

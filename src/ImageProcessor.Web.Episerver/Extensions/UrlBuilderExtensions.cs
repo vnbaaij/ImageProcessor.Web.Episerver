@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Web.Mvc;
 using EPiServer;
 using ImageProcessor.Imaging;
-using ImageProcessor.Web.Episerver.Business;
 
 namespace ImageProcessor.Web.Episerver
 {
