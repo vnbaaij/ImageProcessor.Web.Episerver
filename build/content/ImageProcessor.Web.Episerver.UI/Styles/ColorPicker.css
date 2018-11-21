@@ -1,11 +1,10 @@
-﻿
-.dojoxColorPicker {
+﻿.dojoxColorPicker {
     padding: 8px;
     width: 300px;
     height: 150px;
     -moz-border-radius: 4pt;
     -webkit-border-radius: 5pt;
-    -webkit-drop-shadow: 3pt;
+    border-radius: 4pt;
 }
 
 .dojoxColorPickerRightPad {
@@ -51,7 +50,7 @@
 
 .dojoxHuePicker {
     position: relative;
-    left: 0px;
+    left: 0;
 }
 
 .dojoxHuePickerPoint {
@@ -98,8 +97,8 @@
 
 .dojoxColorPickerOptional {
     position: relative;
-    top: 0px;
-    left: 05px;
+    top: 0;
+    left: 5px;
 }
 
 .dojoxColorPickerOptional table {
@@ -107,7 +106,7 @@
 }
 
 .dojoxColorPickerPreviewContainer table {
-    border-spacing: 6px 0px;
+    border-spacing: 6px 0;
 }
 
 
@@ -116,14 +115,6 @@
     width: 30px;
     padding: 1px 3px 1px 3px;
     line-height: 1.1em;
-}
-
-.dojoxColorPickerRgb {
-
-}
-
-.dojoxColorPickerHsv {
-
 }
 
 .dojoxColorPickerHex {
