@@ -7,7 +7,12 @@ using EPiServer.Shell.ObjectEditing;
 
 namespace ImageProcessor.Web.Episerver.Models.Blocks
 {
-    [ContentType(DisplayName = "Vignette", GUID = "c2c4dea4-035c-4c18-a961-7bd3f46b0960", Description = "Adds a vignette image effect to the current image.", GroupName = Global.GroupName)]
+    [ContentType(DisplayName = "Vignette", 
+        GUID = "c2c4dea4-035c-4c18-a961-7bd3f46b0960", 
+        Description = "Adds a vignette image effect to the current image.", 
+        GroupName = Global.GroupName, 
+        Order = 30)]
+    [Icon]
     public class VignetteBlock : ImageProcessorMethodBaseBlock
     {
         public virtual bool Enabled { get; set; }

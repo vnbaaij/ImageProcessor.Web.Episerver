@@ -8,7 +8,7 @@
     <owners>Vincent Baaij</owners>
     <projectUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver</projectUrl>
     <licenseUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/LICENSE</licenseUrl>
-    <iconUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/ipepi.png</iconUrl>
+    <iconUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/ipepi.png?raw=true</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Supports Episerver 11 and higher</releaseNotes>
@@ -22,6 +22,7 @@
   </metadata>
   <files>
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\module.config" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\ipepi.png" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\ImageProcessor.Web.Episerver.UI.zip" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\web.config.install.xdt" target="content\web.config.install.xdt" />
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\web.config.uninstall.xdt" target="content\web.config.uninstall.xdt" />

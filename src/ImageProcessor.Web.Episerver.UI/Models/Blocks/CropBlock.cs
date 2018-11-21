@@ -7,7 +7,12 @@ using ImageProcessor.Web.Episerver.Business;
 
 namespace ImageProcessor.Web.Episerver.Models.Blocks
 {
-    [ContentType(DisplayName = "Crop", GUID = "c26bc228-1215-4c40-a294-7dae69aa37e4", Description = "Crops the current image to the given location and size.", GroupName = Global.GroupName)]
+    [ContentType(DisplayName = "Crop", 
+        GUID = "c26bc228-1215-4c40-a294-7dae69aa37e4", 
+        Description = "Crops the current image to the given location and size.", 
+        GroupName = Global.GroupName, 
+        Order = 8)]
+    [Icon]
     public class CropBlock : ImageProcessorMethodBaseBlock
     {
 

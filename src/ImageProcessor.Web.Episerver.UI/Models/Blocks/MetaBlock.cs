@@ -6,7 +6,12 @@ using EPiServer.DataAnnotations;
 
 namespace ImageProcessor.Web.Episerver.Models.Blocks
 {
-    [ContentType(DisplayName = "Meta", GUID = "e8270b25-2d7e-4abc-871d-35baf5a64016", Description = "Toggles preservation of EXIF defined metadata within the image.", GroupName = Global.GroupName)]
+    [ContentType(DisplayName = "Meta", 
+        GUID = "e8270b25-2d7e-4abc-871d-35baf5a64016", 
+        Description = "Toggles preservation of EXIF defined metadata within the image.", 
+        GroupName = Global.GroupName, 
+        Order = 18)]
+    [Icon]
     public class MetaBlock : ImageProcessorMethodBaseBlock
     {
         [Display(Name = "Preserve metadata")]

@@ -6,7 +6,12 @@ using EPiServer.DataAnnotations;
 
 namespace ImageProcessor.Web.Episerver.Models.Blocks
 {
-    [ContentType(DisplayName = "Replace Color", GUID = "a9125ab3-c281-4a18-96c2-97fdb34a5733", Description = "Replaces one color with another within the current image.", GroupName = Global.GroupName)]
+    [ContentType(DisplayName = "Replace Color",
+        GUID = "a9125ab3-c281-4a18-96c2-97fdb34a5733",
+        Description = "Replaces one color with another within the current image.",
+        GroupName = Global.GroupName,
+        Order = 22)]
+    [Icon]
     public class ReplaceColorBlock : ImageProcessorMethodBaseBlock
     {
         [Display(Name = "From")]

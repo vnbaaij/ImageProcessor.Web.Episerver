@@ -15,7 +15,7 @@ namespace ImageProcessor.Web.Episerver.Models.Blocks
         DisplayName = "Processed Image",
         GUID = "c493e717-5bee-4de7-8d8b-3ba40e012304",
         Description = "Manipulate image stored in Episerver with ImageProcessor ")]
-    //[SiteImageUrl]
+    [Icon]
     public class ProcessImageBlock : BlockData
     {
         /// <summary>

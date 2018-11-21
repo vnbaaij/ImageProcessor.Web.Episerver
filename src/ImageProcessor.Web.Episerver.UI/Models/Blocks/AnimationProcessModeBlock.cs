@@ -8,7 +8,12 @@ using ImageProcessor.Web.Episerver.Business;
 
 namespace ImageProcessor.Web.Episerver.Models.Blocks
 {
-    [ContentType(DisplayName = "Animation Process Mode", GUID = "112157b5-2786-4173-918e-7e0c6bbf4417", Description = "Defines whether gif images are processed to preserve animation or processed keeping the first frame only.", GroupName = Global.GroupName)]
+    [ContentType(DisplayName = "Animation Process Mode", 
+        GUID = "112157b5-2786-4173-918e-7e0c6bbf4417", 
+        Description = "Defines whether gif images are processed to preserve animation or processed keeping the first frame only.", 
+        GroupName = Global.GroupName, 
+        Order = 2)]
+    [Icon]
     public class AnimationProcessModeBlock : ImageProcessorMethodBaseBlock
     {
         [Display(Name = "Animation Process Mode")]

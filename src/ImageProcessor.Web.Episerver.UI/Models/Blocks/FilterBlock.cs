@@ -7,7 +7,12 @@ using ImageProcessor.Web.Episerver.Business;
 
 namespace ImageProcessor.Web.Episerver.Models.Blocks
 {
-    [ContentType(DisplayName = "Filter", GUID = "f6d77f0f-07b0-4495-9c56-57dadcbbc157", Description = "Applies a filter to the current image.", GroupName = Global.GroupName)]
+    [ContentType(DisplayName = "Filter", 
+        GUID = "f6d77f0f-07b0-4495-9c56-57dadcbbc157",
+        Description = "Applies a filter to the current image.", 
+        GroupName = Global.GroupName,
+        Order = 11)]
+    [Icon]
     public class FilterBlock : ImageProcessorMethodBaseBlock
     {
         [EnumAttribute(typeof(Filter))]

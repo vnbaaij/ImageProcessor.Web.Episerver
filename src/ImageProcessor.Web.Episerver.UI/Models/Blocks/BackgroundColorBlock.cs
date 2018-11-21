@@ -6,7 +6,12 @@ using EPiServer.DataAnnotations;
 
 namespace ImageProcessor.Web.Episerver.Models.Blocks
 {
-    [ContentType(DisplayName = "Background Color", GUID = "4ddbb4bf-a836-4e4d-9cbf-fd2f792dbc53", Description = "Changes the background color of the current image.", GroupName = Global.GroupName)]
+    [ContentType(DisplayName = "Background Color",
+        GUID = "4ddbb4bf-a836-4e4d-9cbf-fd2f792dbc53", 
+        Description = "Changes the background color of the current image.", 
+        GroupName = Global.GroupName, 
+        Order = 4)]
+    [Icon]
     public class BackgroundColorBlock : ImageProcessorMethodBaseBlock
     {
         [Display(Name = "Background color")]

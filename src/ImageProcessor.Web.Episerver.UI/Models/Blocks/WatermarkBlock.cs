@@ -8,7 +8,12 @@ using ImageProcessor.Web.Episerver.Business;
 
 namespace ImageProcessor.Web.Episerver.Models.Blocks
 {
-    [ContentType(DisplayName = "Watermark", GUID = "6f0efc40-7e9a-4d07-ade2-292630a59dbf", Description = "Adds a text based watermark to the current image with a wide range of options.", GroupName = Global.GroupName)]
+    [ContentType(DisplayName = "Watermark",
+        GUID = "6f0efc40-7e9a-4d07-ade2-292630a59dbf",
+        Description = "Adds a text based watermark to the current image with a wide range of options.",
+        GroupName = Global.GroupName,
+        Order = 31)]
+    [Icon]
     public class WatermarkBlock : ImageProcessorMethodBaseBlock
     {
         private Point? position;

@@ -6,7 +6,12 @@ using EPiServer.DataAnnotations;
 
 namespace ImageProcessor.Web.Episerver.Models.Blocks
 {
-    [ContentType(DisplayName = "Hue", GUID = "b0dd8d1e-1cb8-4bd2-81df-11ae90ffe8f2", Description = "Alters the hue of the current image changing the overall color. ", GroupName = Global.GroupName)]
+    [ContentType(DisplayName = "Hue", 
+        GUID = "b0dd8d1e-1cb8-4bd2-81df-11ae90ffe8f2", 
+        Description = "Alters the hue of the current image changing the overall color. ", 
+        GroupName = Global.GroupName, 
+        Order = 16)]
+    [Icon]
     public class HueBlock : ImageProcessorMethodBaseBlock
     {
         [Display(Name = "Angle")]

@@ -6,7 +6,12 @@ using EPiServer.DataAnnotations;
 
 namespace ImageProcessor.Web.Episerver.Models.Blocks
 {
-    [ContentType(DisplayName = "Overlay", GUID = "554ba99c-7f42-40cb-a82b-39f0cdf1ba9b", Description = "Adds a image overlay to the current image.", GroupName = Global.GroupName)]
+    [ContentType(DisplayName = "Overlay", 
+        GUID = "554ba99c-7f42-40cb-a82b-39f0cdf1ba9b", 
+        Description = "Adds a image overlay to the current image.", 
+        GroupName = Global.GroupName,
+        Order = 19)]
+    [Icon]
     public class OverlayBlock : ImageProcessorMethodBaseBlock
     {
         public virtual int X { get; set; }

@@ -8,7 +8,12 @@ using ImageProcessor.Web.Episerver.Business;
 
 namespace ImageProcessor.Web.Episerver.Models.Blocks
 {
-    [ContentType(DisplayName = "Resize", GUID = "a51f38ca-eb17-4acd-a3d6-c688ca7f98a3", Description = "Resizes the current image to the given dimensions.", GroupName = Global.GroupName)]
+    [ContentType(DisplayName = "Resize",
+        GUID = "a51f38ca-eb17-4acd-a3d6-c688ca7f98a3",
+        Description = "Resizes the current image to the given dimensions.",
+        GroupName = Global.GroupName, 
+        Order = 23)]
+    [Icon]
     public class ResizeBlock : ImageProcessorMethodBaseBlock
     {
         [Display(Name = "Resize mode")]

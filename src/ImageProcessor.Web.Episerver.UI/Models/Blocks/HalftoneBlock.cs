@@ -6,7 +6,12 @@ using EPiServer.DataAnnotations;
 
 namespace ImageProcessor.Web.Episerver.Models.Blocks
 {
-    [ContentType(DisplayName = "Halftone", GUID = "0ea05674-3096-40fe-bf36-07b967b151b1", Description = "Applies a classical CMYK halftone to the given image", GroupName = Global.GroupName)]
+    [ContentType(DisplayName = "Halftone", 
+        GUID = "0ea05674-3096-40fe-bf36-07b967b151b1", 
+        Description = "Applies a classical CMYK halftone to the given image", 
+        GroupName = Global.GroupName, 
+        Order = 15)]
+    [Icon]
     public class HalftoneBlock : ImageProcessorMethodBaseBlock
     {
         [Display(Name = "Enable")]

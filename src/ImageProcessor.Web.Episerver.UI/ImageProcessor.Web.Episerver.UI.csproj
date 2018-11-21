@@ -182,6 +182,7 @@
     <Compile Include="Business\EnumAttribute.cs" />
     <Compile Include="Business\EnumSelectionFactory.cs" />
     <Compile Include="Business\HideCategoryEditorDescriptor.cs" />
+    <Compile Include="Business\IconAttribute.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Models\Blocks\AlphaBlock.cs" />
     <Compile Include="Models\Blocks\AnimationProcessModeBlock.cs" />
