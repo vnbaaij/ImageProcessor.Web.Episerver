@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ImageProcessor.Web.Episerver.UI")]
-[assembly: AssemblyDescription("ImageProcessor in Episerver. Offers all processing methods as editor useable blocks")]
+[assembly: AssemblyDescription("ImageProcessor in Episerver. All processing methods as editor useable blocks")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Vincent Baaij")]
 [assembly: AssemblyProduct("ImageProcessor.Web.Episerver.UI")]
