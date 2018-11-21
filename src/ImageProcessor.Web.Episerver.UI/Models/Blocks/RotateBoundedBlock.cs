@@ -1,10 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using EPiServer.Core;
+﻿using System.ComponentModel.DataAnnotations;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
+using ImageProcessor.Web.Episerver.UI.Business;
 
-namespace ImageProcessor.Web.Episerver.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
 {
     [ContentType(DisplayName = "Rotate Bounded Block", 
         GUID = "0d536270-8fee-4413-86e9-42d7de84930f",

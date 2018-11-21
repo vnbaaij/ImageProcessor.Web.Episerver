@@ -1,18 +1,16 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using EPiServer.Shell.ObjectEditing;
 using EPiServer.Web;
-using ImageProcessor.Imaging;
-using ImageProcessor.Web.Episerver.Business;
+using ImageProcessor.Web.Episerver.UI.Business;
 
-namespace ImageProcessor.Web.Episerver.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
 {
     [ContentType(
-        DisplayName = "Processed Image",
+        DisplayName = "Process Image",
         GUID = "c493e717-5bee-4de7-8d8b-3ba40e012304",
         Description = "Manipulate image stored in Episerver with ImageProcessor ")]
     [Icon]

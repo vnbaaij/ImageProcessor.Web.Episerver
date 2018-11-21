@@ -1,12 +1,10 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using EPiServer.Core;
+﻿using System.ComponentModel.DataAnnotations;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Imaging;
-using ImageProcessor.Web.Episerver.Business;
+using ImageProcessor.Web.Episerver.UI.Business;
 
-namespace ImageProcessor.Web.Episerver.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
 {
     [ContentType(DisplayName = "Resize",
         GUID = "a51f38ca-eb17-4acd-a3d6-c688ca7f98a3",

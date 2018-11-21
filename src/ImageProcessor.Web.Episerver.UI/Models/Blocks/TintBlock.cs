@@ -1,10 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using EPiServer.Core;
+﻿using System.ComponentModel.DataAnnotations;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
+using ImageProcessor.Web.Episerver.UI.Business;
 
-namespace ImageProcessor.Web.Episerver.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
 {
     [ContentType(DisplayName = "Tint",
         GUID = "6150367c-3f59-4e4d-b96b-68b0c6fc3a2d", 

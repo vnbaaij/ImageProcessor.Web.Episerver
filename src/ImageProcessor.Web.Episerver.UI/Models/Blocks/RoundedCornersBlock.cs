@@ -1,10 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using EPiServer.Core;
+﻿using System.ComponentModel.DataAnnotations;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
+using ImageProcessor.Web.Episerver.UI.Business;
 
-namespace ImageProcessor.Web.Episerver.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
 {
     [ContentType(DisplayName = "Rounded Corners",
         GUID = "60b84172-12a5-4987-88c4-c285381d9ceb", 

@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Imaging;
-using ImageProcessor.Web.Episerver.Business;
+using ImageProcessor.Web.Episerver.UI.Business;
 
-namespace ImageProcessor.Web.Episerver.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
 {
     [ContentType(DisplayName = "Crop", 
         GUID = "c26bc228-1215-4c40-a294-7dae69aa37e4", 

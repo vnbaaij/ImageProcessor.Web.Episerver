@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
-using ImageProcessor.Web.Episerver.Business;
+using ImageProcessor.Web.Episerver.UI.Business;
 
-namespace ImageProcessor.Web.Episerver.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
 {
     [ContentType(DisplayName = "Detect Edges", 
         GUID = "d4909010-f701-4c60-85ff-53789ca59743", 

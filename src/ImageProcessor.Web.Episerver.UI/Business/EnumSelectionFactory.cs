@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using EPiServer.Framework.Localization;
 using EPiServer.Shell.ObjectEditing;
 
-namespace ImageProcessor.Web.Episerver.Business
+namespace ImageProcessor.Web.Episerver.UI.Business
 {
     public class EnumSelectionFactory<TEnum> : ISelectionFactory
     {

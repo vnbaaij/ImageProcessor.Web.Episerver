@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace ImageProcessor.Web.Episerver.Business
+namespace ImageProcessor.Web.Episerver.UI.Business
 {
     public class EnumAttribute : SelectOneAttribute, IMetadataAware
     {

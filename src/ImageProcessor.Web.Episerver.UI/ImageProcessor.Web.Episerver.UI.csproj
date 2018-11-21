@@ -7,7 +7,7 @@
     <ProjectGuid>{0C044F78-5162-418D-AF21-6E9FE4C437FB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ImageProcessor.Web.Episerver</RootNamespace>
+    <RootNamespace>ImageProcessor.Web.Episerver.UI</RootNamespace>
     <AssemblyName>ImageProcessor.Web.Episerver.UI</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
