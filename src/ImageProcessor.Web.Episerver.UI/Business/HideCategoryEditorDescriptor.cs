@@ -8,7 +8,7 @@ using ImageProcessor.Web.Episerver.Models.Blocks;
 
 namespace ImageProcessor.Web.Episerver.Business
 {
-    [EditorDescriptorRegistration(TargetType = typeof(CategoryList))]
+    [EditorDescriptorRegistration(TargetType = typeof(CategoryList), EditorDescriptorBehavior = EditorDescriptorBehavior.Default)]
     public class HideCategoryEditorDescriptor : EditorDescriptor
     {
         public override void ModifyMetadata(
@@ -19,7 +19,7 @@ namespace ImageProcessor.Web.Episerver.Business
 
             var contentMetadata = (ContentDataMetadata)metadata;
             var ownerContent = contentMetadata.OwnerContent;
-            if (ownerContent is ProcessImageBlock && metadata.PropertyName == "icategorizable_category")
+            if (ownerContent is ImageProcessorMethodBaseBlock && metadata.PropertyName == "icategorizable_category")
             {
                 metadata.ShowForEdit = false;
             }
