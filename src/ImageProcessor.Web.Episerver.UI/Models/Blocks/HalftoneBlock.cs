@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EPiServer;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
@@ -13,10 +14,18 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
     [Icon]
     public class HalftoneBlock : ImageProcessorMethodBaseBlock
     {
-        [Display(Name = "Enable")]
-        public virtual bool Halftone { get; set; }
-
         [Display(Name = "Comic mode")]
         public virtual bool ComicMode { get; set; }
+
+        public override UrlBuilder GetMethod(UrlBuilder url)
+        {
+            return url.Halftone(ComicMode);
+        }
+
+        public override void SetDefaultValues(ContentType contentType)
+        {
+            base.SetDefaultValues(contentType);
+            ComicMode = false;
+        }
     }
 }

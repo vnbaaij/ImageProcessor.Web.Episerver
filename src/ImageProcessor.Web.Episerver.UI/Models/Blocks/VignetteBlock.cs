@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EPiServer;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
@@ -13,11 +14,14 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
     [Icon]
     public class VignetteBlock : ImageProcessorMethodBaseBlock
     {
-        public virtual bool Enabled { get; set; }
-
         [Display(Name = "Color")]
         [UIHint("ColorPicker")]
-        public virtual string Vignette { get; set; }
+        public virtual string Color { get; set; }
+
+        public override UrlBuilder GetMethod(UrlBuilder url)
+        {
+            return url.Vignette(Color);
+        }
 
         /// <summary>
         /// Sets the default property values on the content data.
@@ -26,9 +30,7 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
         public override void SetDefaultValues(ContentType contentType)
         {
             base.SetDefaultValues(contentType);
-            Enabled = false;
-            Vignette = "#000000";
-
+            Color = "#000000";
         }
     }
 }

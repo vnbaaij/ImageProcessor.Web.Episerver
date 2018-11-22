@@ -391,6 +391,25 @@ namespace ImageProcessor.Web.Episerver
             return target;
         }
 
+        /// <summary>
+        /// Adjusts the brightness of images.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="percentage">Desired percentage value (without the ‘%’)</param>
+        /// <returns></returns>
+        public static UrlBuilder Brightness(this UrlBuilder target, int percentage)
+        {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            if (percentage < 0 || percentage > 100)
+                throw new ArgumentOutOfRangeException(nameof(target));
+
+            if (!target.IsEmpty)
+                target.QueryCollection.Add("brightness", percentage.ToString());
+
+            return target;
+        }
 
         /// <summary>
         /// Uses a Gaussian kernel to sharpen the current image.
@@ -809,7 +828,7 @@ namespace ImageProcessor.Web.Episerver
         /// <param name="target"></param>
         /// <param name="angle">The rotation angle</param>
         /// <returns></returns>
-        public static UrlBuilder Rotate(this UrlBuilder target, float angle)
+        public static UrlBuilder Rotate(this UrlBuilder target, int angle)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -826,7 +845,7 @@ namespace ImageProcessor.Web.Episerver
         /// <param name="target"></param>
         /// <param name="angle">The rotation angle</param>
         /// <param name="keepSize">Whether to keep the image dimensions.
-        /// /// <para>
+        /// <para>
         /// If set to true, the image is zoomed to fit the bounding area.
         /// </para>
         /// <para>
@@ -834,7 +853,7 @@ namespace ImageProcessor.Web.Episerver
         /// </para>
         /// </param>
         /// <returns></returns>
-        public static UrlBuilder RotateBounded(this UrlBuilder target, float angle, bool keepSize)
+        public static UrlBuilder RotateBounded(this UrlBuilder target, int angle, bool keepSize)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -842,8 +861,7 @@ namespace ImageProcessor.Web.Episerver
             if (!target.IsEmpty)
                 target.QueryCollection.Add("rotatebounded", angle.ToString());
 
-            if (keepSize)
-                target.QueryCollection.Add("rotatebounded.keepsize", keepSize.ToString().ToLower());
+            target.QueryCollection.Add("rotatebounded.keepsize", keepSize.ToString().ToLower());
 
             return target;
         }
@@ -1041,7 +1059,7 @@ namespace ImageProcessor.Web.Episerver
         /// <param name="vertical">Default is false</param>
         /// <param name="rtl">Default is false</param>
         /// <returns></returns>
-        public static UrlBuilder Watermark(this UrlBuilder target, string text, Point? position, string color, FontFamily font = null, int size = 48, FontStyle style = FontStyle.Bold, int opacity = 100, bool dropshadow = false, bool vertical = false, bool rtl = false)
+        public static UrlBuilder Watermark(this UrlBuilder target, string text, Point? position, string color, string fontfamily = null, int size = 48, FontStyle style = FontStyle.Bold, int opacity = 100, bool dropshadow = false, bool vertical = false, bool rtl = false)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -1053,8 +1071,8 @@ namespace ImageProcessor.Web.Episerver
             {
                 target.QueryCollection.Add("watermark", text);
             }
-            if (font != null)
-                target.QueryCollection.Add("fontfamily", font.Name);
+            if (fontfamily != null)
+                target.QueryCollection.Add("fontfamily", fontfamily);
 
             if (color != null)
                 target.QueryCollection.Add("color", color.ToString().ToLower());
@@ -1088,7 +1106,7 @@ namespace ImageProcessor.Web.Episerver
         /// <param name="vertical">Default is false</param>
         /// <param name="rtl">Default is false</param>
         /// <returns></returns>
-        public static UrlBuilder Watermark(this UrlBuilder target, string text, Point? position, KnownColor? color, FontFamily font = null, int size = 48, FontStyle style = FontStyle.Bold, int opacity = 100, bool dropshadow = false, bool vertical = false, bool rtl = false)
+        public static UrlBuilder Watermark(this UrlBuilder target, string text, Point? position, KnownColor? color, string fontfamily = null, int size = 48, FontStyle style = FontStyle.Bold, int opacity = 100, bool dropshadow = false, bool vertical = false, bool rtl = false)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -1100,8 +1118,8 @@ namespace ImageProcessor.Web.Episerver
             {
                 target.QueryCollection.Add("watermark", text);
             }
-            if (font != null)
-                target.QueryCollection.Add("fontfamily", font.Name);
+            if (fontfamily != null)
+                target.QueryCollection.Add("fontfamily", fontfamily);
 
             if (color != null)
                 target.QueryCollection.Add("color", color.ToString().ToLower());
@@ -1135,7 +1153,7 @@ namespace ImageProcessor.Web.Episerver
         /// <param name="vertical">Default is false</param>
         /// <param name="rtl">Default is false</param>
         /// <returns></returns>
-        public static UrlBuilder Watermark(this UrlBuilder target, string text, Point? position, Color? color, FontFamily font = null, int size = 48, FontStyle style = FontStyle.Bold, int opacity = 100, bool dropshadow = false, bool vertical = false, bool rtl = false)
+        public static UrlBuilder Watermark(this UrlBuilder target, string text, Point? position, Color? color, string fontfamily = null, int size = 48, FontStyle style = FontStyle.Bold, int opacity = 100, bool dropshadow = false, bool vertical = false, bool rtl = false)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -1147,8 +1165,8 @@ namespace ImageProcessor.Web.Episerver
             {
                 target.QueryCollection.Add("watermark", text);
             }
-            if (font != null)
-                target.QueryCollection.Add("fontfamily", font.Name);
+            if (fontfamily != null)
+                target.QueryCollection.Add("fontfamily", fontfamily);
 
             if (color != null)
                 target.QueryCollection.Add("color", color.Value.ToKnownColor().ToString().ToLower());

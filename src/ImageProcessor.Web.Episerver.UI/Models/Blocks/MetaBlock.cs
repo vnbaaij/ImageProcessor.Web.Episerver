@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EPiServer;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
@@ -14,6 +15,11 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
     public class MetaBlock : ImageProcessorMethodBaseBlock
     {
         [Display(Name = "Preserve metadata")]
-        public virtual bool Metadata { get; set; }
+        public virtual bool Preserve { get; set; }
+
+        public override UrlBuilder GetMethod(UrlBuilder url)
+        {
+            return url.Meta(Preserve);
+        }
     }
 }

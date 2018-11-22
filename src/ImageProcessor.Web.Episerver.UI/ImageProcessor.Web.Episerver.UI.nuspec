@@ -22,7 +22,7 @@
   </metadata>
   <files>
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\Views\ProcessImageBlock.cshtml" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\Views" />
-    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\Views\web.config" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\web.config" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\module.config" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\ipepi.png" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\ImageProcessor.Web.Episerver.UI.zip" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />

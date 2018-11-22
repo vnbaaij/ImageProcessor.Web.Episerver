@@ -1,4 +1,5 @@
-﻿using EPiServer.DataAbstraction;
+﻿using EPiServer;
+using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
 
@@ -15,5 +16,17 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
         public virtual int Kernelsize { get; set; }
         public virtual double Sigma { get; set; }
         public virtual int Threshold { get; set; }
+
+        public override UrlBuilder GetMethod(UrlBuilder url)
+        {
+            return url.Blur(Kernelsize, Sigma, Threshold);
+        }
+
+        public override void SetDefaultValues(ContentType contentType)
+        {
+            base.SetDefaultValues(contentType);
+            Sigma = 1.4;
+            Threshold = 0;
+        }
     }
 }

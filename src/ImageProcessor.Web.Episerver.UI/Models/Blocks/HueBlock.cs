@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EPiServer;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
@@ -15,7 +16,18 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
     {
         [Display(Name = "Angle")]
         [Range(0,360)]
-        public virtual int Hue { get; set; }
+        public virtual int Angle { get; set; }
         public virtual bool Rotate { get; set; }
+
+        public override UrlBuilder GetMethod(UrlBuilder url)
+        {
+            return url.Hue(Angle, Rotate);
+        }
+
+        public override void SetDefaultValues(ContentType contentType)
+        {
+            base.SetDefaultValues(contentType);
+            Rotate = false;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EPiServer;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Imaging;
@@ -16,6 +17,11 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
     {
         [Display(Name = "Animation Process Mode")]
         [EnumAttribute(typeof(AnimationProcessMode))]
-        public virtual AnimationProcessMode AnimationProcessMode { get; set; }
+        public virtual AnimationProcessMode Mode { get; set; }
+
+        public override UrlBuilder GetMethod(UrlBuilder url)
+        {
+            return url.AnimationProcessMode(Mode);
+        }
     }
 }

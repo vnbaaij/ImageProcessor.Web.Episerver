@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Drawing;
+using EPiServer;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
@@ -17,7 +18,7 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
         private Point? position;
 
         [Display(Name = "Text")]
-        public virtual string Watermark { get; set; }
+        public virtual string Text { get; set; }
 
         public virtual int X { get; set; }
         public virtual int Y { get; set; }
@@ -25,7 +26,7 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
         [UIHint("ColorPicker")]
         public virtual string Color { get; set; }
 
-        public virtual string Font { get; set; }
+        public virtual string FontFamily { get; set; }
 
         public virtual int Size { get; set; }
 
@@ -38,6 +39,11 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
         public virtual bool Vertical { get; set; }
         public virtual bool Rtl { get; set; }
 
+        public override UrlBuilder GetMethod(UrlBuilder url)
+        {
+           return url.Watermark(Text,position, Color, FontFamily, Size, Style, Opacity, Dropshadow, Vertical, Rtl);
+        }
+
         /// <summary>
         /// Sets the default property values on the content data.
         /// </summary>
@@ -45,10 +51,10 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
         public override void SetDefaultValues(ContentType contentType)
         {
             base.SetDefaultValues(contentType);
-            Watermark = string.Empty;
+            Text = string.Empty;
             Color = "white";
             position = new Point(X, Y);
-            Font = null;
+            FontFamily = null;
             Size = 48;
             Style = FontStyle.Bold;
             Opacity = 100;

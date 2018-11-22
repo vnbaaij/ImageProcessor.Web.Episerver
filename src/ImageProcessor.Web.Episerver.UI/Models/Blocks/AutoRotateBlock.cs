@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EPiServer;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
@@ -14,7 +15,11 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
     public class AutoRotateBlock : ImageProcessorMethodBaseBlock
     {
         [Display(Name = "Auto rotate", Description = "If EXIF preservation is set to preserve metadata during processing this method will not alter the images rotation.")]
-        public virtual bool Autorotate { get; set; }
+        public virtual bool DoAutoRotate { get; set; }
 
+        public override UrlBuilder GetMethod(UrlBuilder url)
+        {
+            return url.Autorotate(DoAutoRotate);
+        }
     }
 }

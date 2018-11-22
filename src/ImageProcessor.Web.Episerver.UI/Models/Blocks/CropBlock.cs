@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EPiServer;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Imaging;
@@ -6,10 +7,10 @@ using ImageProcessor.Web.Episerver.UI.Business;
 
 namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
 {
-    [ContentType(DisplayName = "Crop", 
-        GUID = "c26bc228-1215-4c40-a294-7dae69aa37e4", 
-        Description = "Crops the current image to the given location and size.", 
-        GroupName = Global.GroupName, 
+    [ContentType(DisplayName = "Crop",
+        GUID = "c26bc228-1215-4c40-a294-7dae69aa37e4",
+        Description = "Crops the current image to the given location and size.",
+        GroupName = Global.GroupName,
         Order = 8)]
     [Icon]
     public class CropBlock : ImageProcessorMethodBaseBlock
@@ -31,5 +32,19 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
         public virtual int Right { get; set; }
         [Range(0, 100)]
         public virtual int Bottom { get; set; }
+
+        public override UrlBuilder GetMethod(UrlBuilder url)
+        {
+            if (Mode == CropMode.Pixels)
+                return url.Crop(X, Y, Width, Height, Mode);
+            else
+                return url.Crop(Left, Top, Right, Bottom, CropMode.Percentage);
+        }
+
+        public override void SetDefaultValues(ContentType contentType)
+        {
+            base.SetDefaultValues(contentType);
+            Mode = CropMode.Pixels;
+        }
     }
 }

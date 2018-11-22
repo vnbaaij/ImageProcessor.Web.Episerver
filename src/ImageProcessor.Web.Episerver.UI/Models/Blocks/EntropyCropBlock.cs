@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EPiServer;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
@@ -14,6 +15,11 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
     public class EntropyCropBlock : ImageProcessorMethodBaseBlock
     {
         [Display(Name = "Value")]
-        public virtual int EntropyCrop { get; set; }
+        public virtual int Entropy { get; set; }
+
+        public override UrlBuilder GetMethod(UrlBuilder url)
+        {
+            return url.EntropyCrop(Entropy);
+        }
     }
 }

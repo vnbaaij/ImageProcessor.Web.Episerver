@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EPiServer;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
@@ -16,5 +17,10 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
         [Display(Name = "Image format")]
         [EnumAttribute(typeof(ImageFormat))]
         public virtual ImageFormat Format { get; set; }
+
+        public override UrlBuilder GetMethod(UrlBuilder url)
+        {
+            return url.Format(Format);
+        }
     }
 }

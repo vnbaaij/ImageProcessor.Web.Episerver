@@ -1,14 +1,16 @@
-﻿@using EPiServer.Core
+﻿@using System.Drawing
 @using EPiServer.Web.Mvc.Html
+@using ImageProcessor.Web.Episerver
+
 @model ImageProcessor.Web.Episerver.UI.Models.Blocks.ProcessImageBlock
 
 @if (EPiServer.Editor.PageEditing.PageIsInEditMode)
 {
-
+    <img src="@Model.GetMethods()" />
 }
 else
 {
-        <div>
-            @Html.PropertyFor(m => m.ImageUrl)
-        </div>
+    <div>
+        @Model.Image
+    </div>
 }

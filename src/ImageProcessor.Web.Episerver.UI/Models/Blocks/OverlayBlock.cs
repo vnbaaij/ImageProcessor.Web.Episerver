@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EPiServer;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
@@ -19,6 +20,17 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
         public virtual int Height { get; set; }
         public virtual int Opacity { get; set; }
         [Display(Name = "Overlay image")]
-        public virtual string Overlay { get; set; }
+        public virtual string OverlayImage { get; set; }
+
+        public override UrlBuilder GetMethod(UrlBuilder url)
+        {
+            return url.Overlay(OverlayImage, X, Y, Width, Height, Opacity);
+        }
+
+        public override void SetDefaultValues(ContentType contentType)
+        {
+            base.SetDefaultValues(contentType);
+            Opacity = 0;
+        }
     }
 }

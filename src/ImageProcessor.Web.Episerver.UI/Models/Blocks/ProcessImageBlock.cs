@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using EPiServer.Shell.ObjectEditing;
 using EPiServer.Web;
+using EPiServer.Web.Routing;
 using ImageProcessor.Web.Episerver.UI.Business;
 
 namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
@@ -24,20 +26,9 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
         [Display(Name = "Image", Order = 1)]
         [Required(AllowEmptyStrings = false)]
         [UIHint(UIHint.Image)]
-        public virtual Url ImageUrl
+        public virtual ContentReference Image
         {
-            get
-            {
-                var url = this.GetPropertyValue(b => b.ImageUrl);
-
-                return url == null || url.IsEmpty()
-                           ? new Url(string.Empty)
-                           : url;
-            }
-            set
-            {
-                this.SetPropertyValue(b => b.ImageUrl, value);
-            }
+            get; set;
         }
 
         [Display(Name = "Methods",
@@ -51,6 +42,28 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
 
         [Display(Order = 4)]
         public virtual int Height { get; set; }
+
+        public UrlBuilder GetMethods()
+        {
+            var url = new UrlBuilder(UrlResolver.Current.GetUrl(Image));
+            return MethodBuilder(url);
+        }
+
+        private UrlBuilder MethodBuilder(UrlBuilder url)
+        {
+            if (Methods == null)
+            {
+                return url;
+            }
+            foreach (var item in Methods.FilteredItems)
+            {
+                if (item.GetContent() is ImageProcessorMethodBaseBlock method)
+                {
+                    method.GetMethod(url);
+                }
+            }
+            return url;
+        }
 
     }
 }

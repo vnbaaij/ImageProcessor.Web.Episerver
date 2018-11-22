@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EPiServer;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
@@ -15,6 +16,11 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
     {
         [Display(Name = "Percentage", Description = "The desired adjustment percentage")]
         [Range(-99, 99)]
-        public virtual int Saturation { get; set; }
+        public virtual int Percentage { get; set; }
+
+        public override UrlBuilder GetMethod(UrlBuilder url)
+        {
+            return url.Saturation(Percentage);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EPiServer;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
@@ -14,7 +15,7 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
     public class RoundedCornersBlock : ImageProcessorMethodBaseBlock
     {
         [Display(Name = "Radius")]
-        public virtual int RoundedCorners { get; set; }
+        public virtual int Radius { get; set; }
 
         [Display(Name = "Top left")]
         public virtual bool Tl { get; set; }
@@ -27,5 +28,19 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
 
         [Display(Name = "Bottom right")]
         public virtual bool Br { get; set; }
+
+        public override UrlBuilder GetMethod(UrlBuilder url)
+        {
+            return url.RoundedCorners(Radius, Tl, Tr, Bl, Br);
+        }
+
+        public override void SetDefaultValues(ContentType contentType)
+        {
+            base.SetDefaultValues(contentType);
+            Tl = true;
+            Tr = true;
+            Bl = true;
+            Br = true;
+        }
     }
 }
