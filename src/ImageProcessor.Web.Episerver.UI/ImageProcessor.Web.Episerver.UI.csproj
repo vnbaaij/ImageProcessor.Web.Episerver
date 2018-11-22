@@ -185,6 +185,7 @@
     <Compile Include="Business\HideCategoryEditorDescriptor.cs" />
     <Compile Include="Business\IconAttribute.cs" />
     <Compile Include="Business\IForceAllPropertiesMode.cs" />
+    <Compile Include="Controllers\ProcessImageBlockController.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Models\Blocks\AlphaBlock.cs" />
     <Compile Include="Models\Blocks\AnimationProcessModeBlock.cs" />
@@ -236,5 +237,6 @@
       <Name>ImageProcessor.Web.Episerver</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

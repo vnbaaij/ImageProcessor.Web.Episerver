@@ -69,6 +69,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{AAA337
 		build\content\ImageProcessor.Web.Episerver.UI\Styles\images\underlay.png = build\content\ImageProcessor.Web.Episerver.UI\Styles\images\underlay.png
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Views", "Views", "{7AF879A3-4355-462E-8B85-B98E0E815FFB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,7 @@ Global
 		{2DDDD264-5B75-4327-A347-8BC5A39B1101} = {46C72CDC-EEAC-4C7E-9C6F-6A93932D5385}
 		{B04198DD-46AA-495B-9888-B895A05A81AC} = {E705CE45-31B1-440B-8D91-80379A7FC274}
 		{AAA3373A-7D68-41F1-AD70-836E24649225} = {2DDDD264-5B75-4327-A347-8BC5A39B1101}
+		{7AF879A3-4355-462E-8B85-B98E0E815FFB} = {46C72CDC-EEAC-4C7E-9C6F-6A93932D5385}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E3289EDC-30FC-441A-AD01-FF9B67AEDDE4}
