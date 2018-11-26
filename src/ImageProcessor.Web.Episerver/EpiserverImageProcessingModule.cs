@@ -101,7 +101,7 @@ namespace ImageProcessor.Web.Episerver
             MatchEvaluator = new MatchEvaluator(IsSecondOccurance);
         }
 
-        private string _replaceWith;
+        private readonly string _replaceWith;
         public MatchEvaluator MatchEvaluator { get; }
 
         private int _matchIndex;
