@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using EPiServer;
+using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
@@ -16,11 +17,40 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
     {
         [Display(Name = "From")]
         [UIHint("ColorPicker")]
-        public virtual string ColorFrom { get; set; }
+        public virtual string ColorFrom {
+            get
+            {
+                var color = this.GetPropertyValue(b => b.ColorFrom);
+
+                if (color == null)
+                    return string.Empty;
+                color = color.TrimStart('#');
+                return color;
+            }
+            set
+            {
+                this.SetPropertyValue(b => b.ColorFrom, value.TrimStart('#'));
+            }
+        }
 
         [Display(Name = "To")]
         [UIHint("ColorPicker")]
-        public virtual string ColorTo { get; set; }
+        public virtual string ColorTo
+        {
+            get
+            {
+                var color = this.GetPropertyValue(b => b.ColorTo);
+
+                if (color == null)
+                    return string.Empty;
+                color = color.TrimStart('#');
+                return color;
+            }
+            set
+            {
+                this.SetPropertyValue(b => b.ColorTo, value.TrimStart('#'));
+            }
+        }
 
         public virtual int Fuziness { get; set; }
 

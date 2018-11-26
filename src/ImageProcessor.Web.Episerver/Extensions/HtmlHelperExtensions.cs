@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Configuration;
-using System.Web;
 using System.Web.Mvc;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.Web.Routing;
-
 
 
 namespace ImageProcessor.Web.Episerver

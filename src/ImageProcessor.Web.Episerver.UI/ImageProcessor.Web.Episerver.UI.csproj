@@ -206,6 +206,7 @@
     <Compile Include="Models\Blocks\ImageProcessorMethodBaseBlock.cs" />
     <Compile Include="Models\Blocks\MaskBlock.cs" />
     <Compile Include="Models\Blocks\MetaBlock.cs" />
+    <Compile Include="Models\Blocks\MethodCollectionBlock.cs" />
     <Compile Include="Models\Blocks\OverlayBlock.cs" />
     <Compile Include="Models\Blocks\PixelateBlock.cs" />
     <Compile Include="Models\Blocks\ProcessImageBlock.cs" />

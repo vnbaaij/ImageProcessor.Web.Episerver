@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using EPiServer;
+using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
@@ -24,8 +25,23 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
         public virtual int Y { get; set; }
 
         [UIHint("ColorPicker")]
-        public virtual string Color { get; set; }
+        public virtual string Color {
+            get
+            {
+                var color = this.GetPropertyValue(b => b.Color);
 
+                if (color == null)
+                    return string.Empty;
+                color = color.TrimStart('#');
+                return color;
+            }
+            set
+            {
+                this.SetPropertyValue(b => b.Color, value.TrimStart('#'));
+            }
+        }
+
+        [Display(Name = "Font family")]
         public virtual string FontFamily { get; set; }
 
         public virtual int Size { get; set; }
@@ -41,7 +57,8 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
 
         public override UrlBuilder GetMethod(UrlBuilder url)
         {
-           return url.Watermark(Text,position, Color, FontFamily, Size, Style, Opacity, Dropshadow, Vertical, Rtl);
+            position = new Point(X, Y);
+            return url.Watermark(Text, position, Color, FontFamily, Size, Style, Opacity, Dropshadow, Vertical, Rtl);
         }
 
         /// <summary>
@@ -52,7 +69,7 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
         {
             base.SetDefaultValues(contentType);
             Text = string.Empty;
-            Color = "white";
+            Color = "#ffffff";
             position = new Point(X, Y);
             FontFamily = null;
             Size = 48;

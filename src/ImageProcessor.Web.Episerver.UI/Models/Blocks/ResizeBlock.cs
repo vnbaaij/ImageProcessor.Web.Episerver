@@ -16,6 +16,7 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
     public class ResizeBlock : ImageProcessorMethodBaseBlock
     {
         [Display(Name = "Resize mode")]
+        [EnumAttribute(typeof(ResizeMode))]
         public virtual ResizeMode Mode { get; set; }
 
         [Display(Name = "Anchor position")]
@@ -55,6 +56,7 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
             HeightRatio = 0;
             CenterX = 0;
             CenterY = 0;
+            Mode = ResizeMode.Pad;
         }
     }
 }

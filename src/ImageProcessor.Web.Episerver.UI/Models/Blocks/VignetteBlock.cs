@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using EPiServer;
+using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
@@ -16,7 +17,22 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
     {
         [Display(Name = "Color")]
         [UIHint("ColorPicker")]
-        public virtual string Color { get; set; }
+        public virtual string Color
+        {
+            get
+            {
+                var color = this.GetPropertyValue(b => b.Color);
+
+                if (color == null)
+                    return string.Empty;
+                color = color.TrimStart('#');
+                return color;
+            }
+            set
+            {
+                this.SetPropertyValue(b => b.Color, value.TrimStart('#'));
+            }
+        }
 
         public override UrlBuilder GetMethod(UrlBuilder url)
         {
@@ -30,7 +46,7 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
         public override void SetDefaultValues(ContentType contentType)
         {
             base.SetDefaultValues(contentType);
-            Color = "#000000";
+            Color = "000000";
         }
     }
 }

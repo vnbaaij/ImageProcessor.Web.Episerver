@@ -144,8 +144,8 @@
     <Reference Include="ImageProcessor.Web.Episerver, Version=5.0.0.28829, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ImageProcessor.Web.Episerver.5.0.0.28829\lib\net461\ImageProcessor.Web.Episerver.dll</HintPath>
     </Reference>
-    <Reference Include="ImageProcessor.Web.Episerver.UI, Version=5.0.0.28830, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ImageProcessor.Web.Episerver.UI.5.0.0.28830\lib\net461\ImageProcessor.Web.Episerver.UI.dll</HintPath>
+    <Reference Include="ImageProcessor.Web.Episerver.UI, Version=5.0.0.18861, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.Web.Episerver.UI.5.0.0.18861\lib\net461\ImageProcessor.Web.Episerver.UI.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -518,8 +518,8 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="License.config" />
-    <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI\Views\ProcessImageBlock.cshtml" />
     <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI\Web.config" />
+    <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI\Views\ProcessImageBlock.cshtml" />
     <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI\module.config" />
     <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI\ImageProcessor.Web.Episerver.UI.zip" />
     <None Include="packages.config">
