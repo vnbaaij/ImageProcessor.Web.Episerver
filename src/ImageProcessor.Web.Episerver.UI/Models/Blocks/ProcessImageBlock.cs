@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
@@ -51,16 +50,23 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
 
         private UrlBuilder MethodBuilder(UrlBuilder url)
         {
-            if (Methods == null)
+            if (Methods != null)
             {
-                return url;
-            }
-            foreach (var item in Methods.FilteredItems)
-            {
-                if (item.GetContent() is ImageProcessorMethodBaseBlock method)
+                foreach (var item in Methods.FilteredItems)
                 {
-                    method.GetMethod(url);
+                    if (item.GetContent() is ImageProcessorMethodBaseBlock method)
+                    {
+                        method.GetMethod(url);
+                    }
                 }
+            }
+            if (Width > 0)
+            {
+                url.Width(Width);
+            }
+            if (Height > 0)
+            {
+                url.Height(Height);
             }
             return url;
         }

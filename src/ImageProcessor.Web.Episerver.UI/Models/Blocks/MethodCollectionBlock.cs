@@ -12,7 +12,7 @@ namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
         GUID = "12fed908-e7b4-4dca-aee6-fcb65dcaf969",
         Description = "Re-useable grouping of image processing methods",
         GroupName = Global.GroupName,
-        Order = -1)]
+        Order = 33)]
     [Icon]
     public class MethodCollectionBlock : ImageProcessorMethodBaseBlock
     {
