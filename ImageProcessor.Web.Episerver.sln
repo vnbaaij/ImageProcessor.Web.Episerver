@@ -44,6 +44,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImageProcessor.Web.Episerver.UI", "ImageProcessor.Web.Episerver.UI", "{46C72CDC-EEAC-4C7E-9C6F-6A93932D5385}"
 	ProjectSection(SolutionItems) = preProject
 		build\content\ImageProcessor.Web.Episerver.UI\module.config = build\content\ImageProcessor.Web.Episerver.UI\module.config
+		build\content\ImageProcessor.Web.Episerver.UI\processing.config.install.xdt = build\content\ImageProcessor.Web.Episerver.UI\processing.config.install.xdt
+		build\content\ImageProcessor.Web.Episerver.UI\processing.config.uninstall.xdt = build\content\ImageProcessor.Web.Episerver.UI\processing.config.uninstall.xdt
 		build\content\ImageProcessor.Web.Episerver.UI\Web.config = build\content\ImageProcessor.Web.Episerver.UI\Web.config
 		build\content\ImageProcessor.Web.Episerver.UI\web.config.install.xdt = build\content\ImageProcessor.Web.Episerver.UI\web.config.install.xdt
 		build\content\ImageProcessor.Web.Episerver.UI\web.config.uninstall.xdt = build\content\ImageProcessor.Web.Episerver.UI\web.config.uninstall.xdt

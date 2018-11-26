@@ -106,6 +106,42 @@ namespace ImageProcessor.Web.Episerver
         }
 
         /// <summary>
+        /// Adds an image background to the current image.
+        /// If the background is larger than the image it will be scaled to match the image
+        /// The image background is called by name alone.It has to be a locally stored file which defaults to the location ~/images/imageprocessor/background/. This value is configurable.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="background">Background image</param>
+        /// <param name="x">X position</param>
+        /// <param name="y">Y position</param>
+        /// <param name="width">Width</param>
+        /// <param name="height">Heigth</param>
+        /// <param name="opacity">Opacity</param>
+        /// <returns></returns>
+        public static UrlBuilder Background(this UrlBuilder target, string background, int x, int y, int width, int height, int opacity = 0)
+        {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            if (string.IsNullOrWhiteSpace(background))
+                throw new ArgumentNullException(nameof(target));
+
+            if (x < 0 || y < 0 || width <= 0 || height <= 0 || opacity < 0)
+                throw new ArgumentOutOfRangeException(nameof(target));
+
+            if (!target.IsEmpty)
+            {
+                target.QueryCollection.Add("background", background);
+                target.QueryCollection.Add("background.position", string.Join(",", x.ToString(), y.ToString()));
+                target.QueryCollection.Add("background.size", string.Join(",", width.ToString(), height.ToString()));
+                target.QueryCollection.Add("background.opacity", opacity.ToString());
+
+            }
+
+            return target;
+        }
+
+        /// <summary>
         /// Changes the background color of the current image. This functionality is useful for adding a background when resizing image formats without an alpha channel.
         /// </summary>
         /// <param name="target"></param>

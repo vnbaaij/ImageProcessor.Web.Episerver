@@ -1,0 +1,35 @@
+<processing xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <plugins>
+    <plugin name="Alpha" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="AutoRotate" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Background" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>/>
+    <plugin name="BackgroundColor" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Brightness" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Contrast" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Crop" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="DetectEdges" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="EntropyCrop" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Filter" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Flip" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Format" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Gamma" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="GaussianBlur" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="GaussianSharpen" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Halftone" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Hue" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Mask" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Meta" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Overlay" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Pixelate" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Quality" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="ReplaceColor" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Resize" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Rotate" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="RotateBounded" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="RoundedCorners" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Saturation" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Tint" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Vignette" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+    <plugin name="Watermark" enabled="true" xdt:Transform="SetAttributes" xdt:Locator="Match(name)"/>
+  </plugins>
+</processing>

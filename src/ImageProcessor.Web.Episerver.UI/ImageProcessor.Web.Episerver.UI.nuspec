@@ -28,5 +28,8 @@
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\ImageProcessor.Web.Episerver.UI.zip" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\web.config.install.xdt" target="content\web.config.install.xdt" />
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\web.config.uninstall.xdt" target="content\web.config.uninstall.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\processing.config.install.xdt" target="content\config\processing.config.install.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\processing.config.uninstall.xdt" target="content\config\processing.config.uninstall.xdt" />
+
   </files>
 </package>

@@ -1,30 +1,32 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using EPiServer;
+using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Business;
 
 namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
 {
-    [ContentType(DisplayName = "Overlay",
-        GUID = "554ba99c-7f42-40cb-a82b-39f0cdf1ba9b",
-        Description = "Adds a image overlay to the current image.",
+    [ContentType(DisplayName = "Background", 
+        GUID = "8895582f-97ce-42f3-be8b-fb41ef933867",
+        Description = "Adds an image background to the current image.",
         GroupName = Global.GroupName,
-        Order = 19)]
+        Order = 4)]
     [Icon]
-    public class OverlayBlock : ImageProcessorMethodBaseBlock
+    public class BackgroundBlock : ImageProcessorMethodBaseBlock
     {
         public virtual int X { get; set; }
         public virtual int Y { get; set; }
         public virtual int Width { get; set; }
         public virtual int Height { get; set; }
         public virtual int Opacity { get; set; }
-        [Display(Name = "Overlay image")]
-        public virtual string OverlayImage { get; set; }
+        [Display(Name = "Background image")]
+        public virtual string BackgroundImage { get; set; }
 
         public override UrlBuilder GetMethod(UrlBuilder url)
         {
-            return url.Overlay(OverlayImage, X, Y, Width, Height, Opacity);
+            return url.Overlay(BackgroundImage, X, Y, Width, Height, Opacity);
         }
 
         public override void SetDefaultValues(ContentType contentType)
