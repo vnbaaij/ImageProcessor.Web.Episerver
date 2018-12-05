@@ -1,19 +1,77 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EPiServer;
+using ImageProcessor.Web.Episerver.Extensions.Picture;
 
 namespace ImageProcessor.Web.Episerver.Picture
 {
-	internal static class PictureUtils
+	public static class PictureUtils
 	{
-		internal static string GetFormatFromExtension(string filePath)
+	    /// <summary>
+	    /// Get the data necessary for rendering a Picture element.
+	    /// </summary>
+	    public static PictureData GetPictureData(string imageUrl, ImageType imageType, bool includeLowQuality = false)
+	    {
+	        var urlBuilder = new UrlBuilder(imageUrl);
+	        return GetPictureData(urlBuilder, imageType, includeLowQuality);
+	    }
+
+	    /// <summary>
+	    /// Get the data necessary for rendering a Picture element.
+	    /// </summary>
+        public static PictureData GetPictureData(UrlBuilder imageUrl, ImageType imageType, bool includeLowQuality = false)
+	    {
+            var pData = new PictureData();
+	        var currentFormat = PictureUtils.GetFormatFromExtension(imageUrl.Path);
+	        if (imageType.SrcSetWidths != null)
+	        {
+	            pData.SrcSet = BuildSrcSet(imageUrl, imageType, currentFormat);
+                pData.ImgSrc = BuildQueryString(imageUrl, imageType, imageType.DefaultImgWidth, currentFormat);
+	            pData.SizesAttribute = string.Join(", ", imageType.SrcSetSizes);
+
+                //if jpg, also add webp versions
+                if (currentFormat == "jpg")
+	            {
+	                pData.SrcSetWebp = BuildSrcSet(imageUrl, imageType, "webp");
+	            }
+
+	            if (includeLowQuality)
+	            {
+	                pData.SrcSetLowQuality = BuildSrcSet(imageUrl, imageType, currentFormat, true);
+                    pData.ImgSrcLowQuality = BuildQueryString(imageUrl, imageType, imageType.DefaultImgWidth, currentFormat, 10);
+                }
+	        }
+
+	        return pData;
+	    }
+
+	    private static string BuildSrcSet(UrlBuilder imageUrl, ImageType imageType, string format, bool lowQuality = false)
+	    {
+	        var lowQualityValue = format == "webp" ? 1 : 10; //webp can have lower quality value
+	        var lowQualityFormat = format == "png" ? "png8" : format; //low quality png will be 8-bit
+
+            var srcset = string.Empty;
+            foreach (var width in imageType.SrcSetWidths)
+	        {
+	            if (lowQuality)
+	            {
+	                srcset += BuildQueryString(imageUrl, imageType, width, lowQualityFormat, lowQualityValue) + " " + width + "w, ";
+                }
+                else
+	            {
+	                srcset += BuildQueryString(imageUrl, imageType, width, format) + " " + width + "w, ";
+                }
+            }
+	        srcset = srcset.TrimEnd(',', ' ');
+
+	        return srcset;
+	    }
+
+        private static string GetFormatFromExtension(string filePath)
 		{
 			var extension = Path.GetExtension(filePath);
 			var format = extension?.TrimStart('.');
@@ -22,26 +80,39 @@ namespace ImageProcessor.Web.Episerver.Picture
 			return format ?? string.Empty;
 		}
 
-		internal static string BuildQueryString(UrlBuilder imageUrlbuilder, ImageType imageType, int? imageWidth, string format = "", int? overrideQuality = null)
+		private static string BuildQueryString(UrlBuilder imageUrl, ImageType imageType, int? imageWidth, string format, int? overrideQuality = null)
 		{
-			var qc = new NameValueCollection();
+		    var currentQueryKeys = imageUrl.QueryCollection.AllKeys;
+            var qc = new NameValueCollection();
 
 			if (format == "webp" || format == "png8")
 			{
-				qc.Add("format", format); //format needs to be added before quality
+				qc.Add("format", format);
 			}
 
-			if (format != "png" &&  format != "png8") //quality is ignored for png anyway
+			if (format != "png" && format != "png8") //quality is ignored for png anyway
 			{
-				var quality = overrideQuality ?? imageType.Quality;
-				qc.Add("quality", quality.ToString());
+                if (overrideQuality.HasValue)
+                {
+                    qc.Add("quality", overrideQuality.ToString());
+                }
+                else
+                {
+                    if (!currentQueryKeys.Contains("quality")) //don't change quality value if it already exists
+                    {
+                        qc.Add("quality", imageType.Quality.ToString());
+                    }
+                }
 			}
 
 			qc.Add("width", imageWidth.ToString());
 
 			if (imageType.HeightRatio > 0)
 			{
-				qc.Add("mode", "crop");
+			    if (!currentQueryKeys.Contains("mode")) //don't change mode value if it already exists
+                {
+			        qc.Add("mode", "crop");
+                }
 				qc.Add("heightratio", imageType.HeightRatio.ToString(CultureInfo.InvariantCulture));
 			}
 
@@ -51,14 +122,22 @@ namespace ImageProcessor.Web.Episerver.Picture
 				qc.Add(BuildInfoCollection(imageType, imageWidth, format));
 			}
 
-			//clone imageUrlBuilder and merge querystring values to the clone
-			var newTarget = new UrlBuilder(imageUrlbuilder.ToString()); 
+			//clone imageUrl and merge querystring values to the clone
+			var newTarget = new UrlBuilder(imageUrl.ToString()); 
 			newTarget.MergeQueryCollection(qc);
 
-			return (string)newTarget;
+            //make sure "quality" is last in querystring. It has to be after "format".
+		    var quality = newTarget.QueryCollection.Get("quality");
+		    if (!string.IsNullOrEmpty(quality))
+		    {
+		        newTarget.QueryCollection.Remove("quality");
+		        newTarget.QueryCollection.Add("quality", quality);
+            }
+
+            return (string)newTarget;
 		}
 
-		internal static NameValueCollection BuildInfoCollection(ImageType imageType, int? imageWidth, string format)
+		private static NameValueCollection BuildInfoCollection(ImageType imageType, int? imageWidth, string format)
 		{
 			var queryCollection = new NameValueCollection();
 
@@ -68,13 +147,13 @@ namespace ImageProcessor.Web.Episerver.Picture
 			}
 
 			var height = Convert.ToInt32(imageWidth * imageType.HeightRatio);
-			string watermark = $"format:%20{format};%20width:%20{imageWidth};" + (height > 0 ? $"%20height:%20{height}" : "");
+			var watermark = $"format:%20{format};%20width:%20{imageWidth};" + (height > 0 ? $"%20height:%20{height}" : "");
 			var fontsize = imageWidth > 700 ? 35 : 17;
 			var textX = imageWidth / 2 - 150;
 			textX = textX < 0 ? 10 : textX;
 
 			queryCollection.Add("watermark", watermark);
-			queryCollection.Add("color", "000000");
+		    queryCollection.Add("color", "000000");
 			queryCollection.Add("fontsize", fontsize.ToString());
 			queryCollection.Add("textposition", string.Join(",", textX.ToString(), Convert.ToInt32(height / 2).ToString()));
 

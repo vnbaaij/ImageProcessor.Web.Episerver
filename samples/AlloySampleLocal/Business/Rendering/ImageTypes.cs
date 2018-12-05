@@ -35,8 +35,9 @@ namespace AlloySample.Business.Rendering
         {
             DefaultImgWidth = 750,
             SrcSetWidths = new[] { 375, 750, 980, 1500 }, //adding a bunch of sizes for demo purpose. In a real world scenario I wouldn't have this many.
-            SrcSetSizes = new[] { "(max-width: 980px) calc((100vw - 40px)), (max-width: 1200px) 368px, 750px" }
-        };
+            SrcSetSizes = new[] { "(max-width: 980px) calc((100vw - 40px)), (max-width: 1200px) 368px, 750px" },
+	        HeightRatio = 0.5625 //16:9
+		};
     }
 
 
