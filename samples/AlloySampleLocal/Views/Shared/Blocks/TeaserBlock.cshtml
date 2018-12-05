@@ -22,13 +22,18 @@
             @Html.Picture(Html.ProcessImage(Model.Image).Quality(32).Resize(null, null, ResizeMode.Stretch), ImageTypes.Teaser, lazyLoadType: LazyLoadType.Progressive)
             @Html.Picture(Html.ProcessImage(Model.Image).Quality(32), ImageTypes.Teaser, lazyLoadType: LazyLoadType.None)
             @Html.Picture(Url.ContentUrl(Model.Image), ImageTypes.Teaser)
+            @Html.Picture(Model.Image, ImageTypes.Teaser)
             <pre>
                 @{
-                    var picData = PictureUtils.GetPictureData(Url.ContentUrl(Model.Image), ImageTypes.Teaser, true);
+                    var picData = PictureUtils.GetPictureData(Model.Image, ImageTypes.Teaser, true);
                     @picData.SrcSet <br />
+
                     @picData.SrcSetLowQuality<br />
+
                     @picData.SrcSetWebp<br />
+
                     @picData.SizesAttribute<br />
+
                 }
             </pre>
         </div>

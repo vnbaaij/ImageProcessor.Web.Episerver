@@ -16,5 +16,7 @@ namespace AlloySample.Models.Media
         /// The copyright.
         /// </value>
         public virtual string Copyright { get; set; }
+
+        public virtual string ImageProcessorFocalPoint { get; set; }
     }
 }

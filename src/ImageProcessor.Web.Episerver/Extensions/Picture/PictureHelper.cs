@@ -1,6 +1,9 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using EPiServer;
+using EPiServer.Core;
+using EPiServer.ServiceLocation;
+using EPiServer.Web.Routing;
 using ImageProcessor.Web.Episerver.Extensions.Picture;
 using ImageProcessor.Web.Episerver.Picture;
 
@@ -8,6 +11,18 @@ namespace ImageProcessor.Web.Episerver
 {
 	public static class PictureHelper
     {
+        public static IHtmlString Picture(this HtmlHelper helper, ContentReference imageReference, ImageType imageType, string cssClass = "", LazyLoadType lazyLoadType = LazyLoadType.None)
+        {
+            if (imageReference == null)
+            {
+                return new MvcHtmlString(string.Empty);
+            }
+
+            var urlBuilder = new UrlBuilder(ServiceLocator.Current.GetInstance<UrlResolver>().GetUrl(imageReference)); //todo: is there a better way to get the service?
+
+            return Picture(helper, urlBuilder, imageType, cssClass, lazyLoadType);
+        }
+
         public static IHtmlString Picture(this HtmlHelper helper, string imageUrl, ImageType imageType, string cssClass = "", LazyLoadType lazyLoadType = LazyLoadType.None)
         {
             if (imageUrl == null)
