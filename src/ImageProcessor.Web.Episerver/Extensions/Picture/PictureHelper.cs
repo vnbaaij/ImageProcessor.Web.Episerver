@@ -96,7 +96,7 @@ namespace ImageProcessor.Web.Episerver
 			        sourceElement.Attributes.Add("data-srcset", srcset);
 			        break;
 		        case LazyLoadType.Progressive:
-			        sourceElement.Attributes.Add("srcset", pictureData.SrcSetLowQuality);
+			        sourceElement.Attributes.Add("srcset", format == "webp" ? pictureData.SrcSetLowQualityWebp : pictureData.SrcSetLowQuality);
 			        sourceElement.Attributes.Add("data-srcset", srcset);
 			        break;
 		        default:
