@@ -65,7 +65,7 @@ namespace ImageProcessor.Web.Episerver
                 throw new ArgumentNullException(nameof(target));
 
             if (!target.IsEmpty)
-                target.QueryCollection.Add("animationprocessmode", mode.ToString().ToLower());
+                target.QueryCollection.Add("animationprocessmode", mode.ToString().ToLowerInvariant());
 
             return target;
         }
@@ -83,7 +83,7 @@ namespace ImageProcessor.Web.Episerver
                 throw new ArgumentNullException(nameof(target));
 
             if (!target.IsEmpty)
-                target.QueryCollection.Add("autorotate", rotate.ToString().ToLower());
+                target.QueryCollection.Add("autorotate", rotate.ToString().ToLowerInvariant());
 
             return target;
         }
@@ -100,7 +100,43 @@ namespace ImageProcessor.Web.Episerver
                 throw new ArgumentNullException(nameof(target));
 
             if (!target.IsEmpty)
-                target.QueryCollection.Add("bgcolor", color.ToLower());
+                target.QueryCollection.Add("bgcolor", color.ToLowerInvariant());
+
+            return target;
+        }
+
+        /// <summary>
+        /// Adds an image background to the current image.
+        /// If the background is larger than the image it will be scaled to match the image
+        /// The image background is called by name alone.It has to be a locally stored file which defaults to the location ~/images/imageprocessor/background/. This value is configurable.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="background">Background image</param>
+        /// <param name="x">X position</param>
+        /// <param name="y">Y position</param>
+        /// <param name="width">Width</param>
+        /// <param name="height">Heigth</param>
+        /// <param name="opacity">Opacity</param>
+        /// <returns></returns>
+        public static UrlBuilder Background(this UrlBuilder target, string background, int x, int y, int width, int height, int opacity = 0)
+        {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            if (string.IsNullOrWhiteSpace(background))
+                throw new ArgumentNullException(nameof(target));
+
+            if (x < 0 || y < 0 || width <= 0 || height <= 0 || opacity < 0)
+                throw new ArgumentOutOfRangeException(nameof(target));
+
+            if (!target.IsEmpty)
+            {
+                target.QueryCollection.Add("background", background);
+                target.QueryCollection.Add("background.position", string.Join(",", x.ToString(), y.ToString()));
+                target.QueryCollection.Add("background.size", string.Join(",", width.ToString(), height.ToString()));
+                target.QueryCollection.Add("background.opacity", opacity.ToString());
+
+            }
 
             return target;
         }
@@ -182,6 +218,7 @@ namespace ImageProcessor.Web.Episerver
         /// kayyali, kirsch, aplacian3X3, laplacian5X5, laplacianffgaussian, prewitt, robertscross, scharr, sobel</param>
         /// <param name="greyscale">If the greyscale parameter is set to false the detected edges will maintain the pixel colors of the originl image.</param>
         /// <returns></returns>
+        [Obsolete("This method is deprecated, use DetectEdges method (with filter enum) instead", false)]
         public static UrlBuilder DetectEdges(this UrlBuilder target, string filter, bool greyscale)
         {
             if (target == null)
@@ -190,12 +227,32 @@ namespace ImageProcessor.Web.Episerver
             if (!target.IsEmpty)
             {
                 target.QueryCollection.Add("detectedges", filter);
-                target.QueryCollection.Add("greyscale", greyscale.ToString().ToLower());
+                target.QueryCollection.Add("greyscale", greyscale.ToString().ToLowerInvariant());
             }
 
             return target;
         }
 
+        /// <summary>
+        /// Detects the edges in the current image using various one and two dimensional algorithms.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="filter">Available filters are defined in the <see cref="DetectEdgesFilter"/> enum</param>
+        /// <param name="greyscale">If the greyscale parameter is set to false the detected edges will maintain the pixel colors of the originl image.</param>
+        /// <returns></returns>
+        public static UrlBuilder DetectEdges(this UrlBuilder target, DetectEdgesFilter filter, bool greyscale)
+        {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            if (!target.IsEmpty)
+            {
+                target.QueryCollection.Add("detectedges", filter.ToString().ToLowerInvariant());
+                target.QueryCollection.Add("greyscale", greyscale.ToString().ToLowerInvariant());
+            }
+
+            return target;
+        }
         /// <summary>
         /// Crops an image to the area of greatest entropy. This method works best with images containing large areas of a single color or similar colors around the edges.
         /// </summary>
@@ -220,6 +277,7 @@ namespace ImageProcessor.Web.Episerver
         /// <param name="filter">Available filters are:
         /// blackwhite, comic, gotham, greyscale, hisatch, invert, lomograph, losatch, polaroid, sepia</param>
         /// <returns></returns>
+        [Obsolete("This method is deprecated, use Filter method (with filter enum) instead", false)]
         public static UrlBuilder Filter(this UrlBuilder target, string filter)
         {
             if (target == null)
@@ -232,11 +290,29 @@ namespace ImageProcessor.Web.Episerver
         }
 
         /// <summary>
+        /// Applies a filter to the current image.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="filter"><see cref="Filter"/></param>
+        /// <returns></returns>
+        public static UrlBuilder Filter(this UrlBuilder target, Filter filter)
+        {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            if (!target.IsEmpty)
+                target.QueryCollection.Add("filter", filter.ToString().ToLowerInvariant());
+
+            return target;
+        }
+
+        /// <summary>
         /// Flips the current image.
         /// </summary>
         /// <param name="target"></param>
         /// <param name="direction">horizontal, vertical or both</param>
         /// <returns></returns>
+        [Obsolete("This method is deprecated, use Flip method (with FlipDirection enum) instead", false)]
         public static UrlBuilder Flip(this UrlBuilder target, string direction)
         {
             if (target == null)
@@ -249,12 +325,30 @@ namespace ImageProcessor.Web.Episerver
         }
 
         /// <summary>
+        /// Flips the current image.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="direction"><see cref="FlipDirection"/></param>
+        /// <returns></returns>
+        public static UrlBuilder Flip(this UrlBuilder target, FlipDirection direction)
+        {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            if (!target.IsEmpty)
+                target.QueryCollection.Add("flip", direction.ToString().ToLowerInvariant());
+
+            return target;
+        }
+
+        /// <summary>
         /// Sets the output format of the current image to the given value.
         /// </summary>
         /// <param name="target"></param>
         /// <param name="format">Core supported formats are:
         /// jpg, jpeg, bmp, gif, png, png8, tif, tiff</param>
         /// <returns></returns>
+        [Obsolete("This method is deprecated, use Format method (with ImageFormat enum) instead")]
         public static UrlBuilder Format(this UrlBuilder target, string format)
         {
             if (target == null)
@@ -262,6 +356,23 @@ namespace ImageProcessor.Web.Episerver
 
             if (!target.IsEmpty)
                 target.QueryCollection.Add("format", format);
+
+            return target;
+        }
+
+        /// <summary>
+        /// Sets the output format of the current image to the given value.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="format"><see cref="ImageFormat"/></param>
+        /// <returns></returns>
+        public static UrlBuilder Format(this UrlBuilder target, ImageFormat format)
+        {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            if (!target.IsEmpty)
+                target.QueryCollection.Add("format", format.ToString().ToLowerInvariant());
 
             return target;
         }
@@ -316,6 +427,25 @@ namespace ImageProcessor.Web.Episerver
             return target;
         }
 
+        /// <summary>
+        /// Adjusts the brightness of images.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="percentage">Desired percentage value (without the ‘%’)</param>
+        /// <returns></returns>
+        public static UrlBuilder Brightness(this UrlBuilder target, int percentage)
+        {
+            if (target == null)
+                throw new ArgumentNullException(nameof(target));
+
+            if (percentage < 0 || percentage > 100)
+                throw new ArgumentOutOfRangeException(nameof(target));
+
+            if (!target.IsEmpty)
+                target.QueryCollection.Add("brightness", percentage.ToString());
+
+            return target;
+        }
 
         /// <summary>
         /// Uses a Gaussian kernel to sharpen the current image.
@@ -734,7 +864,7 @@ namespace ImageProcessor.Web.Episerver
         /// <param name="target"></param>
         /// <param name="angle">The rotation angle</param>
         /// <returns></returns>
-        public static UrlBuilder Rotate(this UrlBuilder target, float angle)
+        public static UrlBuilder Rotate(this UrlBuilder target, int angle)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -751,7 +881,7 @@ namespace ImageProcessor.Web.Episerver
         /// <param name="target"></param>
         /// <param name="angle">The rotation angle</param>
         /// <param name="keepSize">Whether to keep the image dimensions.
-        /// /// <para>
+        /// <para>
         /// If set to true, the image is zoomed to fit the bounding area.
         /// </para>
         /// <para>
@@ -759,7 +889,7 @@ namespace ImageProcessor.Web.Episerver
         /// </para>
         /// </param>
         /// <returns></returns>
-        public static UrlBuilder RotateBounded(this UrlBuilder target, float angle, bool keepSize)
+        public static UrlBuilder RotateBounded(this UrlBuilder target, int angle, bool keepSize)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -767,8 +897,7 @@ namespace ImageProcessor.Web.Episerver
             if (!target.IsEmpty)
                 target.QueryCollection.Add("rotatebounded", angle.ToString());
 
-            if (keepSize)
-                target.QueryCollection.Add("rotatebounded.keepsize", keepSize.ToString().ToLower());
+            target.QueryCollection.Add("rotatebounded.keepsize", keepSize.ToString().ToLower());
 
             return target;
         }
@@ -966,7 +1095,7 @@ namespace ImageProcessor.Web.Episerver
         /// <param name="vertical">Default is false</param>
         /// <param name="rtl">Default is false</param>
         /// <returns></returns>
-        public static UrlBuilder Watermark(this UrlBuilder target, string text, Point? position, string color, FontFamily font = null, int size = 48, FontStyle style = FontStyle.Bold, int opacity = 100, bool dropshadow = false, bool vertical = false, bool rtl = false)
+        public static UrlBuilder Watermark(this UrlBuilder target, string text, Point? position, string color, string fontfamily = null, int size = 48, FontStyle style = FontStyle.Bold, int opacity = 100, bool dropshadow = false, bool vertical = false, bool rtl = false)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -978,8 +1107,8 @@ namespace ImageProcessor.Web.Episerver
             {
                 target.QueryCollection.Add("watermark", text);
             }
-            if (font != null)
-                target.QueryCollection.Add("fontfamily", font.Name);
+            if (fontfamily != null)
+                target.QueryCollection.Add("fontfamily", fontfamily);
 
             if (color != null)
                 target.QueryCollection.Add("color", color.ToString().ToLower());
@@ -1013,7 +1142,7 @@ namespace ImageProcessor.Web.Episerver
         /// <param name="vertical">Default is false</param>
         /// <param name="rtl">Default is false</param>
         /// <returns></returns>
-        public static UrlBuilder Watermark(this UrlBuilder target, string text, Point? position, KnownColor? color, FontFamily font = null, int size = 48, FontStyle style = FontStyle.Bold, int opacity = 100, bool dropshadow = false, bool vertical = false, bool rtl = false)
+        public static UrlBuilder Watermark(this UrlBuilder target, string text, Point? position, KnownColor? color, string fontfamily = null, int size = 48, FontStyle style = FontStyle.Bold, int opacity = 100, bool dropshadow = false, bool vertical = false, bool rtl = false)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -1025,8 +1154,8 @@ namespace ImageProcessor.Web.Episerver
             {
                 target.QueryCollection.Add("watermark", text);
             }
-            if (font != null)
-                target.QueryCollection.Add("fontfamily", font.Name);
+            if (fontfamily != null)
+                target.QueryCollection.Add("fontfamily", fontfamily);
 
             if (color != null)
                 target.QueryCollection.Add("color", color.ToString().ToLower());
@@ -1060,7 +1189,7 @@ namespace ImageProcessor.Web.Episerver
         /// <param name="vertical">Default is false</param>
         /// <param name="rtl">Default is false</param>
         /// <returns></returns>
-        public static UrlBuilder Watermark(this UrlBuilder target, string text, Point? position, Color? color, FontFamily font = null, int size = 48, FontStyle style = FontStyle.Bold, int opacity = 100, bool dropshadow = false, bool vertical = false, bool rtl = false)
+        public static UrlBuilder Watermark(this UrlBuilder target, string text, Point? position, Color? color, string fontfamily = null, int size = 48, FontStyle style = FontStyle.Bold, int opacity = 100, bool dropshadow = false, bool vertical = false, bool rtl = false)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -1072,8 +1201,8 @@ namespace ImageProcessor.Web.Episerver
             {
                 target.QueryCollection.Add("watermark", text);
             }
-            if (font != null)
-                target.QueryCollection.Add("fontfamily", font.Name);
+            if (fontfamily != null)
+                target.QueryCollection.Add("fontfamily", fontfamily);
 
             if (color != null)
                 target.QueryCollection.Add("color", color.Value.ToKnownColor().ToString().ToLower());

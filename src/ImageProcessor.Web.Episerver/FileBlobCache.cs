@@ -97,7 +97,7 @@ namespace ImageProcessor.Web.Episerver
         public FileBlobCache(string requestPath, string fullPath, string querystring)
             : base(requestPath, fullPath, querystring)
         {
-            string basePath = (EPiServerFrameworkSection.Instance.AppData.BasePath.IndexOf("@\\") == 0)
+            string basePath = (EPiServerFrameworkSection.Instance.AppData.BasePath.IndexOf(@"\\") == 0)
                                         ? EPiServerFrameworkSection.Instance.AppData.BasePath
                                         : "~/" + EPiServerFrameworkSection.Instance.AppData.BasePath;
 
@@ -460,12 +460,11 @@ namespace ImageProcessor.Web.Episerver
                         };
                     }
 
-                    string virtualCacheFolderPath;
                     string result = GetValidatedCachePathsImpl(
                         originalPath,
                         mapPath,
                         s => new DirectoryInfo(s),
-                        out virtualCacheFolderPath);
+                        out string virtualCacheFolderPath);
 
                     validatedVirtualCachePath = virtualCacheFolderPath;
                     return result;
