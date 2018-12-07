@@ -67,6 +67,9 @@ The picture helper is described in more detail [here](https://hacksbyme.net/2018
 ## Change log
 To get a more exact overview of the changes, you can also take a look at the commit history.
 
+#### V5.0.2
+- Fix progressive lazyload webp bug
+
 #### V5.0.1
 - Fix regression of bug with UNC Path
 
