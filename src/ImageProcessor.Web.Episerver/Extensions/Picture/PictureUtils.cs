@@ -39,17 +39,21 @@ namespace ImageProcessor.Web.Episerver.Picture
                 pData.ImgSrc = BuildQueryString(imageUrl, imageType, imageType.DefaultImgWidth, currentFormat);
 	            pData.SizesAttribute = string.Join(", ", imageType.SrcSetSizes);
 
+	            if (includeLowQuality)
+	            {
+	                pData.SrcSetLowQuality = BuildSrcSet(imageUrl, imageType, currentFormat, true);
+	                pData.ImgSrcLowQuality = BuildQueryString(imageUrl, imageType, imageType.DefaultImgWidth, currentFormat, 10);
+	            }
+
                 //if jpg, also add webp versions
                 if (currentFormat == "jpg")
 	            {
 	                pData.SrcSetWebp = BuildSrcSet(imageUrl, imageType, "webp");
+	                if (includeLowQuality)
+	                {
+	                    pData.SrcSetLowQualityWebp = BuildSrcSet(imageUrl, imageType, "webp", true);
+                    }
 	            }
-
-	            if (includeLowQuality)
-	            {
-	                pData.SrcSetLowQuality = BuildSrcSet(imageUrl, imageType, currentFormat, true);
-                    pData.ImgSrcLowQuality = BuildQueryString(imageUrl, imageType, imageType.DefaultImgWidth, currentFormat, 10);
-                }
 	        }
 
 	        return pData;
