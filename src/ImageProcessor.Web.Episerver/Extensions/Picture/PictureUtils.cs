@@ -16,9 +16,17 @@ namespace ImageProcessor.Web.Episerver.Picture
 	{
 	    public static PictureData GetPictureData(ContentReference imageReference, ImageType imageType, bool includeLowQuality = false)
 	    {
-	        var urlBuilder = new UrlBuilder(ServiceLocator.Current.GetInstance<UrlResolver>().GetUrl(imageReference));
-	        return GetPictureData(urlBuilder, imageType, includeLowQuality);
-	    }
+	        var imageUrl = new UrlBuilder(ServiceLocator.Current.GetInstance<UrlResolver>().GetUrl(imageReference));
+	        bool.TryParse(ConfigurationManager.AppSettings["ImageProcessorUseFocalPoint"], out var checkFocalPoint);
+	        if (checkFocalPoint)
+	        {
+	            var image = ServiceLocator.Current.GetInstance<IContentLoader>().Get<IContent>(imageReference);
+	            var focalQueryValues = BuildFocalPointCollection(image);
+	            imageUrl.MergeQueryCollection(focalQueryValues);
+	        }
+
+	        return GetPictureData(imageUrl, imageType, includeLowQuality);
+        }
 
         public static PictureData GetPictureData(string imageUrl, ImageType imageType, bool includeLowQuality = false)
 	    {
@@ -126,12 +134,6 @@ namespace ImageProcessor.Web.Episerver.Picture
 				qc.Add("heightratio", imageType.HeightRatio.ToString(CultureInfo.InvariantCulture));
 			}
 
-		    bool.TryParse(ConfigurationManager.AppSettings["ImageProcessorUseFocalPoint"], out var checkFocalPoint);
-		    if (checkFocalPoint)
-		    {
-		        qc.Add(BuildFocalPointCollection(imageUrl));
-            }
-
             bool.TryParse(ConfigurationManager.AppSettings["ImageProcessorDebug"], out var showDebugInfo);
 			if (showDebugInfo)
 			{
@@ -153,11 +155,9 @@ namespace ImageProcessor.Web.Episerver.Picture
             return (string)newTarget;
 		}
 
-	    private static NameValueCollection BuildFocalPointCollection(UrlBuilder imageUrl)
+	    private static NameValueCollection BuildFocalPointCollection(IContentData image)
 	    {
 	        var queryCollection = new NameValueCollection();
-	        var urlResolver = ServiceLocator.Current.GetInstance<UrlResolver>();
-	        IContent image = urlResolver.Route(imageUrl);
 	        if (image?.Property["ImageProcessorFocalPoint"]?.Value != null)
 	        {
 	            var propertyValue = image.Property["ImageProcessorFocalPoint"].ToString();
@@ -167,11 +167,11 @@ namespace ImageProcessor.Web.Episerver.Picture
 	                var x = focalValues[0];
 	                var y = focalValues[1];
 	                queryCollection.Add("center", y + "," + x);
-                }
+	            }
 	        }
 
 	        return queryCollection;
-        }
+	    }
 
         private static NameValueCollection BuildInfoCollection(ImageType imageType, int? imageWidth, string format)
 		{

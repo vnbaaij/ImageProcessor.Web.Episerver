@@ -18,9 +18,10 @@ namespace ImageProcessor.Web.Episerver
                 return new MvcHtmlString(string.Empty);
             }
 
-            var urlBuilder = new UrlBuilder(ServiceLocator.Current.GetInstance<UrlResolver>().GetUrl(imageReference)); //todo: is there a better way to get the service?
+            var pictureData = PictureUtils.GetPictureData(imageReference, imageType, includeLowQuality: lazyLoadType == LazyLoadType.Progressive);
+            var pictureElement = BuildPictureElement(pictureData, cssClass, lazyLoadType);
 
-            return Picture(helper, urlBuilder, imageType, cssClass, lazyLoadType);
+            return new MvcHtmlString(HttpUtility.HtmlDecode(pictureElement));
         }
 
         public static IHtmlString Picture(this HtmlHelper helper, string imageUrl, ImageType imageType, string cssClass = "", LazyLoadType lazyLoadType = LazyLoadType.None)
@@ -43,17 +44,23 @@ namespace ImageProcessor.Web.Episerver
             }
 
             var pictureData = PictureUtils.GetPictureData(imageUrl, imageType, includeLowQuality: lazyLoadType == LazyLoadType.Progressive);
+            var pictureElement = BuildPictureElement(pictureData, cssClass, lazyLoadType);
 
+            return new MvcHtmlString(HttpUtility.HtmlDecode(pictureElement));
+        }
+
+        private static string BuildPictureElement(PictureData pictureData, string cssClass, LazyLoadType lazyLoadType)
+        {
             //Create picture element
             var pictureElement = new TagBuilder("picture");
 
-			if (pictureData.SrcSet != null)
-			{
-			    if (pictureData.SrcSetWebp != null)
-			    {
-			        //Add source element with webp versions. Needs to be rendered before jpg version, browser selects the first version it supports.
-			        pictureElement.InnerHtml += BuildSourceElement(pictureData, lazyLoadType, "webp");
-			    }
+            if (pictureData.SrcSet != null)
+            {
+                if (pictureData.SrcSetWebp != null)
+                {
+                    //Add source element with webp versions. Needs to be rendered before jpg version, browser selects the first version it supports.
+                    pictureElement.InnerHtml += BuildSourceElement(pictureData, lazyLoadType, "webp");
+                }
 
                 //Add source element to picture element
                 pictureElement.InnerHtml += BuildSourceElement(pictureData, lazyLoadType);
@@ -62,10 +69,10 @@ namespace ImageProcessor.Web.Episerver
             //Add img element to picture element
             pictureElement.InnerHtml += BuildImgElement(pictureData, lazyLoadType, cssClass);
 
-            return new MvcHtmlString(System.Web.HttpUtility.HtmlDecode(pictureElement.ToString()));
+            return pictureElement.ToString();
         }
 
-	    private static string BuildImgElement(PictureData pictureData, LazyLoadType lazyLoadType, string cssClass)
+        private static string BuildImgElement(PictureData pictureData, LazyLoadType lazyLoadType, string cssClass)
 	    {
 			var imgElement = new TagBuilder("img");
 		    imgElement.Attributes.Add("alt", "");
