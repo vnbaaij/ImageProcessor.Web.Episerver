@@ -11,20 +11,20 @@ namespace ImageProcessor.Web.Episerver
 {
 	public static class PictureHelper
     {
-        public static IHtmlString Picture(this HtmlHelper helper, ContentReference imageReference, ImageType imageType, string cssClass = "", LazyLoadType lazyLoadType = LazyLoadType.None)
+        public static IHtmlString Picture(this HtmlHelper helper, ContentReference imageReference, ImageType imageType, string cssClass = "", LazyLoadType lazyLoadType = LazyLoadType.None, string altText = "")
         {
             if (imageReference == null)
             {
                 return new MvcHtmlString(string.Empty);
             }
 
-            var pictureData = PictureUtils.GetPictureData(imageReference, imageType, includeLowQuality: lazyLoadType == LazyLoadType.Progressive);
+            var pictureData = PictureUtils.GetPictureData(imageReference, imageType, lazyLoadType == LazyLoadType.Progressive, altText);
             var pictureElement = BuildPictureElement(pictureData, cssClass, lazyLoadType);
 
             return new MvcHtmlString(HttpUtility.HtmlDecode(pictureElement));
         }
 
-        public static IHtmlString Picture(this HtmlHelper helper, string imageUrl, ImageType imageType, string cssClass = "", LazyLoadType lazyLoadType = LazyLoadType.None)
+        public static IHtmlString Picture(this HtmlHelper helper, string imageUrl, ImageType imageType, string cssClass = "", LazyLoadType lazyLoadType = LazyLoadType.None, string altText = "")
         {
             if (imageUrl == null)
             {
@@ -33,17 +33,17 @@ namespace ImageProcessor.Web.Episerver
 
             var urlBuilder = new UrlBuilder(imageUrl);
 
-            return Picture(helper, urlBuilder, imageType, cssClass, lazyLoadType);
+            return Picture(helper, urlBuilder, imageType, cssClass, lazyLoadType, altText);
         }
 
-        public static IHtmlString Picture(this HtmlHelper helper, UrlBuilder imageUrl, ImageType imageType, string cssClass = "", LazyLoadType lazyLoadType = LazyLoadType.None)
+        public static IHtmlString Picture(this HtmlHelper helper, UrlBuilder imageUrl, ImageType imageType, string cssClass = "", LazyLoadType lazyLoadType = LazyLoadType.None, string altText = "")
         {
             if (imageUrl == null)
             {
                 return new MvcHtmlString(string.Empty);
             }
 
-            var pictureData = PictureUtils.GetPictureData(imageUrl, imageType, includeLowQuality: lazyLoadType == LazyLoadType.Progressive);
+            var pictureData = PictureUtils.GetPictureData(imageUrl, imageType, lazyLoadType == LazyLoadType.Progressive, altText);
             var pictureElement = BuildPictureElement(pictureData, cssClass, lazyLoadType);
 
             return new MvcHtmlString(HttpUtility.HtmlDecode(pictureElement));
@@ -75,7 +75,7 @@ namespace ImageProcessor.Web.Episerver
         private static string BuildImgElement(PictureData pictureData, LazyLoadType lazyLoadType, string cssClass)
 	    {
 			var imgElement = new TagBuilder("img");
-		    imgElement.Attributes.Add("alt", "");
+		    imgElement.Attributes.Add("alt", HttpUtility.HtmlEncode(pictureData.AltText));
 
 			//Add src and/or data-src attribute
 		    switch (lazyLoadType)

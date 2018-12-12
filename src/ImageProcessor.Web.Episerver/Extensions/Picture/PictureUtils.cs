@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Web;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.ServiceLocation;
@@ -14,33 +15,56 @@ namespace ImageProcessor.Web.Episerver.Picture
 {
 	public static class PictureUtils
 	{
-	    public static PictureData GetPictureData(ContentReference imageReference, ImageType imageType, bool includeLowQuality = false)
+        /// <summary>
+	    /// Get the data necessary for rendering a Picture element.
+	    /// </summary>
+	    public static PictureData GetPictureData(ContentReference imageReference, ImageType imageType, bool includeLowQuality = false, string altText = "")
 	    {
 	        var imageUrl = new UrlBuilder(ServiceLocator.Current.GetInstance<UrlResolver>().GetUrl(imageReference));
-	        bool.TryParse(ConfigurationManager.AppSettings["ImageProcessorUseFocalPoint"], out var checkFocalPoint);
-	        if (checkFocalPoint)
+
+            //get focal point and/or alt-text from the image data 
+            bool getFocalPoint, getAltText;
+            bool.TryParse(ConfigurationManager.AppSettings["PictureHelperFocalPoint"], out getFocalPoint);
+            bool.TryParse(ConfigurationManager.AppSettings["PictureHelperAltText"], out getAltText);
+            if (getFocalPoint || getAltText)
 	        {
 	            var image = ServiceLocator.Current.GetInstance<IContentLoader>().Get<IContent>(imageReference);
-	            var focalQueryValues = BuildFocalPointCollection(image);
-	            imageUrl.MergeQueryCollection(focalQueryValues);
+                if (getFocalPoint)
+                {
+                    imageUrl.MergeQueryCollection(BuildFocalPointCollection(image));
+                }
+                if (getAltText)
+                {
+                    if (image?.Property["ImageAltText"]?.Value != null)
+                    {
+                        altText = HttpUtility.HtmlEncode(image.Property["ImageAltText"].ToString());
+                    }
+                }
 	        }
 
-	        return GetPictureData(imageUrl, imageType, includeLowQuality);
+            return GetPictureData(imageUrl, imageType, includeLowQuality, altText);
         }
 
-        public static PictureData GetPictureData(string imageUrl, ImageType imageType, bool includeLowQuality = false)
+        /// <summary>
+	    /// Get the data necessary for rendering a Picture element.
+	    /// </summary>
+        public static PictureData GetPictureData(string imageUrl, ImageType imageType, bool includeLowQuality = false, string altText = "")
 	    {
 	        var urlBuilder = new UrlBuilder(imageUrl);
-	        return GetPictureData(urlBuilder, imageType, includeLowQuality);
+	        return GetPictureData(urlBuilder, imageType, includeLowQuality, altText);
 	    }
 
 	    /// <summary>
 	    /// Get the data necessary for rendering a Picture element.
 	    /// </summary>
-        public static PictureData GetPictureData(UrlBuilder imageUrl, ImageType imageType, bool includeLowQuality = false)
+        public static PictureData GetPictureData(UrlBuilder imageUrl, ImageType imageType, bool includeLowQuality = false, string altText = "")
 	    {
-            var pData = new PictureData();
-	        var currentFormat = PictureUtils.GetFormatFromExtension(imageUrl.Path);
+            var pData = new PictureData
+            {
+                AltText = altText
+            };
+
+            var currentFormat = GetFormatFromExtension(imageUrl.Path);
 	        if (imageType.SrcSetWidths != null)
 	        {
 	            pData.SrcSet = BuildSrcSet(imageUrl, imageType, currentFormat);
@@ -134,7 +158,7 @@ namespace ImageProcessor.Web.Episerver.Picture
 				qc.Add("heightratio", imageType.HeightRatio.ToString(CultureInfo.InvariantCulture));
 			}
 
-            bool.TryParse(ConfigurationManager.AppSettings["ImageProcessorDebug"], out var showDebugInfo);
+            bool.TryParse(ConfigurationManager.AppSettings["PictureHelperDebug"], out var showDebugInfo);
 			if (showDebugInfo)
 			{
 				qc.Add(BuildInfoCollection(imageType, imageWidth, format));
@@ -158,9 +182,9 @@ namespace ImageProcessor.Web.Episerver.Picture
 	    private static NameValueCollection BuildFocalPointCollection(IContentData image)
 	    {
 	        var queryCollection = new NameValueCollection();
-	        if (image?.Property["ImageProcessorFocalPoint"]?.Value != null)
+	        if (image?.Property["ImageFocalPoint"]?.Value != null)
 	        {
-	            var propertyValue = image.Property["ImageProcessorFocalPoint"].ToString();
+	            var propertyValue = image.Property["ImageFocalPoint"].ToString();
 	            var focalValues = propertyValue.Split('|');
 	            if (focalValues.Length == 2)
 	            {

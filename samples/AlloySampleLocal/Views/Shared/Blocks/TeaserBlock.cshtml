@@ -11,8 +11,8 @@
     @*Link the teaser block only if a link has been set and not displayed in preview*@
     @using (Html.BeginConditionalLink(
         !ContentReference.IsNullOrEmpty(Model.Link) && !(ViewContext.Controller is PreviewController),
-        Url.PageLinkUrl(Model.Link),
-        Model.Heading))
+        Url.PageLinkUrl(Model.Link) //, Model.Heading
+        ))
     {
         <h2 @Html.EditAttributes(x => x.Heading)>@Model.Heading</h2>
         <p @Html.EditAttributes(x => x.Text)>@Model.Text</p>
@@ -20,7 +20,7 @@
             @Html.Picture(Html.ProcessImage(Model.Image).Resize(378, null).ReplaceColor("fff", "f00", 99).Watermark("Episerver", new Point(100, 100), "fff"), ImageTypes.Teaser, lazyLoadType: LazyLoadType.Regular)
             @Html.Picture(Html.ProcessImage(Model.Image).Resize(378, null, ImageProcessor.Imaging.ResizeMode.Crop).ReplaceColor("fff", "f00", 99).Watermark("Episerver", new Point(100, 100), "fff"), ImageTypes.Teaser, lazyLoadType: LazyLoadType.None)
             @Html.Picture(Html.ProcessImage(Model.Image).Quality(32).Resize(null, null, ResizeMode.Stretch), ImageTypes.Teaser, lazyLoadType: LazyLoadType.Progressive)
-            @Html.Picture(Html.ProcessImage(Model.Image).Quality(32), ImageTypes.Teaser, lazyLoadType: LazyLoadType.None)
+            @Html.Picture(Html.ProcessImage(Model.Image).Quality(32), ImageTypes.Teaser, lazyLoadType: LazyLoadType.None, altText: "Picture helper rocks!\"/><script>alert('this is unsafe!')</script>")
             @Html.Picture(Url.ContentUrl(Model.Image), ImageTypes.Teaser)
             @Html.Picture(Model.Image, ImageTypes.Teaser)
             <pre>
@@ -34,6 +34,7 @@
 
                     @picData.SizesAttribute<br />
 
+                    @picData.AltText<br />
                 }
             </pre>
         </div>
