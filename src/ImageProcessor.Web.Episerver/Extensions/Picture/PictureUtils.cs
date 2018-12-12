@@ -24,8 +24,8 @@ namespace ImageProcessor.Web.Episerver.Picture
 
             //get focal point and/or alt-text from the image data 
             bool getFocalPoint, getAltText;
-            bool.TryParse(ConfigurationManager.AppSettings["PictureHelperFocalPoint"], out getFocalPoint);
-            bool.TryParse(ConfigurationManager.AppSettings["PictureHelperAltText"], out getAltText);
+            bool.TryParse(ConfigurationManager.AppSettings["Picture_FocalPointFromImage"], out getFocalPoint);
+            bool.TryParse(ConfigurationManager.AppSettings["Picture_AltTextFromImage"], out getAltText);
             if (getFocalPoint || getAltText)
 	        {
 	            var image = ServiceLocator.Current.GetInstance<IContentLoader>().Get<IContent>(imageReference);
@@ -158,7 +158,7 @@ namespace ImageProcessor.Web.Episerver.Picture
 				qc.Add("heightratio", imageType.HeightRatio.ToString(CultureInfo.InvariantCulture));
 			}
 
-            bool.TryParse(ConfigurationManager.AppSettings["PictureHelperDebug"], out var showDebugInfo);
+            bool.TryParse(ConfigurationManager.AppSettings["Picture_ShowInfo"], out var showDebugInfo);
 			if (showDebugInfo)
 			{
 				qc.Add(BuildInfoCollection(imageType, imageWidth, format));
