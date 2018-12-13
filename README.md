@@ -68,7 +68,10 @@ The picture helper is described in more detail [here](https://hacksbyme.net/2018
 To get a more exact overview of the changes, you can also take a look at the commit history.
 
 #### V5.1.0
--
+- Basic focal point support in Picture helper
+- Possible to set alt text for the generated img element inside the picture element.
+- Possible to get Picture data with content reference instead of string/urlbuilder (same applies to Picture helper)
+- Change of "ImageProcessorDebug" appsetting to "IPE_ShowInfo"
 - Update several NuGet packages to resolve security alerts
 
 #### V5.0.2
