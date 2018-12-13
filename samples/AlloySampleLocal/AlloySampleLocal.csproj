@@ -142,7 +142,8 @@
       <HintPath>..\..\packages\ImageProcessor.Web.4.9.3.25\lib\net452\ImageProcessor.Web.dll</HintPath>
     </Reference>
     <Reference Include="ImageProcessor.Web.Episerver, Version=5.0.1.14315, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ImageProcessor.Web.Episerver.5.0.1.14315\lib\net461\ImageProcessor.Web.Episerver.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\src\ImageProcessor.Web.Episerver\bin\Debug\ImageProcessor.Web.Episerver.dll</HintPath>
     </Reference>
     <Reference Include="ImageProcessor.Web.Episerver.UI, Version=5.0.1.14316, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ImageProcessor.Web.Episerver.UI.5.0.1.14316\lib\net461\ImageProcessor.Web.Episerver.UI.dll</HintPath>
