@@ -7,7 +7,7 @@ namespace AlloySample.Models.Media
 {
     [ContentType(GUID = "0A89E464-56D4-449F-AEA8-2BF774AB8730")]
     [MediaDescriptor(ExtensionString = "jpg,jpeg,jpe,ico,gif,bmp,png")]
-    public class ImageFile : ImageData 
+    public class ImageFile : ImageData
     {
         /// <summary>
         /// Gets or sets the copyright.
@@ -17,7 +17,10 @@ namespace AlloySample.Models.Media
         /// </value>
         public virtual string Copyright { get; set; }
 
+        [Display(Name = "Focal point")]
         public virtual string ImageFocalPoint { get; set; }
+
+        [Display(Name = "Alt text")]
         public virtual string ImageAltText { get; set; }
 
     }
