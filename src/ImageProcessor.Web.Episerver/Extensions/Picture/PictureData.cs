@@ -15,6 +15,6 @@ namespace ImageProcessor.Web.Episerver.Extensions.Picture
         public string SizesAttribute { get; set; }
         public string ImgSrc { get; set; }
         public string ImgSrcLowQuality { get; set; }
-
+        public string AltText { get; set; }
     }
 }
