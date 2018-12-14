@@ -51,7 +51,7 @@ Example usage
 ```
 @Html.Picture(Model.Image, ImageTypes.Teaser)
 
-@* Also possible to have an url (string) as input. + Render for progressive lazy loading *@
+@* Url (string) as input + render for progressive lazy loading *@
 @Html.Picture(Url.ContentUrl(Model.Image), ImageTypes.Teaser, lazyLoadType: LazyLoadType.Progressive)
 
 @* Picture helper can be used together with the ProcessImage helper *@
@@ -66,7 +66,9 @@ When lazy load type is "Regular", the srcset attribute of the source element (in
 and an additional attribute (data-srcset) will be added that contains the image url(s). 
 That enables you to lazy load the image after the rest of your page content is loaded. <br/>
 When lazy load type is "Progressive", the srcset attribute will contain image url(s) for a low quality version of the image, and makes it possible to lazy load the high quality image.<br/>
-[Javascript example of how to lazy load the images](https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/samples/AlloySampleLocal/Static/js/lazyImages.js)
+[Javascript example of how to lazy load the images](https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/samples/AlloySampleLocal/Static/js/lazyImages.js)<br/>
+* **altText (string)** <br/> Will be added to the rendered img element.<br/>
+See also how to [get alt text from the image](picture_helper_doc.md).
 
 The picture helper is described in more detail [here](https://hacksbyme.net/2018/10/19/a-dead-easy-way-to-optimize-the-images-on-your-episerver-site/).
 
