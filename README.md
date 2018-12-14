@@ -81,6 +81,16 @@ GetPictureData parameters are similar to the parameters for the Picture html hel
 ## Change log
 To get a more exact overview of the changes, you can also take a look at the commit history.
 
+#### V5.1.0
+- Basic focal point support in Picture helper
+- Possible to set alt text for the generated img element inside the picture element.
+- Possible to get Picture data with content reference instead of string/urlbuilder (same applies to Picture helper)
+- Change of "ImageProcessorDebug" appsetting to "IPE_ShowInfo"
+- Update several NuGet packages to resolve security alerts
+
+#### V5.0.2
+- Fix progressive lazyload webp bug
+
 #### V5.0.1
 - Fix regression of bug with UNC Path
 
