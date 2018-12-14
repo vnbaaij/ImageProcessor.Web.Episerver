@@ -49,10 +49,16 @@ This package also include an Html helper that renders a [Picture element](https:
 
 Example usage
 ```
+@Html.Picture(Model.Image, ImageTypes.Teaser)
+
+@* Url (string) as input + render for progressive lazy loading *@
 @Html.Picture(Url.ContentUrl(Model.Image), ImageTypes.Teaser, lazyLoadType: LazyLoadType.Progressive)
+
+@* Picture helper can be used together with the ProcessImage helper *@
+@Html.Picture(Html.ProcessImage(Model.Image).ReplaceColor("fff", "f00", 99).Watermark("Episerver", new Point(100, 100), "fff"), ImageTypes.Teaser)
 ```
 #### Parameters
-* **imageUrl (string or UrlBuilder)** <br/> 
+* **imageReference (ContentReference) <br/>OR<br/> imageUrl (string or UrlBuilder)** <br/> 
 * **imageType (ImageProcessor.Web.Episerver.ImageType)** <br/> An "Image type" defines the possible sizes and quality for an image. <br/> [Example of how to define image types](https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/samples/AlloySampleLocal/Business/Rendering/ImageTypes.cs)
 * **cssClass (string)** <br/> Will be added to the rendered img element.
 * **layzLoadType (ImageProcessor.Web.Episerver.LazyLoadType)** <br/> 
@@ -60,9 +66,19 @@ When lazy load type is "Regular", the srcset attribute of the source element (in
 and an additional attribute (data-srcset) will be added that contains the image url(s). 
 That enables you to lazy load the image after the rest of your page content is loaded. <br/>
 When lazy load type is "Progressive", the srcset attribute will contain image url(s) for a low quality version of the image, and makes it possible to lazy load the high quality image.<br/>
-[Javascript example of how to lazy load the images](https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/samples/AlloySampleLocal/Static/js/lazyImages.js)
+[Javascript example of how to lazy load the images](https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/samples/AlloySampleLocal/Static/js/lazyImages.js)<br/>
+* **altText (string)** <br/> Will be added to the rendered img element.<br/>
+See also how to [get alt text from the image](picture_helper_doc.md).
 
-The picture helper is described in more detail [here](https://hacksbyme.net/2018/03/19/picture-element-imageprocessor-responsive-images-made-easy/) and [here](https://hacksbyme.net/2018/05/12/optimize-your-images-with-imageprocessor/)
+The picture helper is described in more detail [here](https://hacksbyme.net/2018/10/19/a-dead-easy-way-to-optimize-the-images-on-your-episerver-site/).
+
+### Custom rendering of a picture element
+If you can't use the Picture html helper, for instance when rendering the markup client side in a React app, you can still use PictureUtils to get the data needed to render a picture element.
+````
+PictureUtils.GetPictureData(myImageRef, ImageTypes.Teaser)
+````
+GetPictureData returns a PictureData object that contains all the data needed for rendering a picture element.<br/>
+GetPictureData parameters are similar to the parameters for the Picture html helper.<br/><br/>
 
 ## Change log
 To get a more exact overview of the changes, you can also take a look at the commit history.
