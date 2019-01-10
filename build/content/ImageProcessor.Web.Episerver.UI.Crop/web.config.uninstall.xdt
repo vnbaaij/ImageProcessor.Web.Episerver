@@ -2,7 +2,7 @@
 <configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
   <episerver.shell>
     <protectedModules rootPath="~/EPiServer/">
-      <add name="ImageProcessor.Web.Episerver.UI.Blocks" xdt:Transform="Remove" xdt:Locator="Match(name)"/>
+      <add name="ImageProcessor.Web.Episerver.UI.Crop" xdt:Transform="Remove" xdt:Locator="Match(name)"/>
     </protectedModules>
   </episerver.shell>
 </configuration>

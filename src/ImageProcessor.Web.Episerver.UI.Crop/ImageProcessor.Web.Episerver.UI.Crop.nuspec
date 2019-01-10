@@ -21,12 +21,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\Views\ProcessImageBlock.cshtml" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\Views" />
-    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\web.config" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
-    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\module.config" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
-    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\ipepi.png" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
-    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\ImageProcessor.Web.Episerver.UI.zip" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
-    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\web.config.install.xdt" target="content\web.config.install.xdt" />
-    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\web.config.uninstall.xdt" target="content\web.config.uninstall.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI.Crop\module.config" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI.Crop\" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI.Crop\ImageProcessor.Web.Episerver.UI.Crop.zip" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI.Crop\" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI.Crop\web.config.install.xdt" target="content\web.config.install.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI.Crop\web.config.uninstall.xdt" target="content\web.config.uninstall.xdt" />
   </files>
 </package>
