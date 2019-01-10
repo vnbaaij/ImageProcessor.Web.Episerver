@@ -10,7 +10,7 @@ namespace ImageProcessor.Web.Episerver.UI.Blocks.Business.UIDescriptors
     {
         public override void ModifyMetadata(ExtendedMetadata metadata, IEnumerable<Attribute> attributes)
         {
-            ClientEditingClass = "ip/editors/ColorPicker";
+            ClientEditingClass = "ipepiuiblocks/editors/ColorPicker";
             base.ModifyMetadata(metadata, attributes);
         }
     }

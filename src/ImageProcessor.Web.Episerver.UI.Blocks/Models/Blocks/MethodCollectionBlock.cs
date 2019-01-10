@@ -6,7 +6,7 @@ using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Blocks.Business;
 
-namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Blocks.Models.Blocks
 {
     [ContentType(DisplayName = "Method Collection",
         GUID = "12fed908-e7b4-4dca-aee6-fcb65dcaf969",

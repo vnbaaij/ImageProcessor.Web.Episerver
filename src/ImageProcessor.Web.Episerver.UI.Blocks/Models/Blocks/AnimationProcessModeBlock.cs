@@ -5,7 +5,7 @@ using EPiServer.DataAnnotations;
 using ImageProcessor.Imaging;
 using ImageProcessor.Web.Episerver.UI.Blocks.Business;
 
-namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Blocks.Models.Blocks
 {
     [ContentType(DisplayName = "Animation Process Mode", 
         GUID = "112157b5-2786-4173-918e-7e0c6bbf4417", 

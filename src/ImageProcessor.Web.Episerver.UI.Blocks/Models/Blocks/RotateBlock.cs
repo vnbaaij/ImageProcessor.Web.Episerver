@@ -4,7 +4,7 @@ using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Blocks.Business;
 
-namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Blocks.Models.Blocks
 {
     [ContentType(DisplayName = "Rotate", 
         GUID = "bfb53865-6e3b-4f8a-ae1b-109d6990bcad", 

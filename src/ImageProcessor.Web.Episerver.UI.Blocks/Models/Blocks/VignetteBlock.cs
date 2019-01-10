@@ -5,7 +5,7 @@ using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Blocks.Business;
 
-namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Blocks.Models.Blocks
 {
     [ContentType(DisplayName = "Vignette", 
         GUID = "c2c4dea4-035c-4c18-a961-7bd3f46b0960", 

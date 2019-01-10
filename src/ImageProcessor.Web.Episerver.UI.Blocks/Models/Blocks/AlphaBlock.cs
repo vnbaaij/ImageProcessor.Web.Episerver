@@ -4,7 +4,7 @@ using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using ImageProcessor.Web.Episerver.UI.Blocks.Business;
 
-namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Blocks.Models.Blocks
 {
     [ContentType(DisplayName = "Alpha",
         GUID = "438f850d-42e9-4806-986b-c01b9321a1f2",

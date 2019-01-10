@@ -2,7 +2,7 @@
 using EPiServer.Core;
 using ImageProcessor.Web.Episerver.UI.Blocks.Business;
 
-namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Blocks.Models.Blocks
 {
     public abstract class ImageProcessorMethodBaseBlock : BlockData, IForceAllPropertiesMode
     {

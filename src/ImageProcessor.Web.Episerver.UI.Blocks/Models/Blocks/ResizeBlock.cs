@@ -5,7 +5,7 @@ using EPiServer.DataAnnotations;
 using ImageProcessor.Imaging;
 using ImageProcessor.Web.Episerver.UI.Blocks.Business;
 
-namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Blocks.Models.Blocks
 {
     [ContentType(DisplayName = "Resize",
         GUID = "a51f38ca-eb17-4acd-a3d6-c688ca7f98a3",

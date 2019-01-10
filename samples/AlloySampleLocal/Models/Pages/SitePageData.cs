@@ -6,7 +6,7 @@ using AlloySample.Business.Rendering;
 using AlloySample.Models.Properties;
 using EPiServer.Web;
 using AlloySample.Models.Media;
-using ITMeric.ImageCrop.Core;
+using ImageProcessor.Web.Episerver.UI.Crop.Core;
 
 namespace AlloySample.Models.Pages
 {

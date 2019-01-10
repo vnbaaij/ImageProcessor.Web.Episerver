@@ -5,7 +5,7 @@ using EPiServer.DataAnnotations;
 using ImageProcessor.Imaging;
 using ImageProcessor.Web.Episerver.UI.Blocks.Business;
 
-namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Blocks.Models.Blocks
 {
     [ContentType(DisplayName = "Crop",
         GUID = "c26bc228-1215-4c40-a294-7dae69aa37e4",

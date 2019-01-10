@@ -1,4 +1,4 @@
-﻿define("ipepiuicrop/scripts/helpers",
+﻿define("ipepiuicrop/helpers",
   function() {
     var exports = {};
 

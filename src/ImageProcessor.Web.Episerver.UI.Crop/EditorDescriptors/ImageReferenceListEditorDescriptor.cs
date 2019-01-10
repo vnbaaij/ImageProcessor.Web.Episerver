@@ -8,7 +8,7 @@ namespace ImageProcessor.Web.Episerver.UI.Crop.EditorDescriptors
     {
         public ImageReferenceListEditorDescriptor()
         {
-            ClientEditingClass = "itmeric/Scripts/Editors/ImageReferenceListSelector";
+            ClientEditingClass = "ipepiuicrop/Editors/ImageReferenceListSelector";
         }
     }
 }

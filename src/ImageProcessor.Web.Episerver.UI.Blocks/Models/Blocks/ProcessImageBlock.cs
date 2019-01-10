@@ -8,7 +8,7 @@ using EPiServer.Web;
 using EPiServer.Web.Routing;
 using ImageProcessor.Web.Episerver.UI.Blocks.Business;
 
-namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
+namespace ImageProcessor.Web.Episerver.UI.Blocks.Models.Blocks
 {
     [ContentType(
         DisplayName = "Process Image",

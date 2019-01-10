@@ -39,7 +39,7 @@
     'epi/shell/dnd/Target',
     'dojo/dnd/Source',
 
-    'ipepiuicrop/scripts/helpers',
+    'ipepiuicrop/helpers',
 
     //template
     'dojo/text!./templates/template.html',

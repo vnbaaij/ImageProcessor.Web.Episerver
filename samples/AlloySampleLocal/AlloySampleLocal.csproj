@@ -141,16 +141,14 @@
     <Reference Include="ImageProcessor.Web, Version=4.9.3.25, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ImageProcessor.Web.4.9.3.25\lib\net452\ImageProcessor.Web.dll</HintPath>
     </Reference>
-    <Reference Include="ImageProcessor.Web.Episerver, Version=5.0.1.14315, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\ImageProcessor.Web.Episerver\bin\Debug\ImageProcessor.Web.Episerver.dll</HintPath>
+    <Reference Include="ImageProcessor.Web.Episerver, Version=5.2.0.20706, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.Web.Episerver.5.2.0.20706\lib\net461\ImageProcessor.Web.Episerver.dll</HintPath>
     </Reference>
-    <Reference Include="ImageProcessor.Web.Episerver.UI, Version=5.0.1.14316, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ImageProcessor.Web.Episerver.UI.5.0.1.14316\lib\net461\ImageProcessor.Web.Episerver.UI.dll</HintPath>
+    <Reference Include="ImageProcessor.Web.Episerver.UI.Blocks, Version=5.2.0.21633, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.Web.Episerver.UI.Blocks.5.2.0.21633\lib\net461\ImageProcessor.Web.Episerver.UI.Blocks.dll</HintPath>
     </Reference>
-    <Reference Include="ITMeric.ImageCrop, Version=1.0.6948.20347, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\ITMeric.ImageCrop.dll</HintPath>
+    <Reference Include="ImageProcessor.Web.Episerver.UI.Crop, Version=5.2.0.20708, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.Web.Episerver.UI.Crop.5.2.0.20708\lib\net461\ImageProcessor.Web.Episerver.UI.Crop.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -449,7 +447,7 @@
     <Content Include="ClientResources\Styles\LayoutIcons.css" />
     <Content Include="ClientResources\Styles\Styles.css" />
     <Content Include="favicon.ico" />
-    <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI\ipepi.png" />
+    <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI.Blocks\ipepi.png" />
     <Content Include="Resources\LanguageFiles\ContentTypeNames.xml" />
     <Content Include="Resources\LanguageFiles\Display.xml" />
     <Content Include="Resources\LanguageFiles\EditorHints.xml" />
@@ -524,10 +522,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="License.config" />
-    <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI\Web.config" />
-    <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI\Views\ProcessImageBlock.cshtml" />
-    <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI\module.config" />
-    <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI\ImageProcessor.Web.Episerver.UI.zip" />
+    <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI.Crop\ImageProcessor.Web.Episerver.UI.Crop.zip" />
+    <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI.Blocks\Web.config" />
+    <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI.Blocks\Views\ProcessImageBlock.cshtml" />
+    <Content Include="modules\_protected\ImageProcessor.Web.Episerver.UI.Blocks\ImageProcessor.Web.Episerver.UI.Blocks.zip" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
