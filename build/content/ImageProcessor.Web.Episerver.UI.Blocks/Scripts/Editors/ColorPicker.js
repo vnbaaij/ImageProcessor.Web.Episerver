@@ -16,7 +16,7 @@
         _WidgetsInTemplateMixin,
         ColorPicker,
         _ValueRequiredMixin ) {
-        return declare("ipepi.cp", [_Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _CssStateMixin, _ValueRequiredMixin],
+        return declare("ipepiuiblocks.cp", [_Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _CssStateMixin, _ValueRequiredMixin],
             {
                 templateString: "<div class=\"dijitInline\"><div class=\"colorPickerContainer\">" +
                     "<div data-dojo-attach-point=\"stateNode, tooltipNode\">" +

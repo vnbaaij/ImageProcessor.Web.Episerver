@@ -1,7 +1,7 @@
 ﻿using EPiServer.Configuration;
 using EPiServer.DataAnnotations;
 
-namespace ImageProcessor.Web.Episerver.UI.Business
+namespace ImageProcessor.Web.Episerver.UI.Blocks.Business
 {
     public class IconAttribute : ImageUrlAttribute
     {

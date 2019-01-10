@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageProcessor.Web.Episerver.UI.Business
+namespace ImageProcessor.Web.Episerver.UI.Blocks.Business
 {
     public interface IForceAllPropertiesMode
     {

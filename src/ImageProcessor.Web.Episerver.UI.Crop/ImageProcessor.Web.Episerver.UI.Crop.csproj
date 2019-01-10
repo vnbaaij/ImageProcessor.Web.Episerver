@@ -182,8 +182,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="ImageProcessor.Web.Episerver.UI.Crop.nuspec" />
-    <None Include="modules\_protected\CMS\CMS.zip" />
-    <None Include="modules\_protected\Shell\Shell.zip" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

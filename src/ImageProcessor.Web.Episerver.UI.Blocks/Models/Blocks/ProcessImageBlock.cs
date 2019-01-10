@@ -6,7 +6,7 @@ using EPiServer.DataAnnotations;
 using EPiServer.Shell.ObjectEditing;
 using EPiServer.Web;
 using EPiServer.Web.Routing;
-using ImageProcessor.Web.Episerver.UI.Business;
+using ImageProcessor.Web.Episerver.UI.Blocks.Business;
 
 namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
 {

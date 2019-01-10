@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ImageProcessor.Web.Episerver.UI.Crop")]
-[assembly: AssemblyDescription("ImageProcessor in Episerver. Editor useable cropper for single image or collection of images")]
+[assembly: AssemblyDescription("ImageProcessor in Episerver. Editor useable cropper for single image or collection of images. Based on ITMeric.ImageCrop")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Vincent Baaij")]
 [assembly: AssemblyProduct("ImageProcessor.Web.Episerver.UI.Crop")]

@@ -29,8 +29,8 @@
     'epi/shell/widget/dialog/Dialog',
     'epi/shell/dnd/Target',
     'epi/shell/dnd/Source',
-    //itmeric
-    'itmeric/scripts/helpers',
+    //ipepiuicrop
+    'ipepiuicrop/scripts/helpers',
     //template
     'dojo/text!./templates/template.html'
   ],
@@ -69,7 +69,7 @@
       //template
       template
     ) {
-      return declare('itmeric.Editors.ImageReferenceSelector',
+        return declare('ipepiuicrop.Editors.ImageReferenceSelector',
         [
           _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _CssStateMixin, _HasChildDialogMixin, _Droppable,
           _ValueRequiredMixin
@@ -86,19 +86,19 @@
           dialog: null,
           mediaSource: null,
           dropTarget: null,
-          imageWidth: 120,      
+          imageWidth: 120,
 
           postCreate: function () {
 
             this.inherited(arguments);
-            this.allowedDndTypes = this.get('allowedDndTypes');         
+            this.allowedDndTypes = this.get('allowedDndTypes');
 
             this.calculatedHeight = this.get('cropRatio') > 0
               ? Math.round(this.imageWidth / this.get('cropRatio'))
               : 80;
 
             //domStyle.set(this.dropAreaNode, 'min-height', this.calculatedHeight + 'px');
-          },          
+          },
 
           buildRendering: function () {
             this.inherited(arguments);
@@ -113,7 +113,7 @@
             this.connect(this.dropTarget, 'onDropData', '_onDropData');
           },
 
-          _setValueAttr: function (value) {            
+          _setValueAttr: function (value) {
             if (value != null) {
               if (value.hasOwnProperty('cropDetails')) {
                 this.value = value;
@@ -132,12 +132,12 @@
           _onDropData: function (dndData, source, nodes, copy) {
 
             var item = dndData ? (dndData.length ? dndData[0] : dndData) : null;
-            
+
             if (!item) {
               return;
             }
 
-            // invoke the onDropping required by SideBySideWrapper and other widgets listening on onDropping 
+            // invoke the onDropping required by SideBySideWrapper and other widgets listening on onDropping
             if (this.onDropping) {
               this.onDropping();
             }
@@ -158,13 +158,13 @@
 
                   } else {
                     alert('Unsuported media type.');
-                  }                  
+                  }
                 }));
           },
 
           _setValue: function (value) {
             this._set('value', value);
-            this.onChange(value);            
+            this.onChange(value);
             this._updateDisplayNode(value);
             this.validate();
           },
@@ -308,7 +308,7 @@
 
             this._setValue(null);
             this.onBlur();
-          }       
+          }
         });
     });
 })()

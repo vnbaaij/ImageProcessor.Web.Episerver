@@ -1,4 +1,4 @@
-﻿define("itmeric/scripts/helpers",
+﻿define("ipepiuicrop/scripts/helpers",
   function() {
     var exports = {};
 

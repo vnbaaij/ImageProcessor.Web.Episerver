@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EPiServer.Shell;
 
-namespace ImageProcessor.Web.Episerver.UI.Business
+namespace ImageProcessor.Web.Episerver.UI.Blocks.Business
 {
     [UIDescriptorRegistration]
     public class ForceAllPropertiesModeUiDescriptor : UIDescriptor<IForceAllPropertiesMode>

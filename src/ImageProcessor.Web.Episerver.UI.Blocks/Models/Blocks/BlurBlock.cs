@@ -1,7 +1,7 @@
 ﻿using EPiServer;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
-using ImageProcessor.Web.Episerver.UI.Business;
+using ImageProcessor.Web.Episerver.UI.Blocks.Business;
 
 namespace ImageProcessor.Web.Episerver.UI.Models.Blocks
 {

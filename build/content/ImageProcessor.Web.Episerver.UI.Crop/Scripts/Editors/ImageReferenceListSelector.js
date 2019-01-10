@@ -39,7 +39,7 @@
     'epi/shell/dnd/Target',
     'dojo/dnd/Source',
 
-    'itmeric/scripts/helpers',
+    'ipepiuicrop/scripts/helpers',
 
     //template
     'dojo/text!./templates/template.html',
@@ -81,11 +81,11 @@
       Target,
       Source,
 
-      //itmeric
+      //ipepiuicrop
       helpers,
       template
     ) {
-      return declare('itmeric.Editors.ImageReferenceListSelector',
+        return declare('ipepiuicrop.Editors.ImageReferenceListSelector',
         [
           _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _CssStateMixin, _HasChildDialogMixin, _Droppable,
           _ValueRequiredMixin, _ContentContextMixin

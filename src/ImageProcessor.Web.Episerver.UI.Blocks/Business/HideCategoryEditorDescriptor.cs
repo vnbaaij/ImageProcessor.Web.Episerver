@@ -6,7 +6,7 @@ using EPiServer.Shell.ObjectEditing;
 using EPiServer.Shell.ObjectEditing.EditorDescriptors;
 using ImageProcessor.Web.Episerver.UI.Models.Blocks;
 
-namespace ImageProcessor.Web.Episerver.UI.Business
+namespace ImageProcessor.Web.Episerver.UI.Blocks.Business
 {
     [EditorDescriptorRegistration(TargetType = typeof(CategoryList), EditorDescriptorBehavior = EditorDescriptorBehavior.Default)]
     public class HideCategoryEditorDescriptor : EditorDescriptor

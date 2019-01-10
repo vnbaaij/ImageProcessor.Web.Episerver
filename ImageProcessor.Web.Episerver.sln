@@ -81,6 +81,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessor.Web.Episerve
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImageProcessor.Web.Episerver.UI.Crop", "ImageProcessor.Web.Episerver.UI.Crop", "{8708335F-0FCF-4849-98F9-377CAB75EFF5}"
 	ProjectSection(SolutionItems) = preProject
+		build\content\ImageProcessor.Web.Episerver.UI.Crop\module.config = build\content\ImageProcessor.Web.Episerver.UI.Crop\module.config
 		build\content\ImageProcessor.Web.Episerver.UI.Crop\web.config.install.xdt = build\content\ImageProcessor.Web.Episerver.UI.Crop\web.config.install.xdt
 		build\content\ImageProcessor.Web.Episerver.UI.Crop\web.config.uninstall.xdt = build\content\ImageProcessor.Web.Episerver.UI.Crop\web.config.uninstall.xdt
 	EndProjectSection
