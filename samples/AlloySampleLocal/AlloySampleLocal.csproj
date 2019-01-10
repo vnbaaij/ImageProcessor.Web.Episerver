@@ -148,6 +148,10 @@
     <Reference Include="ImageProcessor.Web.Episerver.UI, Version=5.0.1.14316, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ImageProcessor.Web.Episerver.UI.5.0.1.14316\lib\net461\ImageProcessor.Web.Episerver.UI.dll</HintPath>
     </Reference>
+    <Reference Include="ITMeric.ImageCrop, Version=1.0.6948.20347, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\ITMeric.ImageCrop.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>

@@ -5,6 +5,8 @@ using EPiServer.DataAnnotations;
 using AlloySample.Business.Rendering;
 using AlloySample.Models.Properties;
 using EPiServer.Web;
+using AlloySample.Models.Media;
+using ITMeric.ImageCrop.Core;
 
 namespace AlloySample.Models.Pages
 {
@@ -56,6 +58,9 @@ namespace AlloySample.Models.Pages
             Order = 100)]
         [UIHint(UIHint.Image)]
         public virtual ContentReference PageImage { get; set; }
+
+        [ImageReference(CropRatio = 1d, AllowedTypes = new[] { typeof(ImageFile) })]
+        public virtual ImageReference SingleImageReference { get; set; }
 
         [Display(
             GroupName = SystemTabNames.Content,

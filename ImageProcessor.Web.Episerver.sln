@@ -39,42 +39,77 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImageProcessor.Web.Episerve
 		build\content\ImageProcessor.Web.Episerver.Azure\cache.config.uninstall.xdt = build\content\ImageProcessor.Web.Episerver.Azure\cache.config.uninstall.xdt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessor.Web.Episerver.UI", "src\ImageProcessor.Web.Episerver.UI\ImageProcessor.Web.Episerver.UI.csproj", "{0C044F78-5162-418D-AF21-6E9FE4C437FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessor.Web.Episerver.UI.Blocks", "src\ImageProcessor.Web.Episerver.UI.Blocks\ImageProcessor.Web.Episerver.UI.Blocks.csproj", "{0C044F78-5162-418D-AF21-6E9FE4C437FB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImageProcessor.Web.Episerver.UI", "ImageProcessor.Web.Episerver.UI", "{46C72CDC-EEAC-4C7E-9C6F-6A93932D5385}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImageProcessor.Web.Episerver.UI.Blocks", "ImageProcessor.Web.Episerver.UI.Blocks", "{46C72CDC-EEAC-4C7E-9C6F-6A93932D5385}"
 	ProjectSection(SolutionItems) = preProject
-		build\content\ImageProcessor.Web.Episerver.UI\module.config = build\content\ImageProcessor.Web.Episerver.UI\module.config
-		build\content\ImageProcessor.Web.Episerver.UI\processing.config.install.xdt = build\content\ImageProcessor.Web.Episerver.UI\processing.config.install.xdt
-		build\content\ImageProcessor.Web.Episerver.UI\processing.config.uninstall.xdt = build\content\ImageProcessor.Web.Episerver.UI\processing.config.uninstall.xdt
-		build\content\ImageProcessor.Web.Episerver.UI\Web.config = build\content\ImageProcessor.Web.Episerver.UI\Web.config
-		build\content\ImageProcessor.Web.Episerver.UI\web.config.install.xdt = build\content\ImageProcessor.Web.Episerver.UI\web.config.install.xdt
-		build\content\ImageProcessor.Web.Episerver.UI\web.config.uninstall.xdt = build\content\ImageProcessor.Web.Episerver.UI\web.config.uninstall.xdt
+		build\content\ImageProcessor.Web.Episerver.UI.Blocks\module.config = build\content\ImageProcessor.Web.Episerver.UI.Blocks\module.config
+		build\content\ImageProcessor.Web.Episerver.UI.Blocks\processing.config.install.xdt = build\content\ImageProcessor.Web.Episerver.UI.Blocks\processing.config.install.xdt
+		build\content\ImageProcessor.Web.Episerver.UI.Blocks\processing.config.uninstall.xdt = build\content\ImageProcessor.Web.Episerver.UI.Blocks\processing.config.uninstall.xdt
+		build\content\ImageProcessor.Web.Episerver.UI.Blocks\Web.config = build\content\ImageProcessor.Web.Episerver.UI.Blocks\Web.config
+		build\content\ImageProcessor.Web.Episerver.UI.Blocks\web.config.install.xdt = build\content\ImageProcessor.Web.Episerver.UI.Blocks\web.config.install.xdt
+		build\content\ImageProcessor.Web.Episerver.UI.Blocks\web.config.uninstall.xdt = build\content\ImageProcessor.Web.Episerver.UI.Blocks\web.config.uninstall.xdt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{E705CE45-31B1-440B-8D91-80379A7FC274}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Styles", "Styles", "{2DDDD264-5B75-4327-A347-8BC5A39B1101}"
 	ProjectSection(SolutionItems) = preProject
-		build\content\ImageProcessor.Web.Episerver.UI\Styles\ColorPicker.css = build\content\ImageProcessor.Web.Episerver.UI\Styles\ColorPicker.css
+		build\content\ImageProcessor.Web.Episerver.UI.Blocks\Styles\ColorPicker.css = build\content\ImageProcessor.Web.Episerver.UI.Blocks\Styles\ColorPicker.css
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Editors", "Editors", "{B04198DD-46AA-495B-9888-B895A05A81AC}"
 	ProjectSection(SolutionItems) = preProject
-		build\content\ImageProcessor.Web.Episerver.UI\Scripts\Editors\ColorPicker.js = build\content\ImageProcessor.Web.Episerver.UI\Scripts\Editors\ColorPicker.js
+		build\content\ImageProcessor.Web.Episerver.UI.Blocks\Scripts\Editors\ColorPicker.js = build\content\ImageProcessor.Web.Episerver.UI.Blocks\Scripts\Editors\ColorPicker.js
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{AAA3373A-7D68-41F1-AD70-836E24649225}"
 	ProjectSection(SolutionItems) = preProject
-		build\content\ImageProcessor.Web.Episerver.UI\Styles\images\hue.png = build\content\ImageProcessor.Web.Episerver.UI\Styles\images\hue.png
-		build\content\ImageProcessor.Web.Episerver.UI\Styles\images\hueHandle.png = build\content\ImageProcessor.Web.Episerver.UI\Styles\images\hueHandle.png
-		build\content\ImageProcessor.Web.Episerver.UI\Styles\images\hueHandleA11y.png = build\content\ImageProcessor.Web.Episerver.UI\Styles\images\hueHandleA11y.png
-		build\content\ImageProcessor.Web.Episerver.UI\Styles\images\pickerPointer.png = build\content\ImageProcessor.Web.Episerver.UI\Styles\images\pickerPointer.png
-		build\content\ImageProcessor.Web.Episerver.UI\Styles\images\underlay.png = build\content\ImageProcessor.Web.Episerver.UI\Styles\images\underlay.png
+		build\content\ImageProcessor.Web.Episerver.UI.Blocks\Styles\images\hue.png = build\content\ImageProcessor.Web.Episerver.UI.Blocks\Styles\images\hue.png
+		build\content\ImageProcessor.Web.Episerver.UI.Blocks\Styles\images\hueHandle.png = build\content\ImageProcessor.Web.Episerver.UI.Blocks\Styles\images\hueHandle.png
+		build\content\ImageProcessor.Web.Episerver.UI.Blocks\Styles\images\hueHandleA11y.png = build\content\ImageProcessor.Web.Episerver.UI.Blocks\Styles\images\hueHandleA11y.png
+		build\content\ImageProcessor.Web.Episerver.UI.Blocks\Styles\images\pickerPointer.png = build\content\ImageProcessor.Web.Episerver.UI.Blocks\Styles\images\pickerPointer.png
+		build\content\ImageProcessor.Web.Episerver.UI.Blocks\Styles\images\underlay.png = build\content\ImageProcessor.Web.Episerver.UI.Blocks\Styles\images\underlay.png
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Views", "Views", "{7AF879A3-4355-462E-8B85-B98E0E815FFB}"
 	ProjectSection(SolutionItems) = preProject
-		build\content\ImageProcessor.Web.Episerver.UI\Views\ProcessImageBlock.cshtml = build\content\ImageProcessor.Web.Episerver.UI\Views\ProcessImageBlock.cshtml
+		build\content\ImageProcessor.Web.Episerver.UI.Blocks\Views\ProcessImageBlock.cshtml = build\content\ImageProcessor.Web.Episerver.UI.Blocks\Views\ProcessImageBlock.cshtml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessor.Web.Episerver.UI.Crop", "src\ImageProcessor.Web.Episerver.UI.Crop\ImageProcessor.Web.Episerver.UI.Crop.csproj", "{272D4C1E-8C62-4F67-B2FE-31C1E6C33274}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImageProcessor.Web.Episerver.UI.Crop", "ImageProcessor.Web.Episerver.UI.Crop", "{8708335F-0FCF-4849-98F9-377CAB75EFF5}"
+	ProjectSection(SolutionItems) = preProject
+		build\content\ImageProcessor.Web.Episerver.UI.Crop\web.config.install.xdt = build\content\ImageProcessor.Web.Episerver.UI.Crop\web.config.install.xdt
+		build\content\ImageProcessor.Web.Episerver.UI.Crop\web.config.uninstall.xdt = build\content\ImageProcessor.Web.Episerver.UI.Crop\web.config.uninstall.xdt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{E3C9E0A5-595D-45F4-BCA4-F3C2DC5006B4}"
+	ProjectSection(SolutionItems) = preProject
+		build\content\ImageProcessor.Web.Episerver.UI.Crop\Scripts\Helpers.js = build\content\ImageProcessor.Web.Episerver.UI.Crop\Scripts\Helpers.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Styles", "Styles", "{5B9BA172-7BB7-425E-9930-9E6B99D5CB2A}"
+	ProjectSection(SolutionItems) = preProject
+		build\content\ImageProcessor.Web.Episerver.UI.Crop\Styles\cropper.css = build\content\ImageProcessor.Web.Episerver.UI.Crop\Styles\cropper.css
+		build\content\ImageProcessor.Web.Episerver.UI.Crop\Styles\imagecrop.css = build\content\ImageProcessor.Web.Episerver.UI.Crop\Styles\imagecrop.css
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Editors", "Editors", "{DCED8467-15F3-4784-86C0-51062661A712}"
+	ProjectSection(SolutionItems) = preProject
+		build\content\ImageProcessor.Web.Episerver.UI.Crop\Scripts\Editors\ImageReferenceListSelector.js = build\content\ImageProcessor.Web.Episerver.UI.Crop\Scripts\Editors\ImageReferenceListSelector.js
+		build\content\ImageProcessor.Web.Episerver.UI.Crop\Scripts\Editors\ImageReferenceSelector.js = build\content\ImageProcessor.Web.Episerver.UI.Crop\Scripts\Editors\ImageReferenceSelector.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{51569026-FEDA-4248-BFE9-532540B6864D}"
+	ProjectSection(SolutionItems) = preProject
+		build\content\ImageProcessor.Web.Episerver.UI.Crop\Scripts\Lib\cropper.min.js = build\content\ImageProcessor.Web.Episerver.UI.Crop\Scripts\Lib\cropper.min.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "template", "template", "{48AB2E04-D0A9-43CE-A398-D6E931FD609E}"
+	ProjectSection(SolutionItems) = preProject
+		build\content\ImageProcessor.Web.Episerver.UI.Crop\Scripts\Editors\templates\template.html = build\content\ImageProcessor.Web.Episerver.UI.Crop\Scripts\Editors\templates\template.html
 	EndProjectSection
 EndProject
 Global
@@ -103,6 +138,10 @@ Global
 		{0C044F78-5162-418D-AF21-6E9FE4C437FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C044F78-5162-418D-AF21-6E9FE4C437FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C044F78-5162-418D-AF21-6E9FE4C437FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{272D4C1E-8C62-4F67-B2FE-31C1E6C33274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{272D4C1E-8C62-4F67-B2FE-31C1E6C33274}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{272D4C1E-8C62-4F67-B2FE-31C1E6C33274}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{272D4C1E-8C62-4F67-B2FE-31C1E6C33274}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -117,6 +156,12 @@ Global
 		{B04198DD-46AA-495B-9888-B895A05A81AC} = {E705CE45-31B1-440B-8D91-80379A7FC274}
 		{AAA3373A-7D68-41F1-AD70-836E24649225} = {2DDDD264-5B75-4327-A347-8BC5A39B1101}
 		{7AF879A3-4355-462E-8B85-B98E0E815FFB} = {46C72CDC-EEAC-4C7E-9C6F-6A93932D5385}
+		{8708335F-0FCF-4849-98F9-377CAB75EFF5} = {A2F15FD9-ED7E-4216-AB79-3F6F8FAACFD3}
+		{E3C9E0A5-595D-45F4-BCA4-F3C2DC5006B4} = {8708335F-0FCF-4849-98F9-377CAB75EFF5}
+		{5B9BA172-7BB7-425E-9930-9E6B99D5CB2A} = {8708335F-0FCF-4849-98F9-377CAB75EFF5}
+		{DCED8467-15F3-4784-86C0-51062661A712} = {E3C9E0A5-595D-45F4-BCA4-F3C2DC5006B4}
+		{51569026-FEDA-4248-BFE9-532540B6864D} = {E3C9E0A5-595D-45F4-BCA4-F3C2DC5006B4}
+		{48AB2E04-D0A9-43CE-A398-D6E931FD609E} = {DCED8467-15F3-4784-86C0-51062661A712}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E3289EDC-30FC-441A-AD01-FF9B67AEDDE4}

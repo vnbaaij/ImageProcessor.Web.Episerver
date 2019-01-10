@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>Vincent Baaij</owners>
+    <projectUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver</projectUrl>
+    <licenseUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/LICENSE</licenseUrl>
+    <iconUrl>https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/ipepi.png?raw=true</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Supports Episerver 11 and higher</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>Episerver ImageProcessor Blob Cache Fluent API Responsive image</tags>
+    <dependencies>
+      <dependency id="ImageProcessor.Web.Episerver" version="[5.0,6.0)" />
+      <dependency id="EPiServer.CMS.Core" version="[11.1.0, 12.0)" />
+      <dependency id="EPiServer.CMS.AspNet" version="[11.1.0, 12.0)" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\Views\ProcessImageBlock.cshtml" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\Views" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\web.config" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\module.config" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\ipepi.png" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\ImageProcessor.Web.Episerver.UI.zip" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI\" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\web.config.install.xdt" target="content\web.config.install.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI\web.config.uninstall.xdt" target="content\web.config.uninstall.xdt" />
+  </files>
+</package>
