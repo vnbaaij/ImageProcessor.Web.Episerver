@@ -19,7 +19,7 @@ namespace ImageProcessor.Web.Episerver.UI.Blocks.Business
 
             var contentMetadata = (ContentDataMetadata)metadata;
             var ownerContent = contentMetadata.OwnerContent;
-            if ((ownerContent is ImageProcessorMethodBaseBlock || ownerContent is ProcessImageBlock) && metadata.PropertyName == "icategorizable_category")
+            if ((ownerContent is ImageProcessorMethodBaseBlock || ownerContent is ProcessImageBaseBlock) && metadata.PropertyName == "icategorizable_category")
             {
                 metadata.ShowForEdit = false;
             }
