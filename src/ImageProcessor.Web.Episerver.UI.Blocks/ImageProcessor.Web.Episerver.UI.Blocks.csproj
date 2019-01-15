@@ -188,6 +188,7 @@
     <Compile Include="Business\HideCategoryEditorDescriptor.cs" />
     <Compile Include="Business\IconAttribute.cs" />
     <Compile Include="Business\IForceAllPropertiesMode.cs" />
+    <Compile Include="Controllers\CropProcessImageBlockController.cs" />
     <Compile Include="Controllers\ProcessImageBlockController.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Models\Blocks\AlphaBlock.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="Models\Blocks\BrightnessBlock.cs" />
     <Compile Include="Models\Blocks\ContrastBlock.cs" />
     <Compile Include="Models\Blocks\CropBlock.cs" />
+    <Compile Include="Models\Blocks\CropProcessImageBlock.cs" />
     <Compile Include="Models\Blocks\DetectEdgesBlock.cs" />
     <Compile Include="Models\Blocks\EntropyCropBlock.cs" />
     <Compile Include="Models\Blocks\FilterBlock.cs" />
@@ -213,6 +215,7 @@
     <Compile Include="Models\Blocks\MethodCollectionBlock.cs" />
     <Compile Include="Models\Blocks\OverlayBlock.cs" />
     <Compile Include="Models\Blocks\PixelateBlock.cs" />
+    <Compile Include="Models\Blocks\ProcessImageBaseBlock.cs" />
     <Compile Include="Models\Blocks\ProcessImageBlock.cs" />
     <Compile Include="Models\Blocks\QualityBlock.cs" />
     <Compile Include="Models\Blocks\ReplaceColorBlock.cs" />
@@ -231,12 +234,18 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="ImageProcessor.Web.Episerver.UI.Blocks.nuspec" />
+    <None Include="ImageProcessor.Web.Episerver.UI.Blocks.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ImageProcessor.Web.Episerver.UI.Crop\ImageProcessor.Web.Episerver.UI.Crop.csproj">
+      <Project>{272d4c1e-8c62-4f67-b2fe-31c1e6c33274}</Project>
+      <Name>ImageProcessor.Web.Episerver.UI.Crop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ImageProcessor.Web.Episerver\ImageProcessor.Web.Episerver.csproj">
       <Project>{2edae29a-d622-4b01-8853-d26f4d1c0fd8}</Project>
       <Name>ImageProcessor.Web.Episerver</Name>

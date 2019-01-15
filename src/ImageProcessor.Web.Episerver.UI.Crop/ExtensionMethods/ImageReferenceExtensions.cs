@@ -34,12 +34,12 @@ namespace ImageProcessor.Web.Episerver.UI.Crop.ExtensionMethods
 
                 if (imageReference.CropDetails != null)
                     urlBuilder.QueryCollection.Add("crop",
-                        $"({imageReference.CropDetails.X},{imageReference.CropDetails.Y},{imageReference.CropDetails.X + imageReference.CropDetails.Width},{imageReference.CropDetails.Y + imageReference.CropDetails.Height})");
+                        $"{imageReference.CropDetails.X},{imageReference.CropDetails.Y},{imageReference.CropDetails.X + imageReference.CropDetails.Width},{imageReference.CropDetails.Y + imageReference.CropDetails.Height}");
 
-                if (width.HasValue)
+                if (width.HasValue && width > 0)
                     urlBuilder.Width(width.Value);
 
-                if (height.HasValue)
+                if (height.HasValue && height > 0)
                     urlBuilder.Height(height.Value);
 
                 return urlBuilder;

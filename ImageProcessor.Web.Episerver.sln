@@ -74,6 +74,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{AAA337
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Views", "Views", "{7AF879A3-4355-462E-8B85-B98E0E815FFB}"
 	ProjectSection(SolutionItems) = preProject
+		build\content\ImageProcessor.Web.Episerver.UI.Blocks\Views\CropProcessImageBlock.cshtml = build\content\ImageProcessor.Web.Episerver.UI.Blocks\Views\CropProcessImageBlock.cshtml
 		build\content\ImageProcessor.Web.Episerver.UI.Blocks\Views\ProcessImageBlock.cshtml = build\content\ImageProcessor.Web.Episerver.UI.Blocks\Views\ProcessImageBlock.cshtml
 	EndProjectSection
 EndProject

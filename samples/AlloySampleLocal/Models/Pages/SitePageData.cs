@@ -59,7 +59,7 @@ namespace AlloySample.Models.Pages
         [UIHint(UIHint.Image)]
         public virtual ContentReference PageImage { get; set; }
 
-        [ImageReference(CropRatio = 1d, AllowedTypes = new[] { typeof(ImageFile) })]
+        [ImageReference(AllowedTypes = new[] { typeof(ImageFile) })]
         public virtual ImageReference SingleImageReference { get; set; }
 
         [Display(

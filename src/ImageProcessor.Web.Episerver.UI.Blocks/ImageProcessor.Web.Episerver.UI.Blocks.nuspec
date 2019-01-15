@@ -15,13 +15,14 @@
     <copyright>Copyright 2019</copyright>
     <tags>Episerver ImageProcessor Blob Cache Fluent API Responsive image</tags>
     <dependencies>
-      <dependency id="ImageProcessor.Web.Episerver" version="[5.0,6.0)" />
+      <dependency id="ImageProcessor.Web.Episerver" version="[5.2,6.0)" />
       <dependency id="EPiServer.CMS.Core" version="[11.1.0, 12.0)" />
       <dependency id="EPiServer.CMS.AspNet" version="[11.1.0, 12.0)" />
     </dependencies>
   </metadata>
   <files>
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI.Blocks\Views\ProcessImageBlock.cshtml" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI.Blocks\Views" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI.Blocks\Views\CropProcessImageBlock.cshtml" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI.Blocks\Views" />
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI.Blocks\web.config" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI.Blocks\" />
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI.Blocks\ipepi.png" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI.Blocks\" />
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.UI.Blocks\ImageProcessor.Web.Episerver.UI.Blocks.zip" target="content\modules\_protected\ImageProcessor.Web.Episerver.UI.Blocks\" />

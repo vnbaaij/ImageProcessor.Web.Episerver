@@ -12,7 +12,7 @@ namespace ImageProcessor.Web.Episerver.UI.Blocks.Business
             get
             {
                 var uiUrl = Settings.Instance.UIUrl.OriginalString.TrimStart("~/".ToCharArray()).TrimEnd("/".ToCharArray()).TrimEnd("CMS".ToCharArray());
-                return "~/" + uiUrl + "/ImageProcessor.Web.Episerver.UI/ipepi.png";
+                return "~/" + uiUrl + "/ImageProcessor.Web.Episerver.UI.Blocks/ipepi.png";
             }
         }
     }

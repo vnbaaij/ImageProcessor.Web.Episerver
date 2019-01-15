@@ -15,7 +15,7 @@
     <copyright>Copyright 2019</copyright>
     <tags>Episerver ImageProcessor Blob Cache Fluent API Responsive image</tags>
     <dependencies>
-      <dependency id="ImageProcessor.Web.Episerver" version="[5.0,6.0)" />
+      <dependency id="ImageProcessor.Web.Episerver" version="[5.2,6.0)" />
       <dependency id="EPiServer.CMS.Core" version="[11.1.0, 12.0)" />
       <dependency id="EPiServer.CMS.AspNet" version="[11.1.0, 12.0)" />
     </dependencies>
