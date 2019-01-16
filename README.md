@@ -82,6 +82,11 @@ GetPictureData parameters are similar to the parameters for the Picture html hel
 
 ## Change log
 To get a more exact overview of the changes, you can also take a look at the commit history.
+#### V5.2.0
+- New package: ImageProcessor.Web.Episerver.UI.Crop. Based on [https://github.com/itMeric/ITMeric.ImageCrop/](https://github.com/itMeric/ITMeric.ImageCrop/). 
+- Renamed `ImageProcessor.Web.Episerver.UI` to `ImageProcessor.Web.Episerver.UI.Blocks`.
+- Added `CropProcessImageBlock` to `ImageProcessor.Web.Episerver.UI.Blocks`. Blocks package now has a dependency on Crop package.
+- See [the blogpost on World](https://world.episerver.com/blogs/vincent-baaij/dates/2019/1/episerver-and-imageprocessor-new-crop-addition/) for more information
 
 #### V5.1.0
 - Basic focal point support in Picture helper
