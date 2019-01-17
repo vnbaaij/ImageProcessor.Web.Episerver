@@ -10,7 +10,7 @@ namespace ImageProcessor.Web.Episerver.UI.Crop.Core
         //    AllowedTypes = allowedTypes;
         //}
 
-        //public double CropRatio { get; set; }
+        public double CropRatio { get; set; }
         public Type[] AllowedTypes { get; set; }
 
     }

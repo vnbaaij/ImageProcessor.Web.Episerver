@@ -19,7 +19,7 @@ namespace ImageProcessor.Web.Episerver.UI.Crop.EditorDescriptors
 
             if (mediaReferenceAttribute != null)
             {
-                //metadata.EditorConfiguration["cropRatio"] = mediaReferenceAttribute.CropRatio;
+                metadata.EditorConfiguration["cropRatio"] = mediaReferenceAttribute.CropRatio;
 
                 var allowedTypes = mediaReferenceAttribute.AllowedTypes;
 
