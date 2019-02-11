@@ -132,14 +132,14 @@
     <Reference Include="EPiServer.Web.WebControls, Version=11.1.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EPiServer.CMS.AspNet.11.1.0\lib\net461\EPiServer.Web.WebControls.dll</HintPath>
     </Reference>
-    <Reference Include="ImageProcessor, Version=2.6.2.25, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ImageProcessor.2.6.2.25\lib\net452\ImageProcessor.dll</HintPath>
+    <Reference Include="ImageProcessor, Version=2.7.0.100, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.2.7.0.100\lib\net452\ImageProcessor.dll</HintPath>
     </Reference>
-    <Reference Include="ImageProcessor.Plugins.WebP, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ImageProcessor.Plugins.WebP.1.1.0\lib\net452\ImageProcessor.Plugins.WebP.dll</HintPath>
+    <Reference Include="ImageProcessor.Plugins.WebP, Version=1.2.0.100, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.Plugins.WebP.1.2.0.100\lib\net452\ImageProcessor.Plugins.WebP.dll</HintPath>
     </Reference>
-    <Reference Include="ImageProcessor.Web, Version=4.9.3.25, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ImageProcessor.Web.4.9.3.25\lib\net452\ImageProcessor.Web.dll</HintPath>
+    <Reference Include="ImageProcessor.Web, Version=4.10.0.100, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.Web.4.10.0.100\lib\net452\ImageProcessor.Web.dll</HintPath>
     </Reference>
     <Reference Include="ImageProcessor.Web.Episerver, Version=5.2.0.29565, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ImageProcessor.Web.Episerver.5.2.0.29565\lib\net461\ImageProcessor.Web.Episerver.dll</HintPath>

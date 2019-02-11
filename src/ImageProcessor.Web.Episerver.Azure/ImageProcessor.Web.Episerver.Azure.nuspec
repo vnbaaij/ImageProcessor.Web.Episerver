@@ -15,7 +15,7 @@
     <copyright>Copyright 2019</copyright>
     <tags>Episerver ImageProcessor Blob Cache Fluent API Azure</tags>
     <dependencies>
-      <dependency id="ImageProcessor.Web.Episerver" version="[5.0, 6.0)" />
+      <dependency id="ImageProcessor.Web.Episerver" version="[5.3, 6.0)" />
       <dependency id="EPiServer.Azure" version="[9.4.0, 10.0)" />
     </dependencies>
   </metadata>

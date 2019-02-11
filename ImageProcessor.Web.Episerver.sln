@@ -114,6 +114,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "template", "template", "{48
 		build\content\ImageProcessor.Web.Episerver.UI.Crop\Scripts\Editors\templates\template.html = build\content\ImageProcessor.Web.Episerver.UI.Crop\Scripts\Editors\templates\template.html
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution files", "Solution files", "{564E994D-43BD-48D0-95F6-5092B0164621}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

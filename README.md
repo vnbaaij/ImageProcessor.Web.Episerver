@@ -83,6 +83,9 @@ GetPictureData parameters are similar to the parameters for the Picture html hel
 ## Change log
 To get a more exact overview of the changes, you can also take a look at the commit history.
 
+#### V5.3.0
+- References new ImageProcessor packages
+
 #### V5.2.0
 - New package: ImageProcessor.Web.Episerver.UI.Crop. Based on [https://github.com/itMeric/ITMeric.ImageCrop/](https://github.com/itMeric/ITMeric.ImageCrop/). 
 - Added back `CropRatio` (version 5.3)
