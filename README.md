@@ -85,6 +85,7 @@ To get a more exact overview of the changes, you can also take a look at the com
 
 #### V5.3.0
 - References new ImageProcessor packages
+- Updated Microsoft.Data.OData (security alert) in Azure module and sample site
 
 #### V5.2.0
 - New package: ImageProcessor.Web.Episerver.UI.Crop. Based on [https://github.com/itMeric/ITMeric.ImageCrop/](https://github.com/itMeric/ITMeric.ImageCrop/). 
