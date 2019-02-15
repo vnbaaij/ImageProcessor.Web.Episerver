@@ -22,5 +22,7 @@
   <files>
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.Azure\cache.config.install.xdt" target="content\config\imageprocessor\cache.config.install.xdt" />
     <file src="..\..\build\content\ImageProcessor.Web.Episerver.Azure\cache.config.uninstall.xdt" target="content\config\imageprocessor\cache.config.uninstall.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.Azure\security.config.install.xdt" target="content\config\imageprocessor\security.config.install.xdt" />
+    <file src="..\..\build\content\ImageProcessor.Web.Episerver.Azure\security.config.uninstall.xdt" target="content\config\imageprocessor\security.config.uninstall.xdt" />
   </files>
 </package>

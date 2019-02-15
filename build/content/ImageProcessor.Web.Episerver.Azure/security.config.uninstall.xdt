@@ -1,11 +1,9 @@
 <security xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
   <services>
-    <service name="AzureImageService" type="ImageProcessor.Web.Episerver.Azure.ImageService, ImageProcessor.Web.Episerver.Azure" xdt:Transform="Remove" xdt:Locator="Match(name)" >
-      <settings>
-        <setting key="MaxBytes" value="8194304"/>
-        <setting key="Timeout" value="30000"/>
+    <service name="EpiserverImageService" type="ImageProcessor.Web.Episerver.ImageService, ImageProcessor.Web.Episerver">
+      <settings xdt:Transform="Remove">
+        <setting key="OnAzure" value="true"/>
       </settings>
     </service>
-    <service name="EpiserverImageService" type="ImageProcessor.Web.Episerver.ImageService, ImageProcessor.Web.Episerver" xdt:Transform="InsertBefore(/security/services/service)"/>
   </services>
 </security>

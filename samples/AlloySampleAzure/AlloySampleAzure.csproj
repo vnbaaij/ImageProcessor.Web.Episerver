@@ -138,6 +138,12 @@
     <Reference Include="ImageProcessor.Web, Version=4.10.0.100, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ImageProcessor.Web.4.10.0.100\lib\net452\ImageProcessor.Web.dll</HintPath>
     </Reference>
+    <Reference Include="ImageProcessor.Web.Episerver, Version=5.3.0.26423, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.Web.Episerver.5.3.0.26423\lib\net461\ImageProcessor.Web.Episerver.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageProcessor.Web.Episerver.Azure, Version=5.3.2.31348, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.Web.Episerver.Azure.5.3.2.31348\lib\net461\ImageProcessor.Web.Episerver.Azure.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
@@ -450,16 +456,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\DefaultSiteContent.episerverdata" />
-    <Content Include="config\imageprocessor\security.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="config\imageprocessor\processing.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="config\imageprocessor\cache.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="App_Data\GeoLiteCity.dat" />
+    <Content Include="config\imageprocessor\cache.config" />
+    <Content Include="config\imageprocessor\processing.config" />
+    <Content Include="config\imageprocessor\security.config" />
     <None Include="EPiServerLog.config" />
     <Content Include="module.config" />
     <Content Include="Views\SearchPage\Index.cshtml" />
@@ -520,16 +520,6 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\ImageProcessor.Web.Episerver.Azure\ImageProcessor.Web.Episerver.Azure.csproj">
-      <Project>{7b8e1011-6c72-41fc-b73b-0ff79dcb1255}</Project>
-      <Name>ImageProcessor.Web.Episerver.Azure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\ImageProcessor.Web.Episerver\ImageProcessor.Web.Episerver.csproj">
-      <Project>{2edae29a-d622-4b01-8853-d26f4d1c0fd8}</Project>
-      <Name>ImageProcessor.Web.Episerver</Name>
-    </ProjectReference>
   </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>

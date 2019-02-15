@@ -37,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImageProcessor.Web.Episerve
 	ProjectSection(SolutionItems) = preProject
 		build\content\ImageProcessor.Web.Episerver.Azure\cache.config.install.xdt = build\content\ImageProcessor.Web.Episerver.Azure\cache.config.install.xdt
 		build\content\ImageProcessor.Web.Episerver.Azure\cache.config.uninstall.xdt = build\content\ImageProcessor.Web.Episerver.Azure\cache.config.uninstall.xdt
+		build\content\ImageProcessor.Web.Episerver.Azure\security.config.install.xdt = build\content\ImageProcessor.Web.Episerver.Azure\security.config.install.xdt
+		build\content\ImageProcessor.Web.Episerver.Azure\security.config.uninstall.xdt = build\content\ImageProcessor.Web.Episerver.Azure\security.config.uninstall.xdt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessor.Web.Episerver.UI.Blocks", "src\ImageProcessor.Web.Episerver.UI.Blocks\ImageProcessor.Web.Episerver.UI.Blocks.csproj", "{0C044F78-5162-418D-AF21-6E9FE4C437FB}"
