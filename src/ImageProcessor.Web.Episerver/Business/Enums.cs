@@ -43,7 +43,8 @@
         Png,
         Png8,
         Tif,
-        Tiff
+        Tiff,
+        WebP
     }
 
     
