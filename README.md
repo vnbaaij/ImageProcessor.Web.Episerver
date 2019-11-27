@@ -83,6 +83,9 @@ GetPictureData parameters are similar to the parameters for the Picture html hel
 ## Change log
 To get a more exact overview of the changes, you can also take a look at the commit history.
 
+#### V5.4
+- Added functionality to allow for a relative app data path as well
+
 #### V5.3.0
 - References new ImageProcessor packages
 - Updated Microsoft.Data.OData (security alert) in Azure package (5.3.1) and sample site
