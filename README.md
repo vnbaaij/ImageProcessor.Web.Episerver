@@ -82,6 +82,8 @@ GetPictureData parameters are similar to the parameters for the Picture html hel
 
 ## Change log
 To get a more exact overview of the changes, you can also take a look at the commit history.
+#### V5.5
+- All modules updated to use the latest ImageProcessor releases
 
 #### V5.4
 - Added functionality to allow for a relative app data path as well
