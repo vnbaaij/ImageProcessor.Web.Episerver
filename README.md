@@ -1,14 +1,25 @@
-# ImageProcessor.Web.Episerver
+The ImageProcessor.Web.Episerver family consists of four parts. Each part  is a separate nuget package, so you can pick and choose the parts you need in your site. However, as in all families there are dependencies, so adding a package will install the dependencies as well.
 
+# ImageProcessor.Web.Episerver
 This package will install the following ImageProcessor extensions:
   - IImageService implementation to read images from Episerver
   - IImageCache implementation that caches images in the configured Episerver Blob storage (the cache is self healing and cleaning) 
   - ImageProcessingModule to render processed images in edit mode.
 
-And on top of that you also get a, strongly typed, fluent API to use in your views
+And on top of that you also get a, strongly typed, fluent API to use in your views.  See https://world.episerver.com/blogs/vincent-baaij/dates/2017/10/episerver-and-imageprocessor-more-choice-for-developers-and-designers/ for more information
 
-## Installation
-- Install this package from the Episerver NuGet feed (http://nuget.episerver.com/feed/packages.svc/). All dependencies and necessary configuration changes will be made for you.
+# ImageProcessor.Web.Episerver.Azure
+Use the in Episerver configured Azure Storage account for storing the cached images. See https://world.episerver.com/blogs/vincent-baaij/dates/2017/11/episerver-and-imageprocessor-now-also-on-azure-and-cms-11/ for more information
+
+# ImageProcessor.Web.Episerver.UI.Blocks
+Bring the power of ImageProcessor to the Episerver Editors. See https://world.episerver.com/blogs/vincent-baaij/dates/2018/7/fggnrh/ for more information
+
+# ImageProcessor.Web.Episerver.UI.Crop
+Integrate Image Cropper Property Editors with the ImageProcessor.Web.Episerver.UI.Blocks. See https://world.episerver.com/blogs/vincent-baaij/dates/2019/1/episerver-and-imageprocessor-new-crop-addition/ for more information
+
+## Installation 
+- Install these package from the Episerver NuGet feed (http://nuget.episerver.com/feed/packages.svc/). All dependencies and necessary configuration changes will be made for you.
+- You can also find the ImageProcessor.Web.Episerver.UI package in the feed. This is an older version and should not be used anymore. Use ImageProcessor.Web.Episerver.UI.Blocks instead.
 
 
 ## Render Image in Markup
