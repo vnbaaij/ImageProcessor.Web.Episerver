@@ -84,6 +84,7 @@ GetPictureData parameters are similar to the parameters for the Picture html hel
 To get a more exact overview of the changes, you can also take a look at the commit history.
 #### V5.5
 - All modules updated to use the latest ImageProcessor releases
+- (Azure) V5.6 Update to allow new major Episerver.Azure (v10) release
 
 #### V5.4
 - Added functionality to allow for a relative app data path as well
