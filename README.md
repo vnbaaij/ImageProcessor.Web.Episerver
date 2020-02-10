@@ -63,7 +63,7 @@ Example usage
 @Html.Picture(Model.Image, ImageTypes.Teaser)
 
 @* Url (string) as input + render for progressive lazy loading *@
-@Html.Picture(Url.ContentUrl(Model.Image), ImageTypes.Teaser, lazyLoadType: LazyLoadType.Progressive)
+@Html.Picture(Url.ContentUrl(Model.Image), ImageTypes.Teaser, LazyLoadType.CustomProgressive)
 
 @* Picture helper can be used together with the ProcessImage helper *@
 @Html.Picture(Html.ProcessImage(Model.Image).ReplaceColor("fff", "f00", 99).Watermark("Episerver", new Point(100, 100), "fff"), ImageTypes.Teaser)
@@ -73,10 +73,12 @@ Example usage
 * **imageType (ImageProcessor.Web.Episerver.ImageType)** <br/> An "Image type" defines the possible sizes and quality for an image. <br/> [Example of how to define image types](https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/samples/AlloySampleLocal/Business/Rendering/ImageTypes.cs)
 * **cssClass (string)** <br/> Will be added to the rendered img element.
 * **layzLoadType (ImageProcessor.Web.Episerver.LazyLoadType)** <br/> 
-When lazy load type is "Regular", the srcset attribute of the source element (inside the rendered picture element) will be empty, 
+Set lazy load type to "Native" to have a browser-native lazy loaded image. The attribute "loading='lazy'" is added to the img element.<br/>
+When lazy load type is "Custom", the srcset attribute of the source element (inside the rendered picture element) will be empty, 
 and an additional attribute (data-srcset) will be added that contains the image url(s). 
 That enables you to lazy load the image after the rest of your page content is loaded. <br/>
-When lazy load type is "Progressive", the srcset attribute will contain image url(s) for a low quality version of the image, and makes it possible to lazy load the high quality image.<br/>
+When lazy load type is "CustomProgressive", the srcset attribute will contain image url(s) for a low quality version of the image, and makes it possible to lazy load the high quality image.<br/>
+Lazy load type "Hybrid" render the same as "Custom", and also adds the "loading='lazy'" attribute. That means you can have native lazy loading combined with custom lazy loading for browsers that doesn't support native lazy loading.  <br/>
 [Javascript example of how to lazy load the images](https://github.com/vnbaaij/ImageProcessor.Web.Episerver/blob/master/samples/AlloySampleLocal/Static/js/lazyImages.js)<br/>
 * **altText (string)** <br/> Will be added to the rendered img element.<br/>
 See also how to [get alt text from the image](PICTURE_HELPER_DOC.md).

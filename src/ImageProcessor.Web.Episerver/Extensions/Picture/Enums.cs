@@ -10,7 +10,13 @@ namespace ImageProcessor.Web.Episerver
 	public enum LazyLoadType
 	{
 		None,
-		Regular,
-		Progressive
+		Custom,
+        CustomProgressive,
+		[Obsolete("Use \"Custom\" instead.")]
+		Regular = Custom,
+		[Obsolete("Use \"CustomProgressive\" instead.")]
+        Progressive = CustomProgressive,
+		Native,
+		Hybrid
 	}
 }

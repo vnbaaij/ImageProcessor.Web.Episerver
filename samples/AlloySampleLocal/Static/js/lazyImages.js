@@ -1,13 +1,11 @@
 ﻿
-
-
 function initializeLazyImages() {
   // Get images that has the data-src attribute
   const lazyImages = document.querySelectorAll('img[data-src]');
 
-  // If browser doesn't support IntersectionObserver, load all images 
+  // Just load the images if browser doesn't support IntersectionObserver (Assuming that there is no browser that supports native lazy loading, but doesn't support IntersectionObserver). 
   if (!('IntersectionObserver' in window)) {
-    lazyImages.forEach((imageElement) => loadImage(imageElement));
+    lazyImages.forEach((imageElement) => setSrcAttribute(imageElement));
     return;
   }
 
@@ -19,7 +17,7 @@ function initializeLazyImages() {
         }
 
         const imageElement = entry.target;
-        loadImage(imageElement);
+        setSrcAttribute(imageElement);
         observer.unobserve(imageElement);
       });
     },
@@ -27,13 +25,19 @@ function initializeLazyImages() {
     { rootMargin: '100px' } // load images if it gets within 100px
   ); 
 
-  // Let all lazy images be observered
+
   lazyImages.forEach((imageElement) => {
-    observer.observe(imageElement);
+    if (imageElement.loading === 'lazy' && 'loading' in HTMLImageElement.prototype) {
+      // Set src attribute if image element is using native lazy loading (and the browser supports it)
+      setSrcAttribute(imageElement);
+    } else {
+      // Let the image be observed
+      observer.observe(imageElement);
+    }
   });
 }
 
-function loadImage(imageElement) {
+function setSrcAttribute(imageElement) {
   // If image is within a picture element, set srcset attribute for all source elements
   const parent = imageElement.parentNode;
   if (parent.tagName === 'PICTURE') {
@@ -45,4 +49,6 @@ function loadImage(imageElement) {
 
   // Set img src attribute
   imageElement.src = imageElement.dataset.src;
+  console.log(imageElement.src);
+
 }
