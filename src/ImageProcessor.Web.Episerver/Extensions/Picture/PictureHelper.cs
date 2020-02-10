@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using System.Web.Mvc;
 using EPiServer;
 using EPiServer.Core;
@@ -11,6 +12,11 @@ namespace ImageProcessor.Web.Episerver
 {
 	public static class PictureHelper
     {
+        public static IHtmlString Picture(this HtmlHelper helper, ContentReference imageReference, ImageType imageType, LazyLoadType lazyLoadType, string altText = "")
+        {
+            return Picture(helper, imageReference, imageType, string.Empty, lazyLoadType, altText);
+        }
+
         public static IHtmlString Picture(this HtmlHelper helper, ContentReference imageReference, ImageType imageType, string cssClass = "", LazyLoadType lazyLoadType = LazyLoadType.None, string altText = "")
         {
             if (imageReference == null)
@@ -18,10 +24,15 @@ namespace ImageProcessor.Web.Episerver
                 return new MvcHtmlString(string.Empty);
             }
 
-            var pictureData = PictureUtils.GetPictureData(imageReference, imageType, lazyLoadType == LazyLoadType.Progressive, altText);
+            var pictureData = PictureUtils.GetPictureData(imageReference, imageType, lazyLoadType == LazyLoadType.CustomProgressive, altText);
             var pictureElement = BuildPictureElement(pictureData, cssClass, lazyLoadType);
 
             return new MvcHtmlString(HttpUtility.HtmlDecode(pictureElement));
+        }
+
+        public static IHtmlString Picture(this HtmlHelper helper, string imageUrl, ImageType imageType, LazyLoadType lazyLoadType, string altText = "")
+        {
+            return Picture(helper, imageUrl, imageType, string.Empty, lazyLoadType, altText);
         }
 
         public static IHtmlString Picture(this HtmlHelper helper, string imageUrl, ImageType imageType, string cssClass = "", LazyLoadType lazyLoadType = LazyLoadType.None, string altText = "")
@@ -43,7 +54,7 @@ namespace ImageProcessor.Web.Episerver
                 return new MvcHtmlString(string.Empty);
             }
 
-            var pictureData = PictureUtils.GetPictureData(imageUrl, imageType, lazyLoadType == LazyLoadType.Progressive, altText);
+            var pictureData = PictureUtils.GetPictureData(imageUrl, imageType, lazyLoadType == LazyLoadType.CustomProgressive, altText);
             var pictureElement = BuildPictureElement(pictureData, cssClass, lazyLoadType);
 
             return new MvcHtmlString(HttpUtility.HtmlDecode(pictureElement));
@@ -80,10 +91,11 @@ namespace ImageProcessor.Web.Episerver
 			//Add src and/or data-src attribute
 		    switch (lazyLoadType)
 		    {
-			    case LazyLoadType.Regular:
-				    imgElement.Attributes.Add("data-src", pictureData.ImgSrc);
+			    case LazyLoadType.Custom:
+                case LazyLoadType.Hybrid:
+                    imgElement.Attributes.Add("data-src", pictureData.ImgSrc);
 				    break;
-			    case LazyLoadType.Progressive:
+			    case LazyLoadType.CustomProgressive:
 				    imgElement.Attributes.Add("src", pictureData.ImgSrcLowQuality);
 					imgElement.Attributes.Add("data-src", pictureData.ImgSrc);
 				    break;
@@ -91,6 +103,12 @@ namespace ImageProcessor.Web.Episerver
 				    imgElement.Attributes.Add("src", pictureData.ImgSrc);
 				    break;
 		    }
+
+            if (lazyLoadType == LazyLoadType.Native || lazyLoadType == LazyLoadType.Hybrid)
+            {
+                //Add loading attribute
+                imgElement.Attributes.Add("loading", "lazy");
+            }
 
 			//Add class attribute
 		    if (!string.IsNullOrEmpty(cssClass))
@@ -114,10 +132,11 @@ namespace ImageProcessor.Web.Episerver
 
 	        switch (lazyLoadType)
 	        {
-		        case LazyLoadType.Regular:
-			        sourceElement.Attributes.Add("data-srcset", srcset);
+		        case LazyLoadType.Custom:
+                case LazyLoadType.Hybrid:
+                    sourceElement.Attributes.Add("data-srcset", srcset);
 			        break;
-		        case LazyLoadType.Progressive:
+		        case LazyLoadType.CustomProgressive:
 			        sourceElement.Attributes.Add("srcset", format == "webp" ? pictureData.SrcSetLowQualityWebp : pictureData.SrcSetLowQuality);
 			        sourceElement.Attributes.Add("data-srcset", srcset);
 			        break;
