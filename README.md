@@ -95,9 +95,16 @@ GetPictureData parameters are similar to the parameters for the Picture html hel
 
 ## Change log
 To get a more exact overview of the changes, you can also take a look at the commit history.
+#### V5.6.1
+- Update to latest ImageProcessor (2.9) and ImageProcessor.Web (4.12) packages
+#### V5.6
+- Added options for rendering attribute for browser-native lazy loading.
+- Adding and renaming values in Lazyloading enum. Keeping the old ones, but marked as obsolete, so no breaking change.
+- Added overloading methods for Picture helper to simplify usage.
+- Fixed GetCropUrl to use Width/Height instead of offsets
+- Update to allow new major Episerver.Azure (v10) release
 #### V5.5
 - All modules updated to use the latest ImageProcessor releases
-- (Azure) V5.6 Update to allow new major Episerver.Azure (v10) release
 
 #### V5.4
 - Added functionality to allow for a relative app data path as well
