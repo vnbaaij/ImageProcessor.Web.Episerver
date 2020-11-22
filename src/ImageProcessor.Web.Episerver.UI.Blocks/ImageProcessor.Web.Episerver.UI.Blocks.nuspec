@@ -12,11 +12,11 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Supports Episerver 11 and higher</releaseNotes>
-    <copyright>Copyright 2019</copyright>
+    <copyright>Copyright 2020</copyright>
     <tags>Episerver ImageProcessor Blob Cache Fluent API Responsive image</tags>
     <dependencies>
-      <dependency id="ImageProcessor.Web.Episerver" version="[5.5,6.0)" />
-      <dependency id="ImageProcessor.Web.Episerver.UI.Crop" version="[5.5,6.0)" />
+      <dependency id="ImageProcessor.Web.Episerver" version="[5.6,6.0)" />
+      <dependency id="ImageProcessor.Web.Episerver.UI.Crop" version="[5.6,6.0)" />
       <dependency id="EPiServer.CMS.Core" version="[11.1.0, 12.0)" />
       <dependency id="EPiServer.CMS.AspNet" version="[11.1.0, 12.0)" />
     </dependencies>

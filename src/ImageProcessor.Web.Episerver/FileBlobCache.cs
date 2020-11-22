@@ -312,10 +312,19 @@ namespace ImageProcessor.Web.Episerver
                     // Since we are going to call Response.End(), we need to go ahead and set the headers
                     HttpModules.ImageProcessingModule.SetHeaders(context, BrowserMaxDays);
                     SetETagHeader(context);
-                    context.Response.AddHeader("Content-Length", new FileInfo(CachedPath).Length.ToString());
 
-                    context.Response.TransmitFile(CachedPath);
-                    context.Response.End();
+                    var length = new FileInfo(this.CachedPath).Length;
+                    context.Response.AddHeader("Content-Length", length.ToString());
+
+                    context.Response.TransmitFile(this.CachedPath, 0, length);
+                    try
+                    {
+                        context.Response.End();
+                    }
+                    catch (ThreadAbortException)
+                    {
+                        Thread.ResetAbort();
+                    }
                 }
             }
         }
