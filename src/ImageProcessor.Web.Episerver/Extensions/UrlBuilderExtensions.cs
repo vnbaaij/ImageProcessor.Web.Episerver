@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Drawing;
+using System.Globalization;
 using System.Web.Mvc;
 using EPiServer;
 using ImageProcessor.Imaging;
@@ -817,7 +818,7 @@ namespace ImageProcessor.Web.Episerver
                 {
                     centerX = centerX ?? 0;
                     centerY = centerY ?? 0;
-                    target.QueryCollection.Add("center", string.Join(",", centerX.ToString(), centerY.ToString()));
+                    target.QueryCollection.Add("center", string.Join(",", centerY.Value.ToString(CultureInfo.InvariantCulture), centerX.Value.ToString(CultureInfo.InvariantCulture)));
                 }
             }
             return target;

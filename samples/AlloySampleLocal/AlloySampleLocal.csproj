@@ -141,8 +141,14 @@
     <Reference Include="ImageProcessor.Web, Version=4.12.0.206, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ImageProcessor.Web.4.12.0\lib\net452\ImageProcessor.Web.dll</HintPath>
     </Reference>
-    <Reference Include="ImageProcessor.Web.Episerver, Version=5.4.0.37350, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ImageProcessor.Web.Episerver.5.4.0.37350\lib\net461\ImageProcessor.Web.Episerver.dll</HintPath>
+    <Reference Include="ImageProcessor.Web.Episerver, Version=5.6.0.29590, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.Web.Episerver.5.6.0.29590\lib\net461\ImageProcessor.Web.Episerver.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageProcessor.Web.Episerver.UI.Blocks, Version=5.6.2.21823, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.Web.Episerver.UI.Blocks.5.6.2.21823\lib\net461\ImageProcessor.Web.Episerver.UI.Blocks.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageProcessor.Web.Episerver.UI.Crop, Version=5.6.2.21822, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.Web.Episerver.UI.Crop.5.6.2.21822\lib\net461\ImageProcessor.Web.Episerver.UI.Crop.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -573,16 +579,6 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\ImageProcessor.Web.Episerver.UI.Blocks\ImageProcessor.Web.Episerver.UI.Blocks.csproj">
-      <Project>{0c044f78-5162-418d-af21-6e9fe4c437fb}</Project>
-      <Name>ImageProcessor.Web.Episerver.UI.Blocks</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\ImageProcessor.Web.Episerver.UI.Crop\ImageProcessor.Web.Episerver.UI.Crop.csproj">
-      <Project>{272d4c1e-8c62-4f67-b2fe-31c1e6c33274}</Project>
-      <Name>ImageProcessor.Web.Episerver.UI.Crop</Name>
-    </ProjectReference>
   </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>
