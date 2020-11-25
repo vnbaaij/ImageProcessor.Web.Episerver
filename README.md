@@ -96,6 +96,8 @@ GetPictureData parameters are similar to the parameters for the Picture html hel
 ## Change log
 To get a more exact overview of the changes, you can also take a look at the commit history.
 #### V5.6.3
+- Fix #41 (thanks Erik!)
+#### V5.6.3
 - Fix #38 (hopefully)
 - updated the package reference for WindowsAzure.Storage to align with EPiServer.Azure version
 #### V5.6.2
