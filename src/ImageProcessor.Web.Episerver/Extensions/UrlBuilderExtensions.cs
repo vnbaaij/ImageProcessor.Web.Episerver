@@ -1006,7 +1006,7 @@ namespace ImageProcessor.Web.Episerver
                 throw new ArgumentNullException(nameof(target));
 
             if (!target.IsEmpty)
-                target.QueryCollection.Add("tint", $"{color.R.ToString()},{color.G.ToString()},{color.B.ToString()},{color.A.ToString()}");
+                target.QueryCollection.Add("tint", $"{color.R},{color.G},{color.B},{color.A}");
 
             return target;
         }
@@ -1075,7 +1075,7 @@ namespace ImageProcessor.Web.Episerver
                 throw new ArgumentNullException(nameof(target));
 
             if (!target.IsEmpty)
-                target.QueryCollection.Add("vignette", $"{color.R.ToString()},{color.G.ToString()},{color.B.ToString()},{color.A.ToString()}");
+                target.QueryCollection.Add("vignette", $"{color.R},{color.G},{color.B},{color.A}");
 
             return target;
         }
