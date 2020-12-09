@@ -95,7 +95,9 @@ GetPictureData parameters are similar to the parameters for the Picture html hel
 
 ## Change log
 To get a more exact overview of the changes, you can also take a look at the commit history.
-#### V5.6.3
+#### V5.6.5
+- Fix #44. When '#' is found in color string for Tint, it will now be encoded in UrlBuilder.
+#### V5.6.4
 - Fix #41 (thanks Erik!)
 #### V5.6.3
 - Fix #38 (hopefully)

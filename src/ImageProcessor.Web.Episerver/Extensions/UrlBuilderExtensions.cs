@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Drawing;
 using System.Globalization;
+using System.Web;
 using System.Web.Mvc;
 using EPiServer;
 using ImageProcessor.Imaging;
@@ -972,8 +973,12 @@ namespace ImageProcessor.Web.Episerver
                 throw new ArgumentNullException(nameof(target));
 
             if (!target.IsEmpty)
-                target.QueryCollection.Add("tint", color.ToLower());
-
+            {
+                string t = color.ToLower();
+                if (t.Contains("#"))
+                    t = HttpUtility.UrlEncode(t);
+                target.QueryCollection.Add("tint", t);
+            }
             return target;
         }
 
@@ -981,7 +986,7 @@ namespace ImageProcessor.Web.Episerver
         /// Tints the current image with the given color.
         /// </summary>
         /// <param name="target"></param>
-        /// <param name="color">In KnoColor format.</param>
+        /// <param name="color">In KnownColor format.</param>
         /// <returns></returns>
         public static UrlBuilder Tint(this UrlBuilder target, KnownColor color)
         {
