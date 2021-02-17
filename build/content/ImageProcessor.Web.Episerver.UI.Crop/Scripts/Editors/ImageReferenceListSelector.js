@@ -111,7 +111,7 @@
 
             this.calculatedHeight = this.get('cropRatio') > 0
               ? Math.round(this.imageWidth / this.get('cropRatio'))
-              : 80;           
+              : 80;
           },
 
           buildRendering: function () {
@@ -126,7 +126,7 @@
                 horizontal: true,
                 accept: ['image']
               });
-            
+
             this.dndSource.checkAcceptance = lang.hitch(this, this._checkAcceptance);
 
             if (this.readOnly) {
@@ -138,7 +138,7 @@
                 accept: this.allowedDndTypes,
                 createItemOnDrop: false
               });
-            
+
 
             this.connect(this.dropTarget, 'onDropData', '_onDropData');
             this.connect(this.dndSource, 'onDrop', lang.hitch(this, this._onDrop));
@@ -157,12 +157,12 @@
           },
           _setValueAttr: function (value) {
             this._setValue(value);
-            this.items = value || [];     
-            
+            this.items = value || [];
+
             if (this.value != null) {
               this.dndSource.insertNodes(false, this.value);
               this.dndSource.sync();
-            }            
+            }
           },
 
           _setReadOnlyAttr: function (readOnly) {
@@ -365,7 +365,7 @@
                     this.selectedMedia = item;
                     this._showImageEditor(item);
                   }).bind(this)
-                });                            
+                });
 
               var btnDelete = new domConstruct.create('a',
                 {
@@ -396,7 +396,7 @@
                     this._setValue(this.value);
 
                   }).bind(this)
-                });              
+                });
 
               domConstruct.place(btnCrop, buttonsNode, 'last');
               domConstruct.place(btnDelete, buttonsNode, 'last');
