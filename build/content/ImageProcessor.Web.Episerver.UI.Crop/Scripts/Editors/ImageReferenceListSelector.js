@@ -176,7 +176,7 @@
               return false;
             }
 
-            return this.dndSource.defaultCheckAcceptance(source, nodes);
+            return this._source.defaultCheckAcceptance(source, nodes);
           },
 
           _onDrop: function (source, node, copy) {
