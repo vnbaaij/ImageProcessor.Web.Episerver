@@ -127,6 +127,7 @@
                 accept: ['image']
               });
 
+            this._source = new this.dndSource(this.domNode, settings);
             this.dndSource.checkAcceptance = lang.hitch(this, this._checkAcceptance);
 
             if (this.readOnly) {
@@ -176,7 +177,7 @@
               return false;
             }
 
-            return this._source.defaultCheckAcceptance(source, nodes);
+              return true; // this._source.defaultCheckAcceptance(source, nodes);
           },
 
           _onDrop: function (source, node, copy) {

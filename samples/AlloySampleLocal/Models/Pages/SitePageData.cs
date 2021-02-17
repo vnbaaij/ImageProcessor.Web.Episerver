@@ -7,6 +7,7 @@ using AlloySample.Models.Properties;
 using EPiServer.Web;
 using AlloySample.Models.Media;
 using ImageProcessor.Web.Episerver.UI.Crop.Core;
+using ImageProcessor.Web.Episerver.UI.Crop.Core.Collections;
 
 namespace AlloySample.Models.Pages
 {
@@ -61,6 +62,9 @@ namespace AlloySample.Models.Pages
 
         [ImageReference(AllowedTypes = new[] { typeof(ImageFile) })]
         public virtual ImageReference SingleImageReference { get; set; }
+
+        [ImageReference(CropRatio = 1d, AllowedTypes = new[] { typeof(ImageFile) })]
+        public virtual ImageReferenceList ImageReferenceList { get; set; }
 
         [Display(
             GroupName = SystemTabNames.Content,

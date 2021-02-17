@@ -20,6 +20,7 @@ namespace AlloySample.Models.Pages
             Order = 305)]
         public virtual PageListBlock NewsList { get; set; }
 
+
         public override void SetDefaultValues(ContentType contentType)
         {
             base.SetDefaultValues(contentType);
