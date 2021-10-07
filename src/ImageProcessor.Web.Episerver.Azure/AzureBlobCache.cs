@@ -1,4 +1,14 @@
-﻿using System;
+﻿using EPiServer;
+using EPiServer.Core;
+using EPiServer.Framework.Configuration;
+using EPiServer.Logging;
+using EPiServer.Web.Routing;
+using ImageProcessor.Web.Caching;
+//using ImageProcessor.Web.HttpModules;
+
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
@@ -7,18 +17,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
-using EPiServer;
-using EPiServer.Core;
-using EPiServer.Framework.Configuration;
-using EPiServer.Logging;
-using EPiServer.Web.Routing;
-
-using ImageProcessor.Web.Episerver;
-using ImageProcessor.Web.Caching;
-//using ImageProcessor.Web.HttpModules;
-
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace ImageProcessor.Web.Episerver.Azure
 {
@@ -241,6 +239,11 @@ namespace ImageProcessor.Web.Episerver.Azure
                     if (token.IsCancellationRequested)
                     {
                         break;
+                    }
+
+                    if (blob.IsDeleted)
+                    {
+                        continue;
                     }
 
                     if (blob.Properties.LastModified.HasValue && !IsExpired(blob.Properties.LastModified.Value.UtcDateTime))

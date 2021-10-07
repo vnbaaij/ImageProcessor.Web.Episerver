@@ -1,4 +1,13 @@
-﻿using System;
+﻿using EPiServer;
+using EPiServer.Core;
+using EPiServer.Framework.Blobs;
+using EPiServer.Framework.Configuration;
+using EPiServer.Logging;
+using EPiServer.Web.Routing;
+using ImageProcessor.Configuration;
+using ImageProcessor.Imaging.Formats;
+using ImageProcessor.Web.Caching;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -8,15 +17,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
-using EPiServer;
-using EPiServer.Core;
-using EPiServer.Framework.Blobs;
-using EPiServer.Framework.Configuration;
-using EPiServer.Logging;
-using EPiServer.Web.Routing;
-using ImageProcessor.Configuration;
-using ImageProcessor.Imaging.Formats;
-using ImageProcessor.Web.Caching;
 
 namespace ImageProcessor.Web.Episerver
 {
@@ -324,6 +324,10 @@ namespace ImageProcessor.Web.Episerver
                     catch (ThreadAbortException)
                     {
                         Thread.ResetAbort();
+                    }
+                    catch (HttpException)
+                    {
+                        return;
                     }
                 }
             }
