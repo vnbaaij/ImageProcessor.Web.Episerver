@@ -95,6 +95,10 @@ GetPictureData parameters are similar to the parameters for the Picture html hel
 
 ## Change log
 To get a more exact overview of the changes, you can also take a look at the commit history.
+#### V5.7.0 
+- Fix unhandled HttpException in FileBlobCache
+- Fix AzureBlobCache.TrimCacheAsync erro when blob already deleted
+- Fix Crop script helper path
 #### V5.6.3 (Blocks)
 - Fix type type in CropProcessImageBlock
 #### V5.6.5
