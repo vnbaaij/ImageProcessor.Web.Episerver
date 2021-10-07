@@ -30,7 +30,7 @@
     'epi/shell/dnd/Target',
     'epi/shell/dnd/Source',
     //ipepiuicrop
-    'ipepiuicrop/helpers',
+    'ipepiuicrop/editors',
     //template
     'dojo/text!./templates/template.html'
   ],
