@@ -28,9 +28,15 @@ namespace ImageProcessor.Web.Episerver
 		/// </summary>
 		public int Quality { get; set; }
 
+		/// <summary>
+		/// Create Webp versions for these image formats.
+		/// </summary>
+        public ImageFormat[] CreateWebpForFormat { get; set; }
+
 		public ImageType()
 		{
 			Quality = 80;
-		}
+            CreateWebpForFormat = new ImageFormat[] { ImageFormat.Jpg, ImageFormat.Jpeg };
+        }
 	}
 }

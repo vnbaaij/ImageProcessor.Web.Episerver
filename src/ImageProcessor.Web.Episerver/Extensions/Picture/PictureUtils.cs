@@ -64,21 +64,21 @@ namespace ImageProcessor.Web.Episerver.Picture
                 AltText = altText
             };
 
-            var currentFormat = GetFormatFromExtension(imageUrl.Path);
+            var currentFormat = GetFormatFromExtension(imageUrl.Path); 
 	        if (imageType.SrcSetWidths != null)
 	        {
-	            pData.SrcSet = BuildSrcSet(imageUrl, imageType, currentFormat);
-                pData.ImgSrc = BuildQueryString(imageUrl, imageType, imageType.DefaultImgWidth, currentFormat);
+	            pData.SrcSet = BuildSrcSet(imageUrl, imageType, currentFormat.ToString().ToLower()); //TODO: use ImageProcessor.Web.Episerver.ImageFormat everywhere, instead of a string value.
+				pData.ImgSrc = BuildQueryString(imageUrl, imageType, imageType.DefaultImgWidth, currentFormat.ToString().ToLower());
 	            pData.SizesAttribute = string.Join(", ", imageType.SrcSetSizes);
 
 	            if (includeLowQuality)
 	            {
-	                pData.SrcSetLowQuality = BuildSrcSet(imageUrl, imageType, currentFormat, true);
-	                pData.ImgSrcLowQuality = BuildQueryString(imageUrl, imageType, imageType.DefaultImgWidth, currentFormat, 10);
+	                pData.SrcSetLowQuality = BuildSrcSet(imageUrl, imageType, currentFormat.ToString().ToLower(), true);
+	                pData.ImgSrcLowQuality = BuildQueryString(imageUrl, imageType, imageType.DefaultImgWidth, currentFormat.ToString().ToLower(), 10);
 	            }
 
-                //if jpg, also add webp versions
-                if (currentFormat == "jpg")
+				//Add webp versions for the specified image formats
+				if (imageType.CreateWebpForFormat != null && imageType.CreateWebpForFormat.Contains(currentFormat))
 	            {
 	                pData.SrcSetWebp = BuildSrcSet(imageUrl, imageType, "webp");
 	                if (includeLowQuality)
@@ -113,13 +113,11 @@ namespace ImageProcessor.Web.Episerver.Picture
 	        return srcset;
 	    }
 
-        private static string GetFormatFromExtension(string filePath)
+        private static ImageFormat GetFormatFromExtension(string filePath)
 		{
-			var extension = Path.GetExtension(filePath);
-			var format = extension?.TrimStart('.');
-			if (format == "jpeg")
-				format = "jpg";
-			return format ?? string.Empty;
+			var extension = Path.GetExtension(filePath)?.TrimStart('.');
+            Enum.TryParse<ImageFormat>(extension, true, out var format);
+            return format;
 		}
 
 		private static string BuildQueryString(UrlBuilder imageUrl, ImageType imageType, int? imageWidth, string format, int? overrideQuality = null)
