@@ -56,7 +56,7 @@ Alternatively you could supply the image with all the parameters in the HTML:
 See http://imageprocessor.org/imageprocessor-web/imageprocessingmodule/ for all options
 
 ## Picture Helper
-This package also include an Html helper that renders a [Picture element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture) that let's you have responsive, optimized, and lazy loaded images.
+ImageProcessor.Web.Episerver also include an Html helper that renders a [Picture element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture) that let's you have responsive, optimized, and lazy loaded images.
 
 Example usage
 ```
@@ -86,7 +86,7 @@ See also how to [get alt text from the image](PICTURE_HELPER_DOC.md).
 The picture helper is described in more detail [here](https://hacksbyme.net/2018/10/19/a-dead-easy-way-to-optimize-the-images-on-your-episerver-site/).
 
 ### Custom rendering of a picture element
-If you can't use the Picture html helper, for instance when rendering the markup client side in a React app, you can still use PictureUtils to get the data needed to render a picture element.
+If you for some reason wnat to render the markup yourself, you can use PictureUtils to get the data needed to render a picture element.
 ````
 PictureUtils.GetPictureData(myImageRef, ImageTypes.Teaser)
 ````
@@ -95,6 +95,10 @@ GetPictureData parameters are similar to the parameters for the Picture html hel
 
 ## Change log
 To get a more exact overview of the changes, you can also take a look at the commit history.
+#### V5.8.0
+- Picture helper: Possible to create WebP versions for other formats than jpg. Add formats to the `CreateWebpForFormat` array in your Image Type. See also #40.
+- Picture helper: `decoding="async"` is now by default added to the img element. Can be changed by setting `ImageDecoding`in your Image Type.
+- Picture helper: `DefaultImgWidth` is now optional. Will use the largest `SrcSetWidth` if not set.
 #### V5.7.0 
 - Fix unhandled HttpException in FileBlobCache
 - Fix AzureBlobCache.TrimCacheAsync erro when blob already deleted

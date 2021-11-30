@@ -10,10 +10,24 @@ namespace ImageProcessor.Web.Episerver
 {
 	public class ImageType
 	{
+        private int? _defaultImgWidth;
+
 		/// <summary>
 		/// This size will be used in browsers that don't support the picture element.
+		/// Will use the largest SrcSetWidth if not set.
 		/// </summary>
-		public int? DefaultImgWidth { get; set; }
+		public int? DefaultImgWidth
+        {
+            get
+            {
+                if (_defaultImgWidth == default && SrcSetWidths != null)
+                {
+                    return SrcSetWidths.Max();
+                }
+                return _defaultImgWidth;
+            }
+            set => _defaultImgWidth = value;
+        }
 
 		/// <summary>
 		/// The different image widths that the browser will select from.
