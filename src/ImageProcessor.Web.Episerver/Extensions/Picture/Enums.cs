@@ -20,3 +20,16 @@ namespace ImageProcessor.Web.Episerver
 		Hybrid
 	}
 }
+
+namespace ImageProcessor.Web.Episerver.Picture
+{
+    public enum ImageDecoding
+    {
+        Async,
+        Sync,
+        Auto,
+        None
+    }
+}
+
+

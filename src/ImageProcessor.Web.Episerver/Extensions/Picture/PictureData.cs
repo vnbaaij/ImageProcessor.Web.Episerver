@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ImageProcessor.Web.Episerver.Picture;
 
 namespace ImageProcessor.Web.Episerver.Extensions.Picture
 {
@@ -16,5 +17,6 @@ namespace ImageProcessor.Web.Episerver.Extensions.Picture
         public string ImgSrc { get; set; }
         public string ImgSrcLowQuality { get; set; }
         public string AltText { get; set; }
+        public ImageDecoding ImgDecoding { get; set; }
     }
 }

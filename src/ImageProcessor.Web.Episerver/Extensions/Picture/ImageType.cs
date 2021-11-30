@@ -3,16 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ImageProcessor.Web.Episerver.Picture;
 
 //TODO: namespace should be ImageProcessor.Web.Episerver.Picture, but wait for other breaking changes(?)
 namespace ImageProcessor.Web.Episerver
 {
 	public class ImageType
 	{
+        private int? _defaultImgWidth;
+
 		/// <summary>
 		/// This size will be used in browsers that don't support the picture element.
+		/// Will use the largest SrcSetWidth if not set.
 		/// </summary>
-		public int? DefaultImgWidth { get; set; }
+		public int? DefaultImgWidth
+        {
+            get
+            {
+                if (_defaultImgWidth == default && SrcSetWidths != null)
+                {
+                    return SrcSetWidths.Max();
+                }
+                return _defaultImgWidth;
+            }
+            set => _defaultImgWidth = value;
+        }
 
 		/// <summary>
 		/// The different image widths that the browser will select from.
@@ -28,9 +43,27 @@ namespace ImageProcessor.Web.Episerver
 		/// </summary>
 		public int Quality { get; set; }
 
+		/// <summary>
+		/// Create Webp versions for these image formats.
+		/// </summary>
+        public ImageFormat[] CreateWebpForFormat { get; set; }
+
+		/// <summary>
+		/// Create lossless Webp versions for images in png format.
+		/// </summary>
+		public bool CreateLosslessWebpForPng { get; set; }
+
+        /// <summary>
+        /// Img element decoding attribute.
+        /// </summary>
+        public ImageDecoding ImageDecoding { get; set; }
+
 		public ImageType()
 		{
 			Quality = 80;
+            CreateWebpForFormat = new ImageFormat[] { ImageFormat.Jpg, ImageFormat.Jpeg, ImageFormat.Png };
+            CreateLosslessWebpForPng = true;
+            ImageDecoding = ImageDecoding.Async;
 		}
 	}
 }
