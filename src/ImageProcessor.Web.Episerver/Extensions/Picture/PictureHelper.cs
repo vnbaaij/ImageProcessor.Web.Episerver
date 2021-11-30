@@ -116,6 +116,11 @@ namespace ImageProcessor.Web.Episerver
 			    imgElement.Attributes.Add("class", cssClass);
 		    }
 
+            if (pictureData.ImgDecoding != ImageDecoding.None)
+            {
+                imgElement.Attributes.Add("decoding", Enum.GetName(typeof(ImageDecoding), pictureData.ImgDecoding)?.ToLower());
+            }
+
 			return imgElement.ToString(TagRenderMode.SelfClosing);
 		}
 

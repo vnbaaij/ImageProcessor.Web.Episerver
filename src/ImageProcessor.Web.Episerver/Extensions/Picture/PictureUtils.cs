@@ -61,7 +61,8 @@ namespace ImageProcessor.Web.Episerver.Picture
 	    {
             var pData = new PictureData
             {
-                AltText = altText
+                AltText = altText,
+				ImgDecoding = imageType.ImageDecoding
             };
 
             var currentFormat = GetFormatFromExtension(imageUrl.Path); 

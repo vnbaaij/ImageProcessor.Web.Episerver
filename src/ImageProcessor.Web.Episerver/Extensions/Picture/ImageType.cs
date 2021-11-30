@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ImageProcessor.Web.Episerver.Picture;
 
 //TODO: namespace should be ImageProcessor.Web.Episerver.Picture, but wait for other breaking changes(?)
 namespace ImageProcessor.Web.Episerver
@@ -33,10 +34,16 @@ namespace ImageProcessor.Web.Episerver
 		/// </summary>
         public ImageFormat[] CreateWebpForFormat { get; set; }
 
+        /// <summary>
+        /// Img element decoding attribute.
+        /// </summary>
+        public ImageDecoding ImageDecoding { get; set; }
+
 		public ImageType()
 		{
 			Quality = 80;
             CreateWebpForFormat = new ImageFormat[] { ImageFormat.Jpg, ImageFormat.Jpeg };
-        }
+            ImageDecoding = ImageDecoding.Async;
+		}
 	}
 }
