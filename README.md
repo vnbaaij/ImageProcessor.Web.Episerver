@@ -96,8 +96,9 @@ GetPictureData parameters are similar to the parameters for the Picture html hel
 ## Change log
 To get a more exact overview of the changes, you can also take a look at the commit history.
 #### V5.8.0
-- Picture helper: Possible to create WebP versions for other formats than jpg. Add formats to the `CreateWebpForFormat` array in your Image Type. See also #40.
-- Picture helper: `decoding="async"` is now by default added to the img element. Can be changed by setting `ImageDecoding`in your Image Type.
+- Picture helper: Possible to create Webp versions for other formats than jpg. Add formats to the `CreateWebpForFormat` array in the Image Type. See also issue #40.
+- Picture helper: Webp versions of png images will lossless by default. Can be changed by setting `CreateLosslessWebpForPng` in the Image Type.
+- Picture helper: `decoding="async"` is now by default added to the img element. Can be changed by setting `ImageDecoding`in the Image Type.
 - Picture helper: `DefaultImgWidth` is now optional. Will use the largest `SrcSetWidth` if not set.
 #### V5.7.0 
 - Fix unhandled HttpException in FileBlobCache
