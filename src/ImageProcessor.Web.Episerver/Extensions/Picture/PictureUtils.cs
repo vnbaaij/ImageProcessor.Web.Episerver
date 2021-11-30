@@ -81,7 +81,13 @@ namespace ImageProcessor.Web.Episerver.Picture
 				//Add webp versions for the specified image formats
 				if (imageType.CreateWebpForFormat != null && imageType.CreateWebpForFormat.Contains(currentFormat))
 	            {
-	                pData.SrcSetWebp = BuildSrcSet(imageUrl, imageType, "webp");
+                    int? overrideQuality = null;
+                    if (currentFormat == ImageFormat.Png && imageType.CreateLosslessWebpForPng)
+                    {
+                        //set quality to 100 to create lossless Webp when current format is png.
+                        overrideQuality = 100;
+                    }
+					pData.SrcSetWebp = BuildSrcSet(imageUrl, imageType, "webp", false, overrideQuality);
 	                if (includeLowQuality)
 	                {
 	                    pData.SrcSetLowQualityWebp = BuildSrcSet(imageUrl, imageType, "webp", true);
@@ -92,7 +98,8 @@ namespace ImageProcessor.Web.Episerver.Picture
 	        return pData;
 	    }
 
-	    private static string BuildSrcSet(UrlBuilder imageUrl, ImageType imageType, string format, bool lowQuality = false)
+		//TODO: "lowQuality" should be refactored out from this method.
+	    private static string BuildSrcSet(UrlBuilder imageUrl, ImageType imageType, string format, bool lowQuality = false, int? overrideQuality = null)
 	    {
 	        var lowQualityValue = format == "webp" ? 1 : 10; //webp can have lower quality value
 	        var lowQualityFormat = format == "png" ? "png8" : format; //low quality png will be 8-bit
@@ -106,7 +113,7 @@ namespace ImageProcessor.Web.Episerver.Picture
                 }
                 else
 	            {
-	                srcset += BuildQueryString(imageUrl, imageType, width, format) + " " + width + "w, ";
+	                srcset += BuildQueryString(imageUrl, imageType, width, format, overrideQuality) + " " + width + "w, ";
                 }
             }
 	        srcset = srcset.TrimEnd(',', ' ');

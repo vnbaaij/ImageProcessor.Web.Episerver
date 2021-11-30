@@ -48,6 +48,11 @@ namespace ImageProcessor.Web.Episerver
 		/// </summary>
         public ImageFormat[] CreateWebpForFormat { get; set; }
 
+		/// <summary>
+		/// Create lossless Webp versions for images in png format.
+		/// </summary>
+		public bool CreateLosslessWebpForPng { get; set; }
+
         /// <summary>
         /// Img element decoding attribute.
         /// </summary>
@@ -56,7 +61,8 @@ namespace ImageProcessor.Web.Episerver
 		public ImageType()
 		{
 			Quality = 80;
-            CreateWebpForFormat = new ImageFormat[] { ImageFormat.Jpg, ImageFormat.Jpeg };
+            CreateWebpForFormat = new ImageFormat[] { ImageFormat.Jpg, ImageFormat.Jpeg, ImageFormat.Png };
+            CreateLosslessWebpForPng = true;
             ImageDecoding = ImageDecoding.Async;
 		}
 	}
