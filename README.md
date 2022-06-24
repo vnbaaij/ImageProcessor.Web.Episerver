@@ -93,8 +93,10 @@ PictureUtils.GetPictureData(myImageRef, ImageTypes.Teaser)
 GetPictureData returns a PictureData object that contains all the data needed for rendering a picture element.<br/>
 GetPictureData parameters are similar to the parameters for the Picture html helper.<br/><br/>
 
-## Change log
+### Change log
 To get a more exact overview of the changes, you can also take a look at the commit history.
+#### V5.9.0
+- Update all packages to use Newtonsoft.Json version 13.0.1. **This means minimum required EPiServer.CMS.Core version is now 11.20.1**
 #### V5.8.0
 - Picture helper: Possible to create Webp versions for other formats than jpg. Add formats to the `CreateWebpForFormat` array in the Image Type. See also issue #40.
 - Picture helper: Webp versions of png images will lossless by default. Can be changed by setting `CreateLosslessWebpForPng` in the Image Type.
