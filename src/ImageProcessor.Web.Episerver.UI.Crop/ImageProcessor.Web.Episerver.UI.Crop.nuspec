@@ -15,9 +15,9 @@
     <copyright>Copyright 2020</copyright>
     <tags>Episerver ImageProcessor Blob Cache Fluent API Responsive image</tags>
     <dependencies>
-      <dependency id="ImageProcessor.Web.Episerver" version="[5.6,6.0)" />
-      <dependency id="EPiServer.CMS.Core" version="[11.1.0, 12.0)" />
-      <dependency id="EPiServer.CMS.AspNet" version="[11.1.0, 12.0)" />
+      <dependency id="ImageProcessor.Web.Episerver" version="[5.9,6.0)" />
+      <dependency id="EPiServer.CMS.Core" version="[11.20.1.0, 12.0)" />
+      <dependency id="EPiServer.CMS.AspNet" version="[11.20.1, 12.0)" />
     </dependencies>
   </metadata>
   <files>
